@@ -1,0 +1,33 @@
+{
+
+    "name": "plugins/campaignrabbit-integration-for-woocommerce",
+    "description": "To intergrate campaignrabbit and woocommerce",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Cartrabbit",
+            "email": "rvprashanthi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+
+    "require": {
+        "guzzlehttp/guzzle": "dev-master",
+        "a5hleyrich/wp-background-processing": "dev-master"
+    },
+
+
+    "autoload": {
+        "psr-0": {
+            "CampaignRabbit\\WooIncludes": "includes/",
+            "CampaignRabbit\\WooPublic":"public/",
+            "CampaignRabbit\\WooAdmin":"admin/"
+
+        }
+
+    }
+
+
+
+}
