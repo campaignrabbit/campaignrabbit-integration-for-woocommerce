@@ -1,4 +1,4 @@
-campaignrabbit-sdk/
+campaignrabbit-client-library/
 vendor/
 /.idea
 .DS_Store
