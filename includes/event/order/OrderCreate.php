@@ -80,6 +80,7 @@ class OrderCreate extends \WP_Background_Process {
 
         );
 
+
         $order_status=(new Order(get_option('api_token'),get_option('app_id')))->getOrderStatus($order->get_status());
 
 

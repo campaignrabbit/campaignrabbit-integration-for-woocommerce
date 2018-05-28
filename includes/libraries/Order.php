@@ -106,9 +106,11 @@ class Order extends Request {
 
     public function getOrderStatus($status){
 
-        $order_status='';
 
         switch ($status){
+            case 'pending':
+                $order_status='pending';
+                break;
             case 'wc-pending':
                 $order_status='unpaid';
                 break;
@@ -130,10 +132,12 @@ class Order extends Request {
             case 'wc-failed':
                 $order_status='unpaid';
                 break;
+            default:
+                $order_status='pending';
+                break;
         }
 
         return $order_status;
-
 
     }
 

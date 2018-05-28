@@ -33,6 +33,7 @@ class Order
 
         if (get_option('api_token_flag')) {
 
+
             global $order_create_request;
 
             $this->order_create_request=$order_create_request;
