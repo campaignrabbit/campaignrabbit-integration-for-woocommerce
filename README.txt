@@ -17,9 +17,15 @@ To intergrate campaignRabbit and woocommerce
 
 == Installation ==
 
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Upload campaignrabbit-integration-for-woocommerce-master to the `/wp-content/plugins/` directory
+2. Activate the 'CampaignRabbit Integration For WooCommerce' plugin through the 'Plugins' menu in WordPress
+3. Navigate to the root directory of this plugin 'campaignrabbit-integration-for-woocommerce-master' and type the following commands:
+    $ composer update
+    $ composer dump-autoload -o
+4. Once that is done, on the Plugins page in wordpress, Activate the 'CampaignRabbit Integration For WooCommerce' plugin.
+5. Navigate to the 'CampaignRabbit' menu and provide the valid credentials and click on 'Connect'.
+6. Once you are successfully authenticated, Click on migrate to intiate the your site data to WooCampaigns.
+
 
 == Frequently Asked Questions ==
 
