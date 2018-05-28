@@ -2,6 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Order;
 
 
 /**
@@ -82,6 +83,8 @@ class InitialOrders extends \WP_Background_Process
 
         );
 
+        $order_status=(new Order(get_option('api_token'),get_option('app_id')))->getOrderStatus($order->get_status());
+
         $post_order = array(
             'r_order_id' => $order->get_id(),
             'r_order_ref' => $order->get_id(),
@@ -92,7 +95,7 @@ class InitialOrders extends \WP_Background_Process
             'order_items' =>$order_items,
             'shipping' => $shipping,
             'billing' => $billing,
-            'status'=>$order->get_status()
+            'status'=>$order_status
 
         );
 

@@ -104,5 +104,38 @@ class Order extends Request {
 
     }
 
+    public function getOrderStatus($status){
+
+        $order_status='';
+
+        switch ($status){
+            case 'wc-pending':
+                $order_status='unpaid';
+                break;
+            case 'wc-processing':
+                $order_status='pending';
+                break;
+            case 'wc-on-hold':
+                $order_status='unpaid';
+                break;
+            case 'wc-completed':
+                $order_status='completed';
+                break;
+            case 'wc-cancelled':
+                $order_status='cancelled';
+                break;
+            case 'wc-refunded':
+                $order_status='cancelled';
+                break;
+            case 'wc-failed':
+                $order_status='unpaid';
+                break;
+        }
+
+        return $order_status;
+
+
+    }
+
 
 }

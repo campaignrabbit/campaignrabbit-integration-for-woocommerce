@@ -56,8 +56,10 @@ class Order
             $order=(new Request())->request('GET','order/get_by_r_id/'.$order_id,'');
             $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
 
+            $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getOrderStatus($new_status);
+
             $json_body = json_encode(array(
-                'status'=>$new_status
+                'status'=>$order_status
             ));
 
             $data=array(
