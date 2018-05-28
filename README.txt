@@ -1,9 +1,10 @@
 === CampaignRabbit Integration For WooCommerce ===
 Contributors: flycart
 Tags: marketing, automation, campaigns, newsletters, woocommerce
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 1.0.0
+Requires at least: 4.4.1
+Tested up to: 4.9
+Requires PHP: 5.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,30 +23,17 @@ To intergrate campaignRabbit and woocommerce
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 1.1.0 - 28/05/18 =
+* Improvement - Order Status mapping method added to the libraries
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0 - 25/05/18 =
+* Initial Release
 
 == Upgrade Notice ==
 
