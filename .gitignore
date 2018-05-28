@@ -1,3 +1,4 @@
 campaignrabbit-sdk/
+vendor/
 /.idea
 .DS_Store
