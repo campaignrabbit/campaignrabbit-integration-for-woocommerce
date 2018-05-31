@@ -85,18 +85,21 @@ class Order
 
             $this->order_trash_request = $order_trash_request;
             $order=(new Request())->request('GET','order/get_by_r_id/'.$post_id,'');
-            $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
+            if(!$order){
+                $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
 
-            $order= new \WC_Order($post_id);
-            $json_body=json_encode(array(
-                'status'=> $order->get_status()
-            ));
-            $data=array(
-                'json_body'=>$json_body,
-                'uri'=>  $this->uri.'/'.$r_order_id
-            );
-            $this->order_trash_request->push_to_queue( $data );
-            $this->order_trash_request->save()->dispatch();
+                $order= new \WC_Order($post_id);
+                $json_body=json_encode(array(
+                    'status'=> $order->get_status()
+                ));
+                $data=array(
+                    'json_body'=>$json_body,
+                    'uri'=>  $this->uri.'/'.$r_order_id
+                );
+                $this->order_trash_request->push_to_queue( $data );
+                $this->order_trash_request->save()->dispatch();
+            }
+
 
 
         }

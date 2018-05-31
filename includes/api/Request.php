@@ -54,12 +54,31 @@ class Request{
 
             $error_message=$e->getMessage();
             echo "<script type='text/javascript'>alert('$error_message');</script>";
-            $response='false';
+            $response=$e->getResponse();;
 
+
+        return $response;
 
         }
 
         return $response;
+
+    }
+
+
+    public function parseResponse($response){
+
+
+        $parsed_response=array(
+            'reasonPhrase'=> $response->getReasonPhrase(),
+            'statusCode'=>$response->getStatusCode(),
+            'bodyContent'=> $response->getBody()->getContents()
+        );
+
+
+
+
+        return $parsed_response;
 
     }
 

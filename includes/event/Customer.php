@@ -9,10 +9,9 @@
 namespace CampaignRabbit\WooIncludes\Event;
 
 
-
 use CampaignRabbit\WooIncludes\Api\Request;
 
-class Customer{
+class Customer {
 
 
     /**
@@ -91,12 +90,13 @@ class Customer{
 
             $this->customer_update_request = $customer_update_request;
             $customer_response=(new Request())->request('GET',$this->uri.'/get_by_email/'.$old_user_data->user_email,'');
-            $id=json_decode($customer_response->getBody()->getContents(),true)['id'];
+            $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
+
 
                 $meta_array = array(array(
-                    'meta_key' => 'dfs',
-                    'meta_value' => 'fsf',
-                    'meta_options' => 'as'
+                    'meta_key' => 'dummy',
+                    'meta_value' => 'dummy',
+                    'meta_options' => 'dummy'
                 ));
                 $post_customer = array(
 
@@ -110,6 +110,7 @@ class Customer{
                   'json_body'=>$json_body,
                   'uri'=>  $this->uri.'/'.$id
                 );
+   
                 $this->customer_update_request->push_to_queue( $data );
                 $this->customer_update_request->save()->dispatch();
 
