@@ -3,6 +3,8 @@
 namespace CampaignRabbit\WooIncludes\Ajax;
 
 use CampaignRabbit\WooIncludes\Lib\Customer;
+use CampaignRabbit\WooIncludes\Lib\Order;
+use CampaignRabbit\WooIncludes\Lib\Product;
 use CampaignRabbit\WooIncludes\Lib\Request;
 
 
@@ -25,7 +27,11 @@ class InitialBulkMigrate
     function __construct()
     {
 
-  //
+        $this->customer_api= new Customer(get_option('api_token'),get_option('app_id'));
+
+        $this->order_api= new Order(get_option('api_token'), get_option('app_id'));
+
+        $this->product_api= new Product(get_option('api_token'), get_option('app_id'));
 
     }
 
@@ -63,6 +69,7 @@ class InitialBulkMigrate
 
         $orders = $this->get_orders();
 
+
         //iterate through them and start the cron and queue(wp_bg-process)
 
         /*
@@ -83,12 +90,7 @@ class InitialBulkMigrate
                 'meta' => $meta_array
 
             );
-
-          //  $this->customer_api= new Customer(get_option('api_token'),get_option('app_id'));
-            $json_body = json_encode($post_customer);
-
-        $x=(new \CampaignRabbit\WooIncludes\Api\Request())->request('POST','customer', $json_body);
-
+            
             $this->migrate_initial_customers->push_to_queue($post_customer);
         }
 

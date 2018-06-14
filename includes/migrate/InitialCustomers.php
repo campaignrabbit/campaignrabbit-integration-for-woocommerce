@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Customer;
 
 
 /**
@@ -38,17 +38,15 @@ class InitialCustomers extends \WP_Background_Process
             'meta_value' => 'dummy_value',
             'meta_options' => 'dummy_options'
         ));
-        $post_customer = array(
 
+        $post_customer = array(
             'email' =>$item->user_email,
             'name' =>$item->user_login,
             'meta' => $meta_array
 
         );
 
-        $json_body = json_encode($post_customer);
-
-        (new Request())->request('POST','customer', $json_body);
+        (new Customer(get_option('api_token'),get_option('app_id')))->create($post_customer);
 
         return false;
     }
