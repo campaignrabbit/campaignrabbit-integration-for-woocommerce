@@ -85,8 +85,9 @@ class InitialBulkMigrate
             );
 
           //  $this->customer_api= new Customer(get_option('api_token'),get_option('app_id'));
+            $json_body = json_encode($post_customer);
 
-           
+        $x=(new \CampaignRabbit\WooIncludes\Api\Request())->request('POST','customer', $json_body);
 
             $this->migrate_initial_customers->push_to_queue($post_customer);
         }

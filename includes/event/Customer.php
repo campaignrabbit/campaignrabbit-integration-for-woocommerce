@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: flycart
- * Date: 6/3/18
- * Time: 12:35 PM
- */
+
 
 namespace CampaignRabbit\WooIncludes\Event;
 

@@ -3,6 +3,7 @@
 namespace CampaignRabbit\WooIncludes\Api;
 
 use CampaignRabbit\WooIncludes\CampaignRabbit;
+use CampaignRabbit\WooIncludes\Helper\Site;
 use GuzzleHttp\Client;
 
 /**
@@ -11,14 +12,14 @@ use GuzzleHttp\Client;
 class Request{
 
 
-    private $campaignrabbit;
+    private $site;
 
     /**
      * Request constructor.
      */
     public function __construct()
     {
-        $this->campaignrabbit=new CampaignRabbit();
+        $this->site=new Site();
     }
 
 
@@ -34,14 +35,14 @@ class Request{
 
             $client = new Client([
                 // Base URI is used with relative requests
-                'base_uri' => $this->campaignrabbit->get_base_uri()
+                'base_uri' => $this->site->getBaseUri()
             ]);
 
             $response=$client->request($method, $uri, [
                 'body' => $json_body,
                 'headers' => [
                     'Authorization' => 'Bearer ' . get_option('api_token'),
-                    'Request-From-Domain' => $this->campaignrabbit->get_domain(),
+                    'Request-From-Domain' => $this->site->getDomain(),
                     'App-Id' => get_option('app_id'),
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json'

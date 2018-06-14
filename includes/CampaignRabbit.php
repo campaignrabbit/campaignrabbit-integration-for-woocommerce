@@ -146,11 +146,6 @@ class CampaignRabbit {
 
         $this->define_rest_api_hook();
 
-        $this->domain=site_url();
-
-        $this->base_uri='https://app.campaignrabbit.com/api/v1/';
-
-        //define filters
 
 
     }
@@ -524,19 +519,6 @@ class CampaignRabbit {
         return $this->version;
     }
 
-    /**
-     * Get Domain
-     */
-    public function get_domain(){
-        return $this->domain;
-    }
-
-    /**
-     * Get Base URI
-     */
-    public function get_base_uri(){
-        return $this->base_uri;
-    }
 
     /**
      * Get Woocommerce Version
