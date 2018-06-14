@@ -1,6 +1,7 @@
 <?php
 
 namespace CampaignRabbit\WooIncludes\Lib;
+
 use CampaignRabbit\WooIncludes\CampaignRabbit;
 use GuzzleHttp\Client;
 

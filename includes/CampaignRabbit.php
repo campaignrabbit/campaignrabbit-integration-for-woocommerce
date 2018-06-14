@@ -127,10 +127,7 @@ class CampaignRabbit {
 
         if ( defined( 'WOOCOMMERCE_VERSION' ) ) {
             $this->plugin_name = WOOCOMMERCE_VERSION;
-        } else {
-            $this->plugin_name = cr_get_woo_version_number();
         }
-
 
         $this->load_dependencies();
         $this->set_locale();
@@ -451,6 +448,9 @@ class CampaignRabbit {
         $initial_bulk_migrate_orders_process=new InitialOrders();
 
         $initial_bulk_migrate=new InitialBulkMigrate();
+
+        //TODO test
+        $initial_bulk_migrate->execute();
         $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
         $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
 

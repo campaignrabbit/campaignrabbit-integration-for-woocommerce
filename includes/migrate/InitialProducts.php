@@ -17,7 +17,6 @@ class InitialProducts extends \WP_Background_Process
     protected $action = 'products_initial_migrate_process';
 
 
-
     /**
      * Task
      *

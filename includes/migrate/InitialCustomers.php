@@ -1,6 +1,7 @@
 <?php
 
 namespace CampaignRabbit\WooIncludes\Migrate;
+
 use CampaignRabbit\WooIncludes\Api\Request;
 
 
@@ -44,7 +45,6 @@ class InitialCustomers extends \WP_Background_Process
             'meta' => $meta_array
 
         );
-
 
         $json_body = json_encode($post_customer);
 

@@ -2,9 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Lib;
 
-
-
-
 /**
  * Class Customer
  * @package Woocampaign\WooIncludes\Lib
@@ -48,7 +45,6 @@ class Customer extends Request
 
 
     public function get($email){
-
 
         $response=$this->request->request('GET',$this->uri.'/get_by_email/'.$email,'');
         $parsed_response=$this->request->parseResponse($response);

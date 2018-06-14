@@ -1,7 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cartrabbit
- * Date: 14/06/18
- * Time: 4:05 PM
- */
+
+namespace CampaignRabbit\WooIncludes\WooVersion\v2_6;
+
+class Product{
+
+
+}

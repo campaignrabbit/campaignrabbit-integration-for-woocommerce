@@ -2,10 +2,9 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
+use CampaignRabbit\WooIncludes\Lib\Customer;
+use CampaignRabbit\WooIncludes\Lib\Request;
 
-
-use CampaignRabbit\WooIncludes\Lib\Order;
-use CampaignRabbit\WooIncludes\Lib\Product;
 
 class InitialBulkMigrate
 {
@@ -16,8 +15,17 @@ class InitialBulkMigrate
 
     protected $migrate_initial_orders;
 
+    private $customer_api;
+
+    private $order_api;
+
+    private $product_api;
+
+
     function __construct()
     {
+
+  //
 
     }
 
@@ -62,7 +70,25 @@ class InitialBulkMigrate
          */
 
         foreach ($customers as $customer) {
-            $this->migrate_initial_customers->push_to_queue($customer);
+
+            $meta_array = array(array(
+                'meta_key' => 'dummy_key',
+                'meta_value' => 'dummy_value',
+                'meta_options' => 'dummy_options'
+            ));
+            $post_customer = array(
+
+                'email' =>$customer->user_email,
+                'name' =>$customer->user_login,
+                'meta' => $meta_array
+
+            );
+
+          //  $this->customer_api= new Customer(get_option('api_token'),get_option('app_id'));
+
+           
+
+            $this->migrate_initial_customers->push_to_queue($post_customer);
         }
 
         $this->migrate_initial_customers->save()->dispatch();
@@ -101,7 +127,6 @@ class InitialBulkMigrate
 
     private function get_customers()
     {
-
 
 
         if ( get_option('api_token_flag')) {
