@@ -38,7 +38,7 @@ require_once __DIR__.'/vendor/autoload.php';
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'CAMPAIGNRABBIT_VERSION', '1.0.0' );
+define( 'CAMPAIGNRABBIT_VERSION', '1.1.0' );
 define('CAMPAIGNRABBIT_NAME','campaignrabbit-integration-for-woocommerce');
 
 /**
@@ -82,11 +82,45 @@ register_deactivation_hook( __FILE__, 'deactivate_campaignrabbit' );
 function run_campaignrabbit() {
 
 
+    /**
+     * Check if WooCommerce is active
+     **/
+    if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 
-    $plugin = new \CampaignRabbit\WooIncludes\CampaignRabbit();
-	$plugin->run();
+        /*
+         * Get Woocommerce version and define it in global variable
+         */
+
+        define('WOOCOMMERCE_VERSION',cr_get_woo_version_number());
+
+        $plugin = new \CampaignRabbit\WooIncludes\CampaignRabbit();
+        $plugin->run();
+
+    }else{
+        wp_die( __( 'Please install and Activate WooCommerce.', 'woocommerce-addon-slug' ), 'Plugin dependency check', array( 'back_link' => true ) );
+    }
 
 
+}
+
+function cr_get_woo_version_number() {
+
+    // If get_plugins() isn't available, require it
+    if ( ! function_exists( 'get_plugins' ) )
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+    // Create the plugins folder and file variables
+    $plugin_folder = get_plugins( '/' . 'woocommerce' );
+    $plugin_file = 'woocommerce.php';
+
+    // If the plugin version number is set, return it
+    if ( isset( $plugin_folder[$plugin_file]['Version'] ) ) {
+        return $plugin_folder[$plugin_file]['Version'];
+
+    } else {
+        // Otherwise return null
+        return NULL;
+    }
 }
 
 

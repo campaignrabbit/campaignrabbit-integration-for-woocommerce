@@ -110,7 +110,7 @@ class Customer {
                   'json_body'=>$json_body,
                   'uri'=>  $this->uri.'/'.$id
                 );
-   
+
                 $this->customer_update_request->push_to_queue( $data );
                 $this->customer_update_request->save()->dispatch();
 

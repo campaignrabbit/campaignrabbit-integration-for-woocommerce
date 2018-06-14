@@ -102,6 +102,11 @@ class CampaignRabbit {
      */
     protected $base_uri;
 
+    /**
+     * Woocommerce Version
+     */
+    protected $woo_version;
+
 
     /**
      * CampaignRabbit constructor.
@@ -118,6 +123,12 @@ class CampaignRabbit {
             $this->plugin_name = CAMPAIGNRABBIT_NAME;
         } else {
             $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
+        }
+
+        if ( defined( 'WOOCOMMERCE_VERSION' ) ) {
+            $this->plugin_name = WOOCOMMERCE_VERSION;
+        } else {
+            $this->plugin_name = cr_get_woo_version_number();
         }
 
 
@@ -514,17 +525,24 @@ class CampaignRabbit {
     }
 
     /**
-     *
+     * Get Domain
      */
     public function get_domain(){
         return $this->domain;
     }
 
     /**
-     *
+     * Get Base URI
      */
     public function get_base_uri(){
         return $this->base_uri;
+    }
+
+    /**
+     * Get Woocommerce Version
+     */
+    public function get_woo_version(){
+        return $this->woo_version;
     }
 
 }

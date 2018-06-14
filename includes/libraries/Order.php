@@ -36,7 +36,7 @@ class Order extends Request {
     /**
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function getAllOrders(){
+    public function getAll(){
 
         $response=$this->request->request('GET', $this->uri, '');
         $parsed_response=$this->request->parseResponse($response);
@@ -50,7 +50,7 @@ class Order extends Request {
      * @param $id
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function getOrder($id){
+    public function get($id){
 
         $response=$this->request->request('GET', $this->uri.'/'.$id, '');
         $parsed_response=$this->request->parseResponse($response);
@@ -65,7 +65,7 @@ class Order extends Request {
      * @param $body
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function createOrder($body){
+    public function create($body){
 
         $json_body = json_encode($body);
         $response=$this->request->request('POST', $this->uri, $json_body);
@@ -80,7 +80,7 @@ class Order extends Request {
      * @param $body
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function updateOrder($body){
+    public function update($body){
 
         $json_body = json_encode($body);
         $response=$this->request->request('PUT', $this->uri . '/' . $body['id'], $json_body);
@@ -95,7 +95,7 @@ class Order extends Request {
      * @param $id
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function deleteOrder($id){
+    public function delete($id){
 
         $response=$this->request->request('DELETE', $this->uri . '/' . $id, '');
         $parsed_response=$this->request->parseResponse($response);
@@ -104,7 +104,7 @@ class Order extends Request {
 
     }
 
-    public function getOrderStatus($status){
+    public function getStatus($status){
 
 
         switch ($status){

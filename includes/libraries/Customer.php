@@ -36,7 +36,7 @@ class Customer extends Request
     /**
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function getAllCustomers(){
+    public function getAll(){
 
         $response=$this->request->request('GET', $this->uri, '');
         $parsed_response=$this->request->parseResponse($response);
@@ -47,7 +47,7 @@ class Customer extends Request
 
 
 
-    public function getCustomer($email){
+    public function get($email){
 
 
         $response=$this->request->request('GET',$this->uri.'/get_by_email/'.$email,'');
@@ -62,7 +62,7 @@ class Customer extends Request
      * @param $body
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function createCustomer($body)
+    public function create($body)
     {
 
         $json_body = json_encode($body);
@@ -78,7 +78,7 @@ class Customer extends Request
      * @param $body
      * @return mixed|\Psr\Http\Message\ResponseInterface|string
      */
-    public function updateCustomer($body, $old_email)
+    public function update($body, $old_email)
     {
 
         $json_body = json_encode($body);
@@ -97,7 +97,7 @@ class Customer extends Request
 
 
 
-    public function deleteCustomer($email)
+    public function delete($email)
     {
         $customer_response=$this->request->request('GET',$this->uri.'/get_by_email/'.$email,'');
         if($customer_response->getStatusCode()!=200){
