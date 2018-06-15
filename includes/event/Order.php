@@ -6,6 +6,7 @@ namespace CampaignRabbit\WooIncludes\Event;
 
 
 use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Helper\Site;
 
 class Order
 {
@@ -18,6 +19,10 @@ class Order
     protected $order_update_request;
 
     protected $order_trash_request;
+
+    public $woo_version;
+
+
 
     public function __construct($uri)
     {
@@ -33,12 +38,32 @@ class Order
 
         if (get_option('api_token_flag')) {
 
+            $this->woo_version = (new Site())->getWooVersion();
+
+            if ($this->woo_version < 3.0) {
+
+                /*
+                 * 2.6
+                 */
+
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($order_id);
+
+
+            } else {
+
+                /*
+                 * 3.0
+                 */
+
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order_id);
+            }
+
 
             global $order_create_request;
 
             $this->order_create_request=$order_create_request;
 
-            $this->order_create_request->push_to_queue( $order_id );
+            $this->order_create_request->push_to_queue( $order );
             $this->order_create_request->save()->dispatch();
 
         }
@@ -54,18 +79,9 @@ class Order
 
             $this->order_update_request=$order_update_request;
 
-            $order=(new Request())->request('GET','order/get_by_r_id/'.$order_id,'');
-            $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
-
-            $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getOrderStatus($new_status);
-
-            $json_body = json_encode(array(
-                'status'=>$order_status
-            ));
-
             $data=array(
-                'json_body'=>$json_body,
-                'uri'=>  $this->uri.'/'.$r_order_id
+                'order_id'=>$order_id,
+                'status'=>  $new_status
             );
 
             $this->order_update_request->push_to_queue( $data );
@@ -84,21 +100,10 @@ class Order
             global $order_trash_request;
 
             $this->order_trash_request = $order_trash_request;
-            $order=(new Request())->request('GET','order/get_by_r_id/'.$post_id,'');
-            if(!$order){
-                $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
 
-                $order= new \WC_Order($post_id);
-                $json_body=json_encode(array(
-                    'status'=> $order->get_status()
-                ));
-                $data=array(
-                    'json_body'=>$json_body,
-                    'uri'=>  $this->uri.'/'.$r_order_id
-                );
-                $this->order_trash_request->push_to_queue( $data );
-                $this->order_trash_request->save()->dispatch();
-            }
+
+            $this->order_trash_request->push_to_queue( $post_id );
+            $this->order_trash_request->save()->dispatch();
 
 
 

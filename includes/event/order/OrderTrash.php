@@ -26,7 +26,20 @@ class OrderTrash extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        (new Request())->request('PUT',$item['uri'], $item['json_body']);
+        $order=(new Request())->request('GET','order/get_by_r_id/'.$item,'');
+
+        if(!$order){
+            $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
+
+            $order= new \WC_Order($item);
+            $json_body=json_encode(array(
+                'status'=> $order->get_status()
+            ));
+
+            (new Request())->request('PUT','order/'.$r_order_id, $json_body);
+        }
+
+
 
 
         return false;

@@ -97,6 +97,8 @@ class Product
 
             $this->product_update_request = $product_update_request;
 
+            $this->woo_version = (new Site())->getWooVersion();
+
             if ($this->woo_version < 3.0) {
 
                 /*
@@ -161,6 +163,8 @@ class Product
 
             $this->product_delete_request = $product_delete_request;
 
+            $this->woo_version = (new Site())->getWooVersion();
+
             if ($this->woo_version < 3.0) {
 
                 /*
@@ -196,6 +200,8 @@ class Product
             global $product_restore_request;
 
             $this->product_restore_request = $product_restore_request;
+
+            $this->woo_version = (new Site())->getWooVersion();
 
             if ($this->woo_version < 3.0) {
 

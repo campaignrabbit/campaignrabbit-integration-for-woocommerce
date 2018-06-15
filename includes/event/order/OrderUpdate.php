@@ -2,8 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Event\Order;
 
-
-
 use CampaignRabbit\WooIncludes\Api\Request;
 
 class OrderUpdate extends \WP_Background_Process {
@@ -27,7 +25,16 @@ class OrderUpdate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        (new Request())->request('PUT',$item['uri'], $item['json_body']);
+
+        $order=(new Request())->request('GET','order/get_by_r_id/'.$item['order_id'],'');
+        $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
+
+        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($item['status']);
+
+        $json_body = json_encode(array(
+            'status'=>$order_status
+        ));
+        (new Request())->request('PUT','order/'.$r_order_id, $json_body);
 
 
         return false;
