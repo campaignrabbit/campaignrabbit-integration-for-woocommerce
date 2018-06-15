@@ -38,6 +38,7 @@ use CampaignRabbit\WooAdmin\Admin;
 use CampaignRabbit\WooIncludes\Ajax\Analytics;
 use CampaignRabbit\WooIncludes\Ajax\InitialBulkMigrate;
 use CampaignRabbit\WooIncludes\Api\Api;
+use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Endpoints\Authenticate;
 use CampaignRabbit\WooIncludes\Event\Customer;
 use CampaignRabbit\WooIncludes\Event\Order;
@@ -422,6 +423,8 @@ class CampaignRabbit {
 
         //delete existing order
         $this->loader->add_action('wp_trash_post',$order,'trash',1,1);
+
+
 
 
     }

@@ -35,6 +35,7 @@ class InitialOrders extends \WP_Background_Process
     protected function task($item)
     {
 
+        $request= new Request();
 
         $woo_version = (new Site())->getWooVersion();
 
@@ -56,10 +57,14 @@ class InitialOrders extends \WP_Background_Process
             $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($item);
         }
 
+        $remote_order=$request->parseResponse($request->request('GET','order/get_by_r_id/'.$item,''));
 
-        $json_body = json_encode($order);
+        if($remote_order['bodyContent']!='false'){
+            $json_body = json_encode($order);
 
-        (new Request())->request('POST', 'order', $json_body);
+            (new Request())->request('POST', 'order', $json_body);
+
+        }
 
         return false;
     }
