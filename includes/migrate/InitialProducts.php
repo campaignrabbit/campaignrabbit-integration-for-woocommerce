@@ -64,10 +64,10 @@ class InitialProducts extends \WP_Background_Process
         } else {
             //variable products
 
-            foreach ($product as $body) {
+            foreach ($product['body'] as $body) {
 
 
-                (new Request())->request('POST', 'product', json_encode($body['body']));
+                (new Request())->request('POST', 'product', json_encode($body));
 
 
             }

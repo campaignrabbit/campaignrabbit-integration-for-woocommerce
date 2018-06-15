@@ -121,7 +121,7 @@ class Product
 
                 $data = array(
                     'uri' => $this->uri . '/' . $woo_product_sku[$product['body']['r_product_id']],
-                    'json_body' => \GuzzleHttp\json_encode($product['body'])
+                    'json_body' => json_encode($product['body'])
                 );
 
                 $this->product_update_request->push_to_queue($data);
@@ -131,11 +131,11 @@ class Product
             } else {
                 //variable products
 
-                foreach ($product as $body) {
+                foreach ($product['body'] as $body) {
 
                     $data = array(
-                        'uri' => $this->uri . '/' . $woo_product_sku[$body['body']['r_product_id']],
-                        'json_body' => \GuzzleHttp\json_encode($body['body'])
+                        'uri' => $this->uri . '/' . $woo_product_sku[$body['r_product_id']],
+                        'json_body' => json_encode($body)
                     );
 
                     $this->product_update_request->push_to_queue($data);

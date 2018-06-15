@@ -2,11 +2,13 @@
 
 namespace CampaignRabbit\WooIncludes\WooVersion\v2_6;
 
+use function GuzzleHttp\Psr7\str;
+
 class Product{
 
     public function get($product_id){
 
-        $woo_product = wc_get_product($product_id);
+      $woo_product=wc_get_product( $product_id );
 
         $meta_array = array(array(
             'meta_key' => 'dummy_key',
@@ -46,7 +48,6 @@ class Product{
 
                 $woo_variable_product = wc_get_product($woo_variation_id);
 
-
                 $post_product = array(
                     'r_product_id' => $woo_variation_id,
                     'sku' => $woo_variable_product->sku,
@@ -63,7 +64,7 @@ class Product{
             }
 
             $customer=array(
-                'json_body'=>$body,
+                'body'=>$body,
                 'type'=>'variable'
             );
 

@@ -197,7 +197,7 @@ class CampaignRabbit {
 
         $plugin_admin = new Admin( $this->get_plugin_name(), $this->get_version() );
         $api=new Api();
-        $initial_bulk_migration=new InitialBulkMigrate();
+
 
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -235,7 +235,11 @@ class CampaignRabbit {
         /*
          *Recurring initial migration
          */
-        $this->loader->add_action('campaignrabbit_recurring_bulk_migration', $initial_bulk_migration, 'execute');
+        add_action( 'wp_loaded', function () {
+            $initial_bulk_migration=new InitialBulkMigrate();
+            $this->loader->add_action('campaignrabbit_recurring_bulk_migration', $initial_bulk_migration, 'execute');
+        }, 0);
+
 
 
 
@@ -441,8 +445,7 @@ class CampaignRabbit {
 
         $initial_bulk_migrate=new InitialBulkMigrate();
 
-        //TODO test
-    //    $initial_bulk_migrate->execute();
+
         $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
         $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
 

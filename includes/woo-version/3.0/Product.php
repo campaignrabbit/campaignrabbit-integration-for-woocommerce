@@ -64,7 +64,7 @@ class Product{
             }
 
             $customer=array(
-                'json_body'=>$body,
+                'body'=>$body,
                 'type'=>'variable'
             );
 
