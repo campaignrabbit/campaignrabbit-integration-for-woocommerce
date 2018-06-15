@@ -5,7 +5,6 @@ namespace CampaignRabbit\WooIncludes\Ajax;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 use CampaignRabbit\WooIncludes\Lib\Order;
 use CampaignRabbit\WooIncludes\Lib\Product;
-use CampaignRabbit\WooIncludes\Lib\Request;
 
 
 class InitialBulkMigrate
@@ -90,7 +89,8 @@ class InitialBulkMigrate
                 'meta' => $meta_array
 
             );
-            
+
+
             $this->migrate_initial_customers->push_to_queue($post_customer);
         }
 

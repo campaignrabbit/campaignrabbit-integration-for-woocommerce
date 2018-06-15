@@ -58,7 +58,7 @@ class InitialProducts extends \WP_Background_Process
         if ($product['type'] == 'simple') {
 
 
-            (new Request())->request('POST', 'product', \GuzzleHttp\json_encode($product['body']));
+            (new Request())->request('POST', 'product', json_encode($product['body']));
 
 
         } else {
@@ -67,7 +67,7 @@ class InitialProducts extends \WP_Background_Process
             foreach ($product as $body) {
 
 
-                (new Request())->request('POST', 'product', \GuzzleHttp\json_encode($body['body']));
+                (new Request())->request('POST', 'product', json_encode($body['body']));
 
 
             }

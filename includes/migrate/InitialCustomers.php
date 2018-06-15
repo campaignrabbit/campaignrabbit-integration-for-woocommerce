@@ -33,20 +33,7 @@ class InitialCustomers extends \WP_Background_Process
     protected function task( $item ) {
 
 
-        $meta_array = array(array(
-            'meta_key' => 'dummy_key',
-            'meta_value' => 'dummy_value',
-            'meta_options' => 'dummy_options'
-        ));
-
-        $post_customer = array(
-            'email' =>$item->user_email,
-            'name' =>$item->user_login,
-            'meta' => $meta_array
-
-        );
-
-        $json_body= \GuzzleHttp\json_encode($post_customer);
+        $json_body= json_encode($item);
 
         (new Request())->request('POST', 'customer', $json_body);
 
