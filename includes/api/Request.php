@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Api;
 
-use CampaignRabbit\WooIncludes\CampaignRabbit;
+
 use CampaignRabbit\WooIncludes\Helper\Site;
 use GuzzleHttp\Client;
 
