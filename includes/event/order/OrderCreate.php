@@ -31,7 +31,7 @@ class OrderCreate extends \WP_Background_Process
         // Actions to perform
 
 
-        (new Request())->request('POST', 'order', \GuzzleHttp\json_encode($item['body']));
+        (new Request())->request('POST', 'order', json_encode($item));
 
 
         return false;

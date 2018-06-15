@@ -43,9 +43,9 @@ class Customer {
             $this->customer_create_request = $customer_create_request;
 
             $meta_array = array(array(
-                'meta_key' => 'dfs',
-                'meta_value' => 'fsf',
-                'meta_options' => 'as'
+                'meta_key' => 'CUSTOMER_GROUP',
+                'meta_value' => isset($_POST['role'])?$_POST['role']:'',
+                'meta_options' => ''
             ));
             $post_customer = array(
 
@@ -88,16 +88,22 @@ class Customer {
             $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
 
 
-                $meta_array = array(array(
-                    'meta_key' => 'dummy',
-                    'meta_value' => 'dummy',
-                    'meta_options' => 'dummy'
-                ));
+
+                $roles=array();
+
+                foreach ($old_user_data->roles as $role){
+                    $roles[]=array(
+                        'meta_key'=>'CUSTOMER_GROUP',
+                        'meta_value'=>$role,
+                        'meta_options'=>''
+                    );
+                }
+
                 $post_customer = array(
 
                     'email' =>isset($_POST['email'])?$_POST['email']:'',
                     'name' =>$old_user_data->user_login,
-                    'meta' => $meta_array
+                    'meta' => $roles
 
                 );
                 $json_body = json_encode($post_customer);

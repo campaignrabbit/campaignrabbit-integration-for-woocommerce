@@ -59,7 +59,7 @@ class InitialOrders extends \WP_Background_Process
 
         $remote_order=$request->parseResponse($request->request('GET','order/get_by_r_id/'.$item,''));
 
-        if($remote_order['bodyContent']!='false'){
+        if($remote_order['bodyContent']=='false'){
             $json_body = json_encode($order);
 
             (new Request())->request('POST', 'order', $json_body);
