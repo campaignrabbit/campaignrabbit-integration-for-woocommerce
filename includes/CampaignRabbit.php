@@ -125,9 +125,6 @@ class CampaignRabbit {
             $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
         }
 
-        if ( defined( 'WOOCOMMERCE_VERSION' ) ) {
-            $this->plugin_name = WOOCOMMERCE_VERSION;
-        }
 
         $this->load_dependencies();
         $this->set_locale();
@@ -219,7 +216,7 @@ class CampaignRabbit {
 
 
         /*
-         * an interval of 3 minutes to the WP Cron schedules
+         * an interval of 5 minutes to the WP Cron schedules
          */
         $this->loader->add_filter( 'cron_schedules', $this,'add_cron_recurrence_interval' );
 
@@ -445,7 +442,7 @@ class CampaignRabbit {
         $initial_bulk_migrate=new InitialBulkMigrate();
 
         //TODO test
-        $initial_bulk_migrate->execute();
+    //    $initial_bulk_migrate->execute();
         $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
         $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
 
@@ -520,11 +517,5 @@ class CampaignRabbit {
     }
 
 
-    /**
-     * Get Woocommerce Version
-     */
-    public function get_woo_version(){
-        return $this->woo_version;
-    }
 
 }

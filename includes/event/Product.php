@@ -2,6 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Event;
 use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Helper\Site;
 
 
 /**
@@ -26,6 +27,8 @@ class Product
 
     protected $product_restore_request;
 
+    public $woo_version;
+
     /**
      * Product constructor.
      * @param $uri
@@ -34,6 +37,8 @@ class Product
     {
 
         $this->uri = $uri;
+
+
 
     }
 
@@ -44,12 +49,34 @@ class Product
 
         if (get_option('api_token_flag') && get_post_type($post_id) == 'product' && get_post($post_id)->post_title != "AUTO-DRAFT") {
 
+
+            $this->woo_version=(new Site())->getWooVersion();
+
+            if($this->woo_version<3.0){
+
+                /*
+                 * 2.6
+                 */
+
+                $customer=(new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer())->get($post_id);
+
+
+            }else{
+
+                /*
+                 * 3.0
+                 */
+
+              $customer=(new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($post_id);
+            }
+
+
             global $product_create_request;
 
             $this->product_create_request = $product_create_request;
 
 
-            $this->product_create_request->push_to_queue( $post_id );
+            $this->product_create_request->push_to_queue( $customer );
 
             $this->product_create_request->save()->dispatch();
 

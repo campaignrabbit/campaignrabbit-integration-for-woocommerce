@@ -9,11 +9,19 @@ class Site{
 
     public $domain;
 
+    public $woo_version;
+
     public function __construct()
     {
         $this->domain=site_url();
 
         $this->base_uri='https://app.campaignrabbit.com/api/v1/';
+
+        if ( defined( 'WOOCOMMERCE_VERSION' ) ) {
+            $this->woo_version = WOOCOMMERCE_VERSION;
+        }
+
+
     }
 
     /**
@@ -31,6 +39,12 @@ class Site{
     public function getDomain()
     {
         return $this->domain;
+    }
+
+    public function getWooVersion(){
+
+        return $this->woo_version;
+
     }
 
 

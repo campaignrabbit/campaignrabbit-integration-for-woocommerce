@@ -26,60 +26,16 @@ class ProductCreate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        $woo_product = wc_get_product($item);
+        if($item['type']=='simple'){
 
-        $meta_array = array(array(
-            'meta_key' => 'dummy_key',
-            'meta_value' => 'dummy_value',
-            'meta_options' => 'dummy_options'
-        ));
+            (new Request())->request('POST', 'product', $item['json_body']);
 
+        }else{
 
-        if ($woo_product->is_type('simple')) {
+            foreach ($item['json_body'] as $body){
 
-            //simple product
-
-
-
-            $post_product = array(
-                'r_product_id' => $woo_product->get_id(),
-                'sku' => $woo_product->get_sku(),
-                'product_name' => $woo_product->get_title(),
-                'product_price' => $woo_product->get_price(),
-                'parent_id' => $woo_product->get_parent_id(),
-                'meta' => $meta_array
-
-            );
-
-            $json_body = json_encode($post_product);
-            (new Request())->request('POST', 'product', $json_body);
-
-
-        } else {
-
-            //variable products
-
-            $woo_variation_ids = $woo_product->get_children();
-
-            foreach ($woo_variation_ids as $woo_variation_id) {
-
-                $woo_variable_product = wc_get_product($woo_variation_id);
-
-                $post_product = array(
-                    'r_product_id' => $woo_variable_product->get_id(),
-                    'sku' => $woo_variable_product->get_sku(),
-                    'product_name' => $woo_variable_product->get_title(),
-                    'product_price' => $woo_variable_product->get_price(),
-                    'parent_id' => $woo_variable_product->get_parent_id(),
-                    'meta' => $meta_array
-
-                );
-
-                $json_body = json_encode($post_product);
-                (new Request())->request('POST', 'product', $json_body);
-
+                (new Request())->request('POST','product',$body);
             }
-
         }
 
         return false;

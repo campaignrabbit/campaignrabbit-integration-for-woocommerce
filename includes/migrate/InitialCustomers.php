@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-use CampaignRabbit\WooIncludes\Lib\Customer;
+use CampaignRabbit\WooIncludes\Api\Request;
 
 
 /**
@@ -46,7 +46,9 @@ class InitialCustomers extends \WP_Background_Process
 
         );
 
-        (new Customer(get_option('api_token'),get_option('app_id')))->create($post_customer);
+        $json_body= \GuzzleHttp\json_encode($post_customer);
+
+        (new Request())->request('POST', 'customer', $json_body);
 
         return false;
     }
