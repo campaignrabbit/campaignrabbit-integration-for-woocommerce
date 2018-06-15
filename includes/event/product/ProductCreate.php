@@ -28,13 +28,13 @@ class ProductCreate extends \WP_Background_Process {
         // Actions to perform
         if($item['type']=='simple'){
 
-            (new Request())->request('POST', 'product', $item['json_body']);
+            (new Request())->request('POST', 'product', \GuzzleHttp\json_encode($item['body']));
 
         }else{
 
-            foreach ($item['json_body'] as $body){
+            foreach ($item['body'] as $body){
 
-                (new Request())->request('POST','product',$body);
+                (new Request())->request('POST','product',\GuzzleHttp\json_encode($body));
             }
         }
 

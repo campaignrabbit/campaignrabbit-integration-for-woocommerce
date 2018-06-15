@@ -26,9 +26,8 @@ class ProductRestore extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        $woo_product = wc_get_product($item);
 
-        (new Request())->request('PUT', 'product/restore/' . $woo_product->get_sku() . '?allowSearchTrash', '');
+        (new Request())->request('PUT', 'product/restore/' . $item . '?allowSearchTrash', '');
 
 
         return false;

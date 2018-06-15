@@ -1,6 +1,7 @@
 <?php
 
 namespace CampaignRabbit\WooIncludes\Event;
+
 use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Helper\Site;
 
@@ -10,7 +11,6 @@ use CampaignRabbit\WooIncludes\Helper\Site;
  */
 class Product
 {
-
 
 
     /**
@@ -39,7 +39,6 @@ class Product
         $this->uri = $uri;
 
 
-
     }
 
 
@@ -50,24 +49,24 @@ class Product
         if (get_option('api_token_flag') && get_post_type($post_id) == 'product' && get_post($post_id)->post_title != "AUTO-DRAFT") {
 
 
-            $this->woo_version=(new Site())->getWooVersion();
+            $this->woo_version = (new Site())->getWooVersion();
 
-            if($this->woo_version<3.0){
+            if ($this->woo_version < 3.0) {
 
                 /*
                  * 2.6
                  */
 
-                $customer=(new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer())->get($post_id);
+                $product = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product())->get($post_id);
 
 
-            }else{
+            } else {
 
                 /*
                  * 3.0
                  */
 
-              $customer=(new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($post_id);
+                $product = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->get($post_id);
             }
 
 
@@ -76,10 +75,9 @@ class Product
             $this->product_create_request = $product_create_request;
 
 
-            $this->product_create_request->push_to_queue( $customer );
+            $this->product_create_request->push_to_queue($product);
 
             $this->product_create_request->save()->dispatch();
-
 
 
         }
@@ -99,60 +97,46 @@ class Product
 
             $this->product_update_request = $product_update_request;
 
-            $woo_product = wc_get_product($post_id);
+            if ($this->woo_version < 3.0) {
 
-            $meta_array = array(array(
-                'meta_key' => 'dummy_key',
-                'meta_value' => 'dummy_value',
-                'meta_options' => 'dummy_options'
-            ));
+                /*
+                 * 2.6
+                 */
 
-            if ($woo_product->is_type('simple')) {
-                $post_product = array(
-                    'r_product_id' => $woo_product->get_id(),
-                    'sku' => $woo_product->get_sku(),
-                    'product_name' => $woo_product->get_title(),
-                    'product_price' => $woo_product->get_price(),
-                    'meta' => $meta_array
+                $product = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product())->get($post_id);
 
+
+            } else {
+
+                /*
+                 * 3.0
+                 */
+
+                $product = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->get($post_id);
+            }
+
+            if ($product['type'] == 'simple') {
+
+                $data = array(
+                    'uri' => $this->uri . '/' . $woo_product_sku[$product['body']['r_product_id']],
+                    'json_body' => \GuzzleHttp\json_encode($product['body'])
                 );
 
-                $json_body = json_encode($post_product);
-
-                $data=array(
-                  'uri'=>$this->uri.'/'.$woo_product_sku[$woo_product->get_id()],
-                  'json_body'=>$json_body
-                );
-
-                $this->product_update_request->push_to_queue( $data );
+                $this->product_update_request->push_to_queue($data);
                 $this->product_update_request->save()->dispatch();
 
 
-            }else {
+            } else {
                 //variable products
 
-                $woo_variation_ids = $woo_product->get_children();
+                foreach ($product as $body) {
 
-                foreach ($woo_variation_ids as $woo_variation_id) {
-
-                    $woo_variable_product = wc_get_product($woo_variation_id);
-
-                    $post_product = array(
-                        'r_product_id' => $woo_variable_product->get_id(),
-                        'sku' => $woo_variable_product->get_sku(),
-                        'product_name' => $woo_variable_product->get_title(),
-                        'product_price' => $woo_variable_product->get_price(),
-                        'meta' => $meta_array
-
+                    $data = array(
+                        'uri' => $this->uri . '/' . $woo_product_sku[$body['body']['r_product_id']],
+                        'json_body' => \GuzzleHttp\json_encode($body['body'])
                     );
 
-                    $json_body = json_encode($post_product);
-                    $data=array(
-                        'uri'=>$this->uri.'/'.$woo_product_sku[$woo_variable_product->get_id()],
-                        'json_body'=>$json_body
-                    );
-
-                    $this->product_update_request->push_to_queue( $data );
+                    $this->product_update_request->push_to_queue($data);
                     $this->product_update_request->save()->dispatch();
 
                 }
@@ -176,8 +160,26 @@ class Product
             global $product_delete_request;
 
             $this->product_delete_request = $product_delete_request;
-            $woo_product = wc_get_product($post_id);
-            $this->product_delete_request->push_to_queue( $woo_product->get_sku() );
+
+            if ($this->woo_version < 3.0) {
+
+                /*
+                 * 2.6
+                 */
+
+                $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product())->getSKU($post_id);
+
+
+            } else {
+
+                /*
+                 * 3.0
+                 */
+
+                $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->getSKU($post_id);
+            }
+
+            $this->product_delete_request->push_to_queue($product_sku);
             $this->product_delete_request->save()->dispatch();
 
 
@@ -195,9 +197,26 @@ class Product
 
             $this->product_restore_request = $product_restore_request;
 
-            $this->product_restore_request->push_to_queue( $post_id );
-            $this->product_restore_request->save()->dispatch();
+            if ($this->woo_version < 3.0) {
 
+                /*
+                 * 2.6
+                 */
+
+                $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product())->getSKU($post_id);
+
+
+            } else {
+
+                /*
+                 * 3.0
+                 */
+
+                $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->getSKU($post_id);
+            }
+
+            $this->product_restore_request->push_to_queue($product_sku);
+            $this->product_restore_request->save()->dispatch();
 
 
         }
@@ -205,19 +224,20 @@ class Product
     }
 
 
-    public function save_sku( $post_id, $post, $update) {
+    public function save_sku($post_id, $post, $update)
+    {
 
         global $woo_product_sku;
 
-        $woo_product=wc_get_product($post_id);
+        $woo_product = wc_get_product($post_id);
 
-        $woo_product_sku_array=array();
+        $woo_product_sku_array = array();
 
         if ($woo_product->is_type('simple')) {
 
-            $woo_product_sku_array[$woo_product->get_id()]=$woo_product->get_sku();
+            $woo_product_sku_array[$woo_product->get_id()] = $woo_product->get_sku();
 
-        }else {
+        } else {
             //variable products
 
             $woo_variation_ids = $woo_product->get_children();
@@ -226,20 +246,17 @@ class Product
 
                 $woo_variable_product = wc_get_product($woo_variation_id);
 
-                $woo_product_sku_array[$woo_variable_product->get_id()]=$woo_variable_product->get_sku();
+                $woo_product_sku_array[$woo_variable_product->get_id()] = $woo_variable_product->get_sku();
 
             }
 
 
         }
 
-        $woo_product_sku=$woo_product_sku_array;
-
+        $woo_product_sku = $woo_product_sku_array;
 
 
     }
-
-
 
 
 }
