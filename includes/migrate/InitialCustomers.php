@@ -36,28 +36,13 @@ class InitialCustomers extends \WP_Background_Process
 
         $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
 
-        //Check if Customer Exists- get_by_email- If Status is 404-> create req
+        $customer_response=$customer_api->get($item['email']);
 
-        $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
-
-        $customer_response=$customer_api->create('GET','customer/get_by_email/'.$item['email'],'');
-        
-        if($customer['statusCode']==404){
-
-            /*
-             * Create Customer
-             */
-
-            $created=$request->request('POST','customer',json_encode($item));
-
-        }else if ($customer['status']==200){
-
-            /*
-             * Update Customer
-             */
-            $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
-
-            $uodated=$request->request('PUT','customer/'.$id,json_encode($item));
+        if($customer_response->code==404){
+            $created=$customer_api->create($item);
+        }else if ($customer_response->code==200){
+            $email=$customer_response->body->data->email;
+            $updated=$customer_api->update($item,$email);
 
         }
 

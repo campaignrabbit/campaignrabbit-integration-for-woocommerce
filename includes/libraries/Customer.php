@@ -55,7 +55,7 @@ class Customer extends Request
 
 
 
-    public function update($body, $old_email)
+    public function update($old_email, $body)
     {
 
         $customer_response=$this->get($old_email);
