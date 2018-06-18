@@ -33,6 +33,9 @@ class InitialCustomers extends \WP_Background_Process
      */
     protected function task( $item ) {
 
+
+        $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
+
         //Check if Customer Exists- get_by_email- If Status is 404-> create req
 
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));

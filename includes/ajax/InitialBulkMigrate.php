@@ -19,21 +19,9 @@ class InitialBulkMigrate
 
     protected $migrate_initial_orders;
 
-    private $customer_api;
-
-    private $order_api;
-
-    private $product_api;
-
 
     function __construct()
     {
-
-        $this->customer_api= new Customer(get_option('api_token'),get_option('app_id'));
-
-        $this->order_api= new Order(get_option('api_token'), get_option('app_id'));
-
-        $this->product_api= new Product(get_option('api_token'), get_option('app_id'));
 
     }
 

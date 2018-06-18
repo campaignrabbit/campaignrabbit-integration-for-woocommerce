@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-use CampaignRabbit\WooIncludes\Api\Request;
+
 use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Order;
 
@@ -35,9 +35,10 @@ class InitialOrders extends \WP_Background_Process
     protected function task($item)
     {
 
-        $request = new Request();
 
         $site = new Site();
+
+        $order_api=new Order(get_option('api_token'),get_option('app_id'));
 
         $woo_version = $site->getWooVersion();
 
