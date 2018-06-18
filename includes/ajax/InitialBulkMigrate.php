@@ -14,6 +14,7 @@ class InitialBulkMigrate
 
 
     function __construct(){
+        do_action( 'woocommerce_loaded');
     }
 
     public function initiate(){
@@ -24,6 +25,8 @@ class InitialBulkMigrate
     }
 
     public function execute(){
+
+      
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
@@ -53,6 +56,7 @@ class InitialBulkMigrate
         $this->migrate_initial_products->save()->dispatch();
 
         foreach ($orders as $order_id) {
+
            $this->migrate_initial_orders->push_to_queue($order_id);  //Orders
         }
 

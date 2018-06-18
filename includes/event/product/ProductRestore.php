@@ -29,7 +29,7 @@ class ProductRestore extends \WP_Background_Process {
 
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
 
-        (new Request())->request('PUT', 'product/restore/' . $item . '?allowSearchTrash', '');
+        $product_api->restore($item);
 
 
         return false;

@@ -5,8 +5,6 @@ namespace CampaignRabbit\WooIncludes\Lib;
 
 class Product extends Request {
 
-
-
     private $uri;
 
     private $request;
@@ -50,8 +48,5 @@ class Product extends Request {
        $response=$this->request->request('PUT', 'product/restore/' . $sku . '?allowSearchTrash', '');
        return $response;
     }
-
-
-
 
 }

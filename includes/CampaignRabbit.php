@@ -126,7 +126,7 @@ class CampaignRabbit
         } else {
             $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
         }
-
+        do_action( 'woocommerce_loaded' );
 
         $this->load_dependencies();
         $this->set_locale();
@@ -245,6 +245,7 @@ class CampaignRabbit
          */
 
         $initial_bulk_migration = new InitialBulkMigrate();
+        $initial_bulk_migration->execute();
         add_action('campaignrabbit_recurring_bulk_migration', array($initial_bulk_migration, 'execute'));
 
 
