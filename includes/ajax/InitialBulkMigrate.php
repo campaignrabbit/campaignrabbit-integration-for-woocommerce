@@ -26,7 +26,7 @@ class InitialBulkMigrate
 
     public function execute(){
 
-      
+
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
