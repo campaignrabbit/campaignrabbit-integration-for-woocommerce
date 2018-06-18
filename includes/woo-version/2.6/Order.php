@@ -6,7 +6,6 @@ class Order{
 
     public function get($order_id){
 
-
         $order = new \WC_Order($order_id);
         $post_order_items = $order->get_items();
         $meta_array = array(array(

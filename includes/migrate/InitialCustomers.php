@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 
 
@@ -33,16 +33,23 @@ class InitialCustomers extends \WP_Background_Process
      */
     protected function task( $item ) {
 
+        $site = new Site();
+        $woo_version = $site->getWooVersion();
 
+        if ($woo_version < 3.0) {
+            $customer_body = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer())->get($item); //2.6
+        } else {
+            $customer_body = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($item); //3.0
+        }
         $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
 
-        $customer_response=$customer_api->get($item['email']);
+        $customer_response=$customer_api->get($customer_body['email']);
 
         if($customer_response->code==404){
-            $created=$customer_api->create($item);
+            $created=$customer_api->create($customer_body);
         }else if ($customer_response->code==200){
             $email=$customer_response->body->data->email;
-            $updated=$customer_api->update($item,$email);
+            $updated=$customer_api->update($customer_body,$email);
 
         }
 

@@ -95,8 +95,10 @@ function run_campaignrabbit()
          * Get Woocommerce version and define it in global variable
          */
 
-        $plugin = new \CampaignRabbit\WooIncludes\CampaignRabbit();
-        $plugin->run();
+            $plugin = new \CampaignRabbit\WooIncludes\CampaignRabbit();
+            $plugin->run();
+
+
 
     } else {
 

@@ -32,9 +32,7 @@ class InitialOrders extends \WP_Background_Process
      *
      * @return mixed
      */
-    protected function task($item)
-    {
-
+    protected function task($item){
         $site = new Site();
         $order_api=new Order(get_option('api_token'),get_option('app_id'));
         $woo_version = $site->getWooVersion();
