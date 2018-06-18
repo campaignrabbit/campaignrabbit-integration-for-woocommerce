@@ -3,6 +3,7 @@
 namespace CampaignRabbit\WooIncludes\Migrate;
 
 use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Customer;
 
 
 /**
@@ -34,9 +35,9 @@ class InitialCustomers extends \WP_Background_Process
 
         //Check if Customer Exists- get_by_email- If Status is 404-> create req
 
-        $request=new Request();
+        $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
 
-        $customer_response=$request->request('GET','customer/get_by_email/'.$item['email'],'');
+        $customer_response=$customer_api->create('GET','customer/get_by_email/'.$item['email'],'');
 
         $customer=$request->parseResponse($customer_response);
         if($customer['statusCode']==404){

@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * The file that defines the core plugin class
  *
@@ -33,7 +32,6 @@
 namespace CampaignRabbit\WooIncludes;
 
 
-
 use CampaignRabbit\WooAdmin\Admin;
 use CampaignRabbit\WooIncludes\Ajax\Analytics;
 use CampaignRabbit\WooIncludes\Ajax\InitialBulkMigrate;
@@ -49,7 +47,8 @@ use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
 use CampaignRabbit\WooIncludes\Migrate\InitialProducts;
 use CampaignRabbit\WooPublic\CampaignRabbitPublic;
 
-class CampaignRabbit {
+class CampaignRabbit
+{
 
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -57,7 +56,7 @@ class CampaignRabbit {
      *
      * @since    1.0.0
      * @access   protected
-     * @var      Plugin_Name_Loader    $loader    Maintains and registers all hooks for the plugin.
+     * @var      Plugin_Name_Loader $loader Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -66,7 +65,7 @@ class CampaignRabbit {
      *
      * @since    1.0.0
      * @access   protected
-     * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+     * @var      string $plugin_name The string used to uniquely identify this plugin.
      */
     protected $plugin_name;
 
@@ -75,7 +74,7 @@ class CampaignRabbit {
      *
      * @since    1.0.0
      * @access   protected
-     * @var      string    $version    The current version of the plugin.
+     * @var      string $version The current version of the plugin.
      */
     protected $version;
 
@@ -112,43 +111,41 @@ class CampaignRabbit {
     /**
      * CampaignRabbit constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
 
 
-            if ( defined( 'CAMPAIGNRABBIT_VERSION' ) ) {
-                $this->version = CAMPAIGNRABBIT_VERSION;
-            } else {
-                $this->version = '1.0.0';
-            }
+        if (defined('CAMPAIGNRABBIT_VERSION')) {
+            $this->version = CAMPAIGNRABBIT_VERSION;
+        } else {
+            $this->version = '1.0.0';
+        }
 
-            if ( defined( 'CAMPAIGNRABBIT_NAME' ) ) {
-                $this->plugin_name = CAMPAIGNRABBIT_NAME;
-            } else {
-                $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
-            }
-
-
-            $this->load_dependencies();
-            $this->set_locale();
-
-            $this->define_admin_hooks();
-
-            $this->define_public_hooks();
-
-            //define ajax hooks
-
-            $this->define_ajax_hooks();
-
-            //campaignrabbit
-
-            $this->define_event_hooks();
-
-            //rest api hook init
-
-            $this->define_rest_api_hook();
+        if (defined('CAMPAIGNRABBIT_NAME')) {
+            $this->plugin_name = CAMPAIGNRABBIT_NAME;
+        } else {
+            $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
+        }
 
 
+        $this->load_dependencies();
+        $this->set_locale();
 
+        $this->define_admin_hooks();
+
+        $this->define_public_hooks();
+
+        //define ajax hooks
+
+        $this->define_ajax_hooks();
+
+        //campaignrabbit
+
+        $this->define_event_hooks();
+
+        //rest api hook init
+
+        $this->define_rest_api_hook();
 
 
     }
@@ -169,7 +166,8 @@ class CampaignRabbit {
      * @since    1.0.0
      * @access   private
      */
-    private function load_dependencies() {
+    private function load_dependencies()
+    {
 
         $this->loader = new Loader();
 
@@ -184,11 +182,12 @@ class CampaignRabbit {
      * @since    1.0.0
      * @access   private
      */
-    private function set_locale() {
+    private function set_locale()
+    {
 
         $plugin_i18n = new CampaignRabbiti18n();
 
-        $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 
     }
 
@@ -199,22 +198,23 @@ class CampaignRabbit {
      * @since    1.0.0
      * @access   private
      */
-    private function define_admin_hooks() {
+    private function define_admin_hooks()
+    {
 
-        $plugin_admin = new Admin( $this->get_plugin_name(), $this->get_version() );
-        $api=new Api();
+        $plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
+        $api = new Api();
 
 
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
         //admin menu
 
-        $this->loader->add_action('admin_menu', $plugin_admin,'admin_custom_menu');
+        $this->loader->add_action('admin_menu', $plugin_admin, 'admin_custom_menu');
 
         //admin submenus
 
-        $this->loader->add_action('admin_menu',$plugin_admin,'admin_custom_submenu');
+        $this->loader->add_action('admin_menu', $plugin_admin, 'admin_custom_submenu');
 
         //admin post options update
 
@@ -224,21 +224,24 @@ class CampaignRabbit {
         /*
          * an interval of 5 minutes to the WP Cron schedules
          */
-        $this->loader->add_filter( 'cron_schedules', $this,'add_cron_recurrence_interval' );
+        $this->loader->add_filter('cron_schedules', $this, 'add_cron_recurrence_interval');
 
         global $initial_bulk_migrate_customers_process;
 
-        $initial_bulk_migrate_customers_process=new InitialCustomers();
+        $initial_bulk_migrate_customers_process = new InitialCustomers();
 
         global $initial_bulk_migrate_products_process;
 
-        $initial_bulk_migrate_products_process=new InitialProducts();
+        $initial_bulk_migrate_products_process = new InitialProducts();
 
         global $initial_bulk_migrate_orders_process;
 
-        $initial_bulk_migrate_orders_process=new InitialOrders();
+        $initial_bulk_migrate_orders_process = new InitialOrders();
 
         //TODO TEST
+        
+
+        //////
 //        add_action( 'wp_loaded', function () {
 //            $initial_bulk_migration=new InitialBulkMigrate();
 //            $initial_bulk_migration->execute();
@@ -249,22 +252,21 @@ class CampaignRabbit {
          */
 
 
-            $initial_bulk_migration=new InitialBulkMigrate();
-            add_action('campaignrabbit_recurring_bulk_migration', array($initial_bulk_migration, 'execute'));
-
-
-
+        $initial_bulk_migration = new InitialBulkMigrate();
+        add_action('campaignrabbit_recurring_bulk_migration', array($initial_bulk_migration, 'execute'));
 
 
     }
 
-    public function add_cors_http_header(){
+    public function add_cors_http_header()
+    {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
     }
 
-    function add_allowed_origins($origins) {
+    function add_allowed_origins($origins)
+    {
         $origins[] = 'http://192.168.1.9';
         $origins[] = 'http://192.168.1.6';
         $origins[] = 'http://localhost';
@@ -275,17 +277,19 @@ class CampaignRabbit {
      * @param $schedules
      * @return mixed
      */
-    public function add_cron_recurrence_interval($schedules ) {
+    public function add_cron_recurrence_interval($schedules)
+    {
 
         $schedules['campaignrabbit_every_five_minutes'] = array(
-            'interval'  => 300,
-            'display'   => __( 'CampaignRabbit Every 5 Minutes', 'campaignrabbit-integration-for-woocommerce' )
+            'interval' => 300,
+            'display' => __('CampaignRabbit Every 5 Minutes', 'campaignrabbit-integration-for-woocommerce')
         );
 
         return $schedules;
     }
 
-    public function add_rest_post_dispatch(\WP_REST_Response $result) {
+    public function add_rest_post_dispatch(\WP_REST_Response $result)
+    {
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
             $result->header('Access-Control-Allow-Headers', 'Authorization, Content-Type', true);
@@ -300,25 +304,23 @@ class CampaignRabbit {
      * @since    1.0.0
      * @access   private
      */
-    private function define_public_hooks() {
+    private function define_public_hooks()
+    {
 
-        $plugin_public = new CampaignRabbitPublic( $this->get_plugin_name(), $this->get_version() );
+        $plugin_public = new CampaignRabbitPublic($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
         /*
          * Enable CORS
          */
 
-        $this->loader->add_action('init',$this,'add_cors_http_header');
+        $this->loader->add_action('init', $this, 'add_cors_http_header');
 
         $this->loader->add_filter('allowed_http_origins', $this, 'add_allowed_origins');
 
-        $this->loader->add_filter('rest_post_dispatch',$this, 'add_rest_post_dispatch');
-
-
-
+        $this->loader->add_filter('rest_post_dispatch', $this, 'add_rest_post_dispatch');
 
 
     }
@@ -326,71 +328,71 @@ class CampaignRabbit {
     /**
      * Register all of the hooks related to campaignrabbit events- Product, Customer and Order
      */
-    private function define_event_hooks(){
+    private function define_event_hooks()
+    {
 
 
         global $product_create_request;
 
-        $product_create_request=new Product\ProductCreate();
+        $product_create_request = new Product\ProductCreate();
 
         global $product_update_request;
 
-        $product_update_request=new Product\ProductUpdate();
+        $product_update_request = new Product\ProductUpdate();
 
         global $product_delete_request;
 
-        $product_delete_request=new Product\ProductDelete();
+        $product_delete_request = new Product\ProductDelete();
 
         global $product_restore_request;
 
-        $product_restore_request=new Product\ProductRestore();
+        $product_restore_request = new Product\ProductRestore();
 
         /*
          * Product events
          */
 
-        $product=new Product('product');
+        $product = new Product('product');
 
         // Create New Product
 
-        $this->loader->add_action('added_post_meta', $product, 'create', 10 , 4);
+        $this->loader->add_action('added_post_meta', $product, 'create', 10, 4);
 
         // Update Existing Product
 
 
-
         //store old product sku in global variable
 
-        $this->loader->add_action('save_post_product',$product,'save_sku',10,3);
+        $this->loader->add_action('save_post_product', $product, 'save_sku', 10, 3);
 
-        $this->loader->add_action('updated_post_meta', $product, 'update', 10 ,4); //gets triggered on product create. so we have to check if it already exist to trigger post
+        $this->loader->add_action('updated_post_meta', $product, 'update', 10, 4); //gets triggered on product create. so we have to check if it already exist to trigger post
 
         //Delete Existing Product
 
-        $this->loader->add_action('wp_trash_post',$product,'delete',1,1);
+        $this->loader->add_action('wp_trash_post', $product, 'delete', 1, 1);
 
         //Restore deleted product
 
-        $this->loader->add_action('untrash_post',$product,'restore',10,1);
+        $this->loader->add_action('untrash_post', $product, 'restore', 10, 1);
 
 
         global $customer_create_request;
 
-        $customer_create_request=new Customer\CustomerCreate();
+        $customer_create_request = new Customer\CustomerCreate();
 
         global $customer_update_request;
 
-        $customer_update_request=new Customer\CustomerUpdate();
+        $customer_update_request = new Customer\CustomerUpdate();
 
         global $customer_delete_request;
 
-        $customer_delete_request= new Customer\CustomerDelete();
+        $customer_delete_request = new Customer\CustomerDelete();
 
         /*
          * Customer alias User events
          */
 
-        $customer=new Customer('customer');
+        $customer = new Customer('customer');
 
         //create New Customer
 
@@ -398,45 +400,43 @@ class CampaignRabbit {
 
         //Update Existing Customer
 
-        $this->loader->add_action('profile_update', $customer,'update',10,2);
+        $this->loader->add_action('profile_update', $customer, 'update', 10, 2);
 
         //Delete Existing Customer
 
-        $this->loader->add_action('delete_user', $customer,'delete',10, 2);
+        $this->loader->add_action('delete_user', $customer, 'delete', 10, 2);
 
 
         global $order_create_request;
 
-        $order_create_request=new Order\OrderCreate();
+        $order_create_request = new Order\OrderCreate();
 
         global $order_update_request;
 
-        $order_update_request=new Order\OrderUpdate();
+        $order_update_request = new Order\OrderUpdate();
 
         global $order_trash_request;
 
-        $order_trash_request= new Order\OrderTrash();
+        $order_trash_request = new Order\OrderTrash();
 
         /*
          * Order events
          */
 
-        $order=new Order('order');
+        $order = new Order('order');
 
         //create new Order
 
-        $this->loader->add_action('woocommerce_checkout_order_processed',$order,'create',10, 1);
+        $this->loader->add_action('woocommerce_checkout_order_processed', $order, 'create', 10, 1);
 
 
         //update existing order
 
-        $this->loader->add_action('woocommerce_order_status_changed',$order,'update',10,3);
+        $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
 
 
         //delete existing order
-        $this->loader->add_action('wp_trash_post',$order,'trash',1,1);
-
-
+        $this->loader->add_action('wp_trash_post', $order, 'trash', 1, 1);
 
 
     }
@@ -444,37 +444,36 @@ class CampaignRabbit {
     /**
      * Ajax Hooks
      */
-    private function define_ajax_hooks(){
+    private function define_ajax_hooks()
+    {
 
         global $initial_bulk_migrate_customers_process;
 
-        $initial_bulk_migrate_customers_process=new InitialCustomers();
+        $initial_bulk_migrate_customers_process = new InitialCustomers();
 
         global $initial_bulk_migrate_products_process;
 
-        $initial_bulk_migrate_products_process=new InitialProducts();
+        $initial_bulk_migrate_products_process = new InitialProducts();
 
         global $initial_bulk_migrate_orders_process;
 
-        $initial_bulk_migrate_orders_process=new InitialOrders();
+        $initial_bulk_migrate_orders_process = new InitialOrders();
 
-        $initial_bulk_migrate=new InitialBulkMigrate();
+        $initial_bulk_migrate = new InitialBulkMigrate();
 
 
-        $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
-        $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate,'initiate',10);
+        $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
+        $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
 
         if (is_admin()) {
 
-            $analytics= new Analytics();
+            $analytics = new Analytics();
 
             $this->loader->add_action('wp_ajax_analytics', $analytics, 'getAppId', 10);
             $this->loader->add_action('wp_ajax_nopriv_analytics', $analytics, 'getAppId', 10);
 
 
         }
-
-
 
 
     }
@@ -484,9 +483,10 @@ class CampaignRabbit {
      * Rest API Initiate
      */
 
-    private function define_rest_api_hook(){
+    private function define_rest_api_hook()
+    {
 
-        $auth=new Authenticate();
+        $auth = new Authenticate();
 
         $this->loader->add_action('rest_api_init', $auth, 'init');
 
@@ -494,13 +494,13 @@ class CampaignRabbit {
     }
 
 
-
     /**
      * Run the loader to execute all of the hooks with WordPress.
      *
      * @since    1.0.0
      */
-    public function run() {
+    public function run()
+    {
         $this->loader->run();
     }
 
@@ -511,7 +511,8 @@ class CampaignRabbit {
      * @since     1.0.0
      * @return    string    The name of the plugin.
      */
-    public function get_plugin_name() {
+    public function get_plugin_name()
+    {
         return $this->plugin_name;
     }
 
@@ -521,7 +522,8 @@ class CampaignRabbit {
      * @since     1.0.0
      * @return    Plugin_Name_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader() {
+    public function get_loader()
+    {
         return $this->loader;
     }
 
@@ -531,10 +533,10 @@ class CampaignRabbit {
      * @since     1.0.0
      * @return    string    The version number of the plugin.
      */
-    public function get_version() {
+    public function get_version()
+    {
         return $this->version;
     }
-
 
 
 }

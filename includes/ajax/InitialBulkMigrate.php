@@ -2,7 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
-use CampaignRabbit\WooIncludes\Api\Request;
+
 use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 use CampaignRabbit\WooIncludes\Lib\Order;

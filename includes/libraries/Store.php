@@ -4,9 +4,7 @@ namespace CampaignRabbit\WooIncludes\Lib;
 
 class Store extends Request{
 
-    /**
-     * @var
-     */
+
     private $uri;
 
 

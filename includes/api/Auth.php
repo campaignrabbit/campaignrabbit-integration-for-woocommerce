@@ -35,7 +35,7 @@ class Auth
         $this->store = new Store(get_option('api_token'), get_option('app_id'));
     }
 
-    
+
     public function authenticate()
     {
 
