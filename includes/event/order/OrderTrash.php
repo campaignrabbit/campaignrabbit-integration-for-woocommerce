@@ -2,8 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Event\Order;
 
-
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Order;
 
 class OrderTrash extends \WP_Background_Process {
 
@@ -26,21 +25,10 @@ class OrderTrash extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        $order=(new Request())->request('GET','order/get_by_r_id/'.$item,'');
 
-        if(!$order){
-            $r_order_id=json_decode($order->getBody()->getContents(),true)['data']['id'];
+        $order_api= new Order(get_option('api_token'),get_option('app_id'));
 
-            $order= new \WC_Order($item);
-            $json_body=json_encode(array(
-                'status'=> $order->get_status()
-            ));
-
-            (new Request())->request('PUT','order/'.$r_order_id, $json_body);
-        }
-
-
-
+        $order_api->delete($item);
 
         return false;
     }

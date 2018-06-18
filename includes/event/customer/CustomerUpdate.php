@@ -5,6 +5,7 @@ namespace CampaignRabbit\WooIncludes\Event\Customer;
 
 
 use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Customer;
 
 class CustomerUpdate extends \WP_Background_Process {
 
@@ -27,7 +28,26 @@ class CustomerUpdate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-        (new Request())->request('PUT', $item['uri'],$item['json_body']);
+
+        $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
+
+        $user = get_userdata( $item['user_id']);
+        $roles=array();
+        foreach ($user->roles as $role){
+            $roles[]=array(
+                'meta_key'=>'CUSTOMER_GROUP',
+                'meta_value'=>$role,
+                'meta_options'=>''
+            );
+        }
+        $post_customer = array(
+            'email' =>$item['post_email'],
+            'name' =>$item['user_login'],
+            'meta' => $roles
+
+        );
+
+        $customer_api->update($item['user_email'],$post_customer);
 
         return false;
     }

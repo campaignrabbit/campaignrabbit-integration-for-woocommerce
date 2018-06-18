@@ -4,9 +4,8 @@
 namespace CampaignRabbit\WooIncludes\Event;
 
 
-use CampaignRabbit\WooIncludes\Api\Request;
-
-class Customer {
+class Customer
+{
 
 
     /**
@@ -21,22 +20,24 @@ class Customer {
 
     protected $customer_delete_request;
 
+
     /**
      * Customer constructor.
      * @param $uri
      */
     public function __construct($uri)
     {
-        $this->uri=$uri;
+        $this->uri = $uri;
 
     }
 
     /**
      *
      */
-    public function create(){
+    public function create()
+    {
 
-        if ( get_option('api_token_flag')) {
+        if (get_option('api_token_flag')) {
 
             global $customer_create_request;
 
@@ -44,32 +45,30 @@ class Customer {
 
             $meta_array = array(array(
                 'meta_key' => 'CUSTOMER_GROUP',
-                'meta_value' => isset($_POST['role'])?$_POST['role']:'',
+                'meta_value' => isset($_POST['role']) ? $_POST['role'] : '',
                 'meta_options' => ''
             ));
             $post_customer = array(
 
-                'email' =>isset($_POST['email'])?$_POST['email']:'',
-                'name' =>isset($_POST['user_login'])?$_POST['user_login']:'',
+                'email' => isset($_POST['email']) ? $_POST['email'] : '',
+                'name' => isset($_POST['user_login']) ? $_POST['user_login'] : '',
                 'meta' => $meta_array
 
             );
 
-            if(isset($_POST['createaccount'])?$_POST['createaccount']:false){
+            if (isset($_POST['createaccount']) ? $_POST['createaccount'] : false) {
                 $post_customer = array(
 
-                    'email' =>isset($_POST['billing_email'])?$_POST['billing_email']:'',
-                    'name' =>isset($_POST['billing_first_name'])?$_POST['billing_first_name']:'',
+                    'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
+                    'name' => isset($_POST['billing_first_name']) ? $_POST['billing_first_name'] : '',
                     'meta' => $meta_array
 
                 );
             }
 
-            $json_body = json_encode($post_customer);
-
-            $this->customer_create_request->push_to_queue( $json_body );
+            $this->customer_create_request->push_to_queue($post_customer);
             $this->customer_create_request->save()->dispatch();
-       }
+        }
 
     }
 
@@ -77,69 +76,45 @@ class Customer {
      * @param $user_id
      * @param $old_user_data
      */
-    public function update($user_id, $old_user_data){
+    public function update($user_id, $old_user_data)
+    {
 
-        if ( get_option('api_token_flag')) {
+        if (get_option('api_token_flag')) {
 
             global $customer_update_request;
-
             $this->customer_update_request = $customer_update_request;
-            $customer_response=(new Request())->request('GET',$this->uri.'/get_by_email/'.$old_user_data->user_email,'');
-            $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
 
 
-            $user = get_userdata( $user_id);
+            $data = array(
+                'user_email' => $old_user_data->user_email,
+                'user_id' => $user_id,
+                'user_login'=>$old_user_data->user_login,
+                'post_email'=>isset($_POST['email'])?$_POST['email']:''
+            );
 
-                $roles=array();
-
-                foreach ($user->roles as $role){
-                    $roles[]=array(
-                        'meta_key'=>'CUSTOMER_GROUP',
-                        'meta_value'=>$role,
-                        'meta_options'=>''
-                    );
-                }
-
-                $post_customer = array(
-
-                    'email' =>isset($_POST['email'])?$_POST['email']:'',
-                    'name' =>$old_user_data->user_login,
-                    'meta' => $roles
-
-                );
-                $json_body = json_encode($post_customer);
-                $data=array(
-                  'json_body'=>$json_body,
-                  'uri'=>  $this->uri.'/'.$id
-                );
-
-                $this->customer_update_request->push_to_queue( $data );
-                $this->customer_update_request->save()->dispatch();
+            $this->customer_update_request->push_to_queue($data);
+            $this->customer_update_request->save()->dispatch();
 
         }
 
     }
 
 
-    public function delete($user_id){
+    public function delete($user_id)
+    {
 
-        if(get_option('api_token_flag')){
+        if (get_option('api_token_flag')) {
 
             global $customer_delete_request;
 
             $this->customer_delete_request = $customer_delete_request;
 
-            $old_user_data=get_userdata($user_id);
-            $customer_response=(new Request())->request('GET',$this->uri.'/get_by_email/'.$old_user_data->user_email,'');
-            $id=json_decode($customer_response->getBody()->getContents(),true)['id'];
-            $this->customer_delete_request->push_to_queue( $this->uri.'/'.$id );
+
+            $this->customer_delete_request->push_to_queue($user_id);
             $this->customer_delete_request->save()->dispatch();
 
         }
     }
-
-
-
 
 
 }

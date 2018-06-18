@@ -98,8 +98,6 @@ function run_campaignrabbit()
             $plugin = new \CampaignRabbit\WooIncludes\CampaignRabbit();
             $plugin->run();
 
-
-
     } else {
 
         wp_die(__('Please install and Activate WooCommerce.', 'woocommerce-addon-slug'), 'Plugin dependency check', array('back_link' => true));

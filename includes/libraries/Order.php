@@ -38,6 +38,16 @@ class Order extends Request {
 
 
     public function update($id, $body){
+
+        $order_response=$this->get($id);
+        if($order_response->code!=200){
+            return $order_response;
+        }
+        $id=$order_response->body->data->id;
+        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($body['status']);
+        $body=array(
+            'status'=>$order_status
+        );
         $response=$this->request->request('PUT', $this->uri . '/' . $id, $body);
         return $response;
     }
@@ -45,7 +55,17 @@ class Order extends Request {
 
 
     public function delete($id){
-        $response=$this->request->request('DELETE', $this->uri . '/' . $id, '');
+        $order= new \WC_Order($id);
+        $order_response=$this->get($id);
+        if($order_response->code!=200){
+            return $order_response;
+        }
+        $id=$order_response->body->data->id;
+
+        $body=array(
+            'status'=> $order->get_status()
+        );
+        $response=$this->request->request('DELETE', $this->uri . '/' . $id, $body);
         return $response;
     }
 

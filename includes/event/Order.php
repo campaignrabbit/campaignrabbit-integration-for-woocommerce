@@ -1,11 +1,6 @@
 <?php
 
 namespace CampaignRabbit\WooIncludes\Event;
-
-
-
-
-use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Helper\Site;
 
 class Order

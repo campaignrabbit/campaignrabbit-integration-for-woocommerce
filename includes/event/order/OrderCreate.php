@@ -31,8 +31,9 @@ class OrderCreate extends \WP_Background_Process
         // Actions to perform
 
 
-        (new Request())->request('POST', 'order', json_encode($item));
+        $order_api= new Order(get_option('api_token'),get_option('app_id'));
 
+        $order_api->create($item);
 
         return false;
     }
