@@ -35,9 +35,11 @@ class InitialOrders extends \WP_Background_Process
     protected function task($item)
     {
 
-        $request= new Request();
+        $request = new Request();
 
-        $woo_version = (new Site())->getWooVersion();
+        $site = new Site();
+
+        $woo_version = $site->getWooVersion();
 
         if ($woo_version < 3.0) {
 
@@ -57,13 +59,25 @@ class InitialOrders extends \WP_Background_Process
             $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($item);
         }
 
-        $remote_order=$request->parseResponse($request->request('GET','order/get_by_r_id/'.$item,''));
+        $order_response = $request->request('GET', 'order/get_by_r_id/' . $item, '');
 
-        if($remote_order['bodyContent']=='false'){
-            $json_body = json_encode($order);
+        $order_parsed_response = $request->parseResponse($order_response);
 
-            (new Request())->request('POST', 'order', $json_body);
+        if ($order_parsed_response['statusCode'] == 404) {
 
+            $created = $request->request('POST', 'order', json_encode($order));
+
+        } else {
+
+
+            $r_order_id = json_decode($order_response->getBody()->getContents(), true)['data']['id'];
+
+
+            $json_body = json_encode(array(
+                'status' => $order['status']
+            ));
+
+            $updated = $request->request('PUT', 'order/' . $r_order_id, $json_body);
         }
 
         return false;

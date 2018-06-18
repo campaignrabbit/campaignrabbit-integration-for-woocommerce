@@ -32,10 +32,32 @@ class InitialCustomers extends \WP_Background_Process
      */
     protected function task( $item ) {
 
+        //Check if Customer Exists- get_by_email- If Status is 404-> create req
 
-        $json_body= json_encode($item);
+        $request=new Request();
 
-        (new Request())->request('POST', 'customer', $json_body);
+        $customer_response=$request->request('GET','customer/get_by_email/'.$item['email'],'');
+
+        $customer=$request->parseResponse($customer_response);
+        if($customer['statusCode']==404){
+
+            /*
+             * Create Customer
+             */
+
+            $created=$request->request('POST','customer',json_encode($item));
+
+        }else if ($customer['status']==200){
+
+            /*
+             * Update Customer
+             */
+            $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
+
+            $uodated=$request->request('PUT','customer/'.$id,json_encode($item));
+
+        }
+
 
         return false;
     }

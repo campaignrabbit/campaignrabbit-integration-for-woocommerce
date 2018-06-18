@@ -34,7 +34,10 @@ class InitialProducts extends \WP_Background_Process
     protected function task($item)
     {
 
-        $woo_version = (new Site())->getWooVersion();
+        $site=new Site();
+        $request= new Request();
+
+        $woo_version = $site->getWooVersion();
 
 
         if ($woo_version < 3.0) {
@@ -57,8 +60,28 @@ class InitialProducts extends \WP_Background_Process
 
         if ($product['type'] == 'simple') {
 
+            //check if it already exists
 
-            (new Request())->request('POST', 'product', json_encode($product['body']));
+            $product_response=$request->parseResponse($request->request('GET','product/get_by_r_id/'.$product['body']['r_product_id'],''));
+
+            if($product_response['statusCode']==404){
+
+                /*
+                 * Create Simple Product
+                 */
+
+                $created=$request->request('POST', 'product', json_encode($product['body']));
+
+            }elseif ($product_response['statusCode']==200){
+
+                /*
+                 * Update Simple Product
+                 */
+
+                $updated=$request->request('PUT', 'product/'.$product['body']['sku'], json_encode($product['body']));
+
+            }
+
 
 
         } else {
@@ -66,8 +89,28 @@ class InitialProducts extends \WP_Background_Process
 
             foreach ($product['body'] as $body) {
 
+                //check if it already exists
 
-                (new Request())->request('POST', 'product', json_encode($body));
+                $product_response=$request->parseResponse($request->request('GET','product/get_by_r_id/'.$body['r_product_id'],''));
+
+                if($product_response['statusCode']==404){
+
+                    /*
+                     * Create Variable Product
+                     */
+
+                    $created=$request->request('POST', 'product', json_encode($body));
+
+                }else{
+
+                    /*
+                     * Update Variable Product
+                     */
+
+                    $updated=$request->parseResponse($request->request('PUT', 'product/'.$body['sku'], json_encode($body)));
+                }
+
+
 
 
             }

@@ -13,7 +13,7 @@
     "minimum-stability": "dev",
 
     "require": {
-        "guzzlehttp/guzzle": "dev-master",
+        "mashape/unirest-php": "3.*",
         "a5hleyrich/wp-background-processing": "dev-master"
     },
 

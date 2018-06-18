@@ -79,10 +79,13 @@ class Order
 
             $this->order_update_request=$order_update_request;
 
+            $order_status = (new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'), get_option('app_id')))->getStatus($new_status);
+
             $data=array(
                 'order_id'=>$order_id,
-                'status'=>  $new_status
+                'status'=>  $order_status
             );
+
 
             $this->order_update_request->push_to_queue( $data );
             $this->order_update_request->save()->dispatch();

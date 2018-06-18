@@ -114,35 +114,40 @@ class CampaignRabbit {
      */
     public function __construct() {
 
-        if ( defined( 'CAMPAIGNRABBIT_VERSION' ) ) {
-            $this->version = CAMPAIGNRABBIT_VERSION;
-        } else {
-            $this->version = '1.0.0';
-        }
 
-        if ( defined( 'CAMPAIGNRABBIT_NAME' ) ) {
-            $this->plugin_name = CAMPAIGNRABBIT_NAME;
-        } else {
-            $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
-        }
+            if ( defined( 'CAMPAIGNRABBIT_VERSION' ) ) {
+                $this->version = CAMPAIGNRABBIT_VERSION;
+            } else {
+                $this->version = '1.0.0';
+            }
+
+            if ( defined( 'CAMPAIGNRABBIT_NAME' ) ) {
+                $this->plugin_name = CAMPAIGNRABBIT_NAME;
+            } else {
+                $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
+            }
 
 
-        $this->load_dependencies();
-        $this->set_locale();
-        $this->define_admin_hooks();
-        $this->define_public_hooks();
+            $this->load_dependencies();
+            $this->set_locale();
 
-        //define ajax hooks
+            $this->define_admin_hooks();
 
-        $this->define_ajax_hooks();
+            $this->define_public_hooks();
 
-        //campaignrabbit
+            //define ajax hooks
 
-        $this->define_event_hooks();
+            $this->define_ajax_hooks();
 
-        //rest api hook init
+            //campaignrabbit
 
-        $this->define_rest_api_hook();
+            $this->define_event_hooks();
+
+            //rest api hook init
+
+            $this->define_rest_api_hook();
+
+
 
 
 
@@ -233,13 +238,20 @@ class CampaignRabbit {
 
         $initial_bulk_migrate_orders_process=new InitialOrders();
 
+        //TODO TEST
+//        add_action( 'wp_loaded', function () {
+//            $initial_bulk_migration=new InitialBulkMigrate();
+//            $initial_bulk_migration->execute();
+//        },0);
+
         /*
          *Recurring initial migration
          */
-        add_action( 'wp_loaded', function () {
+
+
             $initial_bulk_migration=new InitialBulkMigrate();
-            $this->loader->add_action('campaignrabbit_recurring_bulk_migration', $initial_bulk_migration, 'execute');
-        }, 0);
+            add_action('campaignrabbit_recurring_bulk_migration', array($initial_bulk_migration, 'execute'));
+
 
 
 

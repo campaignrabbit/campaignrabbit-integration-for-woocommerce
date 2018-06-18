@@ -4,7 +4,6 @@ namespace CampaignRabbit\WooIncludes\Api;
 
 class Api{
 
-
     public function update(){
         // Get the options that were sent
         $api_token = (!empty($_POST["api_token"])) ? $_POST["api_token"] : NULL;

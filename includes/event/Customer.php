@@ -88,10 +88,11 @@ class Customer {
             $id=json_decode($customer_response->getBody()->getContents(),true)['data']['id'];
 
 
+            $user = get_userdata( $user_id);
 
                 $roles=array();
 
-                foreach ($old_user_data->roles as $role){
+                foreach ($user->roles as $role){
                     $roles[]=array(
                         'meta_key'=>'CUSTOMER_GROUP',
                         'meta_value'=>$role,

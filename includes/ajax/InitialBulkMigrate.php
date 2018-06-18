@@ -2,6 +2,8 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
+use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 use CampaignRabbit\WooIncludes\Lib\Order;
 use CampaignRabbit\WooIncludes\Lib\Product;
@@ -76,11 +78,13 @@ class InitialBulkMigrate
          * Customers
          */
 
+
         foreach ($customers as $customer) {
 
             $roles=array();
+            $user = get_userdata( $customer->ID );
+            foreach ($user->roles as $customer_role){
 
-            foreach ($customer->role as $customer_role){
                 $roles[]=array(
                     'meta_key'=>'CUSTOMER_GROUP',
                     'meta_value'=>$customer_role,
@@ -96,8 +100,7 @@ class InitialBulkMigrate
 
             );
 
-
-            $this->migrate_initial_customers->push_to_queue($post_customer);
+           $this->migrate_initial_customers->push_to_queue($post_customer);
         }
 
         $this->migrate_initial_customers->save()->dispatch();
@@ -106,7 +109,6 @@ class InitialBulkMigrate
         /*
          * Products
          */
-
 
         foreach ($products as $product) {
             $this->migrate_initial_products->push_to_queue($product);
@@ -120,8 +122,10 @@ class InitialBulkMigrate
          */
 
 
-        foreach ($orders as $order) {
-            $this->migrate_initial_orders->push_to_queue($order);
+        foreach ($orders as $order_id) {
+
+
+           $this->migrate_initial_orders->push_to_queue($order_id);
         }
 
 

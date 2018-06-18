@@ -10,9 +10,9 @@ class Order{
         $order = new \WC_Order($order_id);
         $post_order_items = $order->get_items();
         $meta_array = array(array(
-            'meta_key' => 'dfs',
-            'meta_value' => 'fsf',
-            'meta_options' => 'as'
+            'meta_key' => 'dummy_key',
+            'meta_value' => 'dummy_value',
+            'meta_options' => 'dummy_options'
         ));
 
         $order_items = array();
@@ -60,7 +60,7 @@ class Order{
         );
 
 
-        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->get_status());
+        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->post_status);
 
 
         $post_order = array(

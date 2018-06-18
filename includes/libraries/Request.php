@@ -2,10 +2,8 @@
 
 namespace CampaignRabbit\WooIncludes\Lib;
 
-use CampaignRabbit\WooIncludes\CampaignRabbit;
 use CampaignRabbit\WooIncludes\Helper\Site;
-use GuzzleHttp\Client;
-
+use Unirest\Request\Body;
 
 
 /**
@@ -39,55 +37,60 @@ class Request{
 
 
 
-    protected function request($method, $uri, $body){
+    protected function request($method, $uri, $data){
 
         try {
 
-            $client = new Client([
-                // Base URI is used with relative requests
-                'base_uri' => $this->site->getBaseUri()
-            ]);
+            $headers=array(
+                'Authorization' => 'Bearer '. $this->api_token,
+                'Request-From-Domain' => $this->site->getDomain(),
+                'App-Id' =>$this->app_id,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+            );
 
-            $response=$client->request($method, $uri, [
-                'body' => $body,
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->api_token,
-                    'Request-From-Domain' => $this->site->getDomain(),
-                    'App-Id' => $this->app_id,
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
+            $url=$this->site->getBaseUri().$uri;
 
-                ]]);
-
-
+            switch ($method){
+                case 'POST':
+                    $body = Body::json($data);
+                    $response = \Unirest\Request::post($url,$headers,$body);
+                    break;
+                case 'GET':
+                    $body = Body::json($data);
+                    $response = \Unirest\Request::get($url,$headers,$body);
+                    break;
+                case 'PUT':
+                    $body = Body::json($data);
+                    $response = \Unirest\Request::put($url,$headers,$body);
+                    break;
+                case 'DELETE':
+                    $body = Body::json($data);
+                    $response = \Unirest\Request::delete($url,$headers,$body);
+                    break;
+                case 'PATCH':
+                    $body = Body::json($data);
+                    $response = \Unirest\Request::patch($url,$headers,$body);
+                    break;
+                default:
+                    $response='';
+                    break;
+            }
 
         } catch (\Exception $e) {
-            $response=$e->getResponse();
+            $response=$e;
         }
+
+        /*
+           $response->code;        // HTTP Status code
+           $response->headers;     // Headers
+           $response->body;        // Parsed body
+           $response->raw_body;    // Unparsed body
+        */
 
         return $response;
 
     }
-
-
-    protected function parseResponse($response){
-
-
-            $parsed_response=array(
-                'reasonPhrase'=> $response->getReasonPhrase(),
-                'statusCode'=>$response->getStatusCode(),
-                'bodyContent'=> $response->getBody()->getContents()
-            );
-
-
-
-
-        return $parsed_response;
-
-    }
-
-
-
 
 
 }
