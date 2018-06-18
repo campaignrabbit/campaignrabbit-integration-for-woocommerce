@@ -56,10 +56,10 @@ class Order extends Request {
 
 
 
-    public function update($body){
+    public function update($id, $body){
 
 
-        $response=$this->request->request('PUT', $this->uri . '/' . $body['id'], $body);
+        $response=$this->request->request('PUT', $this->uri . '/' . $id, $body);
 
         return $response;
 

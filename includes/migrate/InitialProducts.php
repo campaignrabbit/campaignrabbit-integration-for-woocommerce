@@ -49,9 +49,9 @@ class InitialProducts extends \WP_Background_Process
 
             $product_response=$product_api->get($product['body']['sku']);
 
-            if($product_response['statusCode']==404){
+            if($product_response->code==404){
                 $created=$product_api->create($product['body']);
-            }elseif ($product_response['statusCode']==200){
+            }elseif ($product_response->code==200){
                 $updated=$product_api->update($product['body'],$product['body']['sku']);
             }
 
@@ -61,9 +61,9 @@ class InitialProducts extends \WP_Background_Process
 
                 $product_response=$product_api->get($body['sku']);
 
-                if($product_response['statusCode']==404){
+                if($product_response->code==404){
                     $created=$product_api->create($body);
-                }else{
+                }elseif ($product_response->code==200){
                     $updated=$product_api->update($body,$body['sku']);
                 }
             }

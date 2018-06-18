@@ -41,8 +41,7 @@ class InitialCustomers extends \WP_Background_Process
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
 
         $customer_response=$customer_api->create('GET','customer/get_by_email/'.$item['email'],'');
-
-        $customer=$request->parseResponse($customer_response);
+        
         if($customer['statusCode']==404){
 
             /*

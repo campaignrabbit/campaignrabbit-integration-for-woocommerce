@@ -35,50 +35,26 @@ class InitialOrders extends \WP_Background_Process
     protected function task($item)
     {
 
-
         $site = new Site();
-
         $order_api=new Order(get_option('api_token'),get_option('app_id'));
-
         $woo_version = $site->getWooVersion();
 
         if ($woo_version < 3.0) {
-
-            /*
-             * 2.6
-             */
-
-            $order = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($item);
-
-
+            $order_body = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($item); //2.6
         } else {
-
-            /*
-             * 3.0
-             */
-
-            $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($item);
+            $order_body = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($item); //3.0
         }
 
-        $order_response = $request->request('GET', 'order/get_by_r_id/' . $item, '');
+        $order_response = $order_api->get($item);
 
-        $order_parsed_response = $request->parseResponse($order_response);
-
-        if ($order_parsed_response['statusCode'] == 404) {
-
-            $created = $request->request('POST', 'order', json_encode($order));
-
+        if ($order_response->code == 404) {
+            $created = $order_api->create($order_body);
         } else {
-
-
-            $r_order_id = json_decode($order_response->getBody()->getContents(), true)['data']['id'];
-
-
-            $json_body = json_encode(array(
-                'status' => $order['status']
-            ));
-
-            $updated = $request->request('PUT', 'order/' . $r_order_id, $json_body);
+            $r_order_id = $order_response->body->data->id;
+            $order_update_body = array(
+                'status' => $order_body['status']
+            );
+            $updated = $order_api->update($order_update_body,$r_order_id);
         }
 
         return false;
