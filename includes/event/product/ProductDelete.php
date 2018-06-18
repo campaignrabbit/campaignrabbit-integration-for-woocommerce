@@ -3,7 +3,7 @@
 namespace CampaignRabbit\WooIncludes\Event\Product;
 
 
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Product;
 
 class ProductDelete extends \WP_Background_Process {
 
@@ -26,8 +26,9 @@ class ProductDelete extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
+        $product_api= new Product(get_option('api_token'),get_option('app_id'));
 
-        (new Request())->request('DELETE', 'product/' . $item, '');
+       $product_api->delete($item);
 
 
         return false;

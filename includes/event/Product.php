@@ -120,8 +120,8 @@ class Product
             if ($product['type'] == 'simple') {
 
                 $data = array(
-                    'uri' => $this->uri . '/' . $woo_product_sku[$product['body']['r_product_id']],
-                    'json_body' => json_encode($product['body'])
+                    'sku' => $woo_product_sku[$product['body']['sku']],
+                    'body' => $product['body']
                 );
 
                 $this->product_update_request->push_to_queue($data);
@@ -134,8 +134,8 @@ class Product
                 foreach ($product['body'] as $body) {
 
                     $data = array(
-                        'uri' => $this->uri . '/' . $woo_product_sku[$body['r_product_id']],
-                        'json_body' => json_encode($body)
+                        'sku' => $woo_product_sku[$body['sku']],
+                        'body' => $body
                     );
 
                     $this->product_update_request->push_to_queue($data);

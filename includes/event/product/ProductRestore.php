@@ -4,7 +4,7 @@ namespace CampaignRabbit\WooIncludes\Event\Product;
 
 
 
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Product;
 
 class ProductRestore extends \WP_Background_Process {
 
@@ -26,6 +26,8 @@ class ProductRestore extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
+
+        $product_api= new Product(get_option('api_token'),get_option('app_id'));
 
         (new Request())->request('PUT', 'product/restore/' . $item . '?allowSearchTrash', '');
 

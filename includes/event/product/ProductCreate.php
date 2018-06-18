@@ -3,7 +3,8 @@
 namespace CampaignRabbit\WooIncludes\Event\Product;
 
 
-use CampaignRabbit\WooIncludes\Api\Request;
+
+use CampaignRabbit\WooIncludes\Lib\Product;
 
 class ProductCreate extends \WP_Background_Process {
 
@@ -26,15 +27,17 @@ class ProductCreate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
+
+        $product_api= new Product(get_option('api_token'),get_option('app_id'));
         if($item['type']=='simple'){
 
-            (new Request())->request('POST', 'product', \GuzzleHttp\json_encode($item['body']));
+           $product_api->create($item['body']);
 
         }else{
 
             foreach ($item['body'] as $body){
 
-                (new Request())->request('POST','product',\GuzzleHttp\json_encode($body));
+                $product_api->create($item['body']);
             }
         }
 

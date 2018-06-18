@@ -3,8 +3,7 @@
 namespace CampaignRabbit\WooIncludes\Event\Product;
 
 
-
-use CampaignRabbit\WooIncludes\Api\Request;
+use CampaignRabbit\WooIncludes\Lib\Product;
 
 class ProductUpdate extends \WP_Background_Process {
 
@@ -28,7 +27,9 @@ class ProductUpdate extends \WP_Background_Process {
     protected function task( $item ) {
         // Actions to perform
 
-        (new Request())->request('PUT',  $item['uri'], $item['json_body']);
+        $product_api= new Product(get_option('api_token'),get_option('app_id'));
+
+        $product_api->update($item['body'],$item['sku']);
 
 
         return false;
