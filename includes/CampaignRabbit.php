@@ -115,6 +115,50 @@ class CampaignRabbit
     public function __construct()
     {
 
+////
+///
+    add_action('wp_loaded',function (){
+        global $wpdb;
+        $sql = "SELECT * FROM $wpdb->posts WHERE post_type='shop_order'";
+        $orders = $wpdb->get_results( $sql);
+        $orders=wp_list_pluck($orders,'ID');
+
+        foreach ($orders as $order) {
+
+            $site = new Site();
+            $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
+            $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
+            $order_api=new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id'));
+            $woo_version = $site->getWooVersion();
+
+            if ($woo_version < 3.0) {
+                $order_body = $order_v2_6->get($order); //2.6
+                $order_status=$order_v2_6->getWooStatus($order);
+            } else {
+                $order_body = $order_v3_0->get($order); //3.0
+                $order_status=$order_v3_0->getWooStatus($order);
+            }
+
+            $order_response = $order_api->get($order);
+
+            if ($order_response->code == 404) {
+                $created = $order_api->create($order_body);
+            } else {
+
+                $order_update_body = array(
+                    'status' => $order_status,
+                    'updated_at'=>$order_body['updated_at']
+                );
+                $updated = $order_api->update($order,$order_update_body);
+            }
+
+        }
+    },0);
+
+
+
+
+///
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {

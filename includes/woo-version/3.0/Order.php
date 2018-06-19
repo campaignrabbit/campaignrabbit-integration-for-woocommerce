@@ -17,7 +17,6 @@ class Order{
 
         $order_items = array();
         foreach ($post_order_items as $post_order_item) {
-            $x=$post_order_item['item_meta']['_variation_id'][0];
             $product_id= empty($post_order_item->get_variation_id())?$post_order_item->get_product_id():$post_order_item->get_variation_id();
             $product=wc_get_product($product_id);
             $order_items[] = array(
@@ -59,7 +58,7 @@ class Order{
         );
 
 
-        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->get_status());
+        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->post_status);
 
         $post_order = array(
             'r_order_id' => $order->get_id(),
@@ -72,8 +71,8 @@ class Order{
             'shipping' => $shipping,
             'billing' => $billing,
             'status'=>$order_status,
-            'created_at'=>$order->get_date_created(),
-            'updated_at'=>$order->get_date_modified()
+            'created_at'=>$order->get_date_created()->date('Y-m-d H:i:s'),
+            'updated_at'=>$order->get_date_modified()->date('Y-m-d H:i:s')
 
         );
 
@@ -82,7 +81,7 @@ class Order{
 
     public function getWooStatus($order_id){
         $order = new \WC_Order($order_id);
-        $order_status = $order->get_status();
+        $order_status = $order->post_status;
         return $order_status;
     }
 }
