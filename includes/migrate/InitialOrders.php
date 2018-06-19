@@ -34,13 +34,17 @@ class InitialOrders extends \WP_Background_Process
      */
     protected function task($item){
         $site = new Site();
+        $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
+        $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
         $order_api=new Order(get_option('api_token'),get_option('app_id'));
         $woo_version = $site->getWooVersion();
 
         if ($woo_version < 3.0) {
-            $order_body = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($item); //2.6
+            $order_body = $order_v2_6->get($item); //2.6
+            $order_status=$order_v2_6->getWooStatus($item);
         } else {
-            $order_body = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($item); //3.0
+            $order_body = $order_v3_0->get($item); //3.0
+            $order_status=$order_v3_0->getWooStatus($item);
         }
 
         $order_response = $order_api->get($item);
@@ -50,7 +54,8 @@ class InitialOrders extends \WP_Background_Process
         } else {
             $r_order_id = $order_response->body->data->id;
             $order_update_body = array(
-                'status' => $order_body['status']
+                'status' => $order_status,
+                'updated_at'=>$order_body['updated_at']
             );
             $updated = $order_api->update($order_update_body,$r_order_id);
         }

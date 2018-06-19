@@ -8,11 +8,9 @@
 
 namespace CampaignRabbit\WooIncludes\Api;
 
-
-use CampaignRabbit\WooIncludes\CampaignRabbit;
 use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Store;
-use GuzzleHttp\Client;
+
 
 /**
  * Class Auth

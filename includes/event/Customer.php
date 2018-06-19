@@ -13,7 +13,6 @@ class Customer
      */
     protected $uri;
 
-
     protected $customer_create_request;
 
     protected $customer_update_request;
@@ -41,28 +40,27 @@ class Customer
 
             global $customer_create_request;
 
-            $this->customer_create_request = $customer_create_request;
+            $user_login=isset($_POST['user_login']) ? $_POST['user_login'] : '';
 
+            $this->customer_create_request = $customer_create_request;
+            update_user_meta( $user_login, 'cr_user_updated', current_time( 'mysql' ) );
             $meta_array = array(array(
                 'meta_key' => 'CUSTOMER_GROUP',
                 'meta_value' => isset($_POST['role']) ? $_POST['role'] : '',
                 'meta_options' => ''
             ));
             $post_customer = array(
-
                 'email' => isset($_POST['email']) ? $_POST['email'] : '',
-                'name' => isset($_POST['user_login']) ? $_POST['user_login'] : '',
+                'name' => $user_login,
                 'meta' => $meta_array
-
             );
-
             if (isset($_POST['createaccount']) ? $_POST['createaccount'] : false) {
                 $post_customer = array(
-
                     'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
                     'name' => isset($_POST['billing_first_name']) ? $_POST['billing_first_name'] : '',
+                    'created_at'=>get_user_meta($user_login,'cr_user_updated',true),
+                    'updated_at'=>get_user_meta($user_login,'cr_user_updated',true),
                     'meta' => $meta_array
-
                 );
             }
 
@@ -84,6 +82,7 @@ class Customer
             global $customer_update_request;
             $this->customer_update_request = $customer_update_request;
 
+            update_user_meta( $old_user_data->user_login, 'cr_user_updated', current_time( 'mysql' ) );
 
             $data = array(
                 'user_email' => $old_user_data->user_email,
@@ -91,7 +90,6 @@ class Customer
                 'user_login'=>$old_user_data->user_login,
                 'post_email'=>isset($_POST['email'])?$_POST['email']:''
             );
-
             $this->customer_update_request->push_to_queue($data);
             $this->customer_update_request->save()->dispatch();
 

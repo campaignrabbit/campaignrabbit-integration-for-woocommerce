@@ -201,6 +201,7 @@ class CampaignRabbit
     private function define_admin_hooks()
     {
 
+
         $plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
         $api = new Api();
 
@@ -239,13 +240,16 @@ class CampaignRabbit
         $initial_bulk_migrate_orders_process = new InitialOrders();
 
         //TODO TEST
+//        add_action('wp_loaded',function (){
+//            $initial_bulk_migration = new InitialBulkMigrate();
+//            $initial_bulk_migration->execute();
+//        },0);
 
         /*
          *Recurring initial migration
          */
 
         $initial_bulk_migration = new InitialBulkMigrate();
-      //  $initial_bulk_migration->execute();
         add_action('campaignrabbit_recurring_bulk_migration', array($initial_bulk_migration, 'execute'));
 
 

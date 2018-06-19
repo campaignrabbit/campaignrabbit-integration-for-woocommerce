@@ -12,7 +12,7 @@
  * Domain Path:       /languages
  */
 
-if(did_action('woocommerce_loaded')){
+
     header("Access-Control-Allow-Origin: *");
 
 // If this file is called directly, abort.
@@ -113,5 +113,3 @@ if(did_action('woocommerce_loaded')){
     run_campaignrabbit();
 
 
-
-}

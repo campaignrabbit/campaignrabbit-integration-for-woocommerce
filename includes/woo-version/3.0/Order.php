@@ -61,8 +61,6 @@ class Order{
 
         $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->get_status());
 
-
-
         $post_order = array(
             'r_order_id' => $order->get_id(),
             'r_order_ref' => $order->get_id(),
@@ -73,12 +71,18 @@ class Order{
             'order_items' =>$order_items,
             'shipping' => $shipping,
             'billing' => $billing,
-            'status'=>$order_status
+            'status'=>$order_status,
+            'created_at'=>$order->get_date_created(),
+            'updated_at'=>$order->get_date_modified()
 
         );
 
         return $post_order;
+    }
 
-
+    public function getWooStatus($order_id){
+        $order = new \WC_Order($order_id);
+        $order_status = $order->get_status();
+        return $order_status;
     }
 }

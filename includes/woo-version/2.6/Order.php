@@ -72,7 +72,9 @@ class Order{
             'order_items' =>$order_items,
             'shipping' => $shipping,
             'billing' => $billing,
-            'status'=>$order_status
+            'status'=>$order_status,
+            'created_at'=>$order->order_date,
+            'updated_at'=>$order->modified_date
 
         );
 
@@ -80,6 +82,12 @@ class Order{
         return $post_order;
 
 
+    }
+
+    public function getWooStatus($order_id){
+        $order = new \WC_Order($order_id);
+        $order_status = $order->post_status;
+        return $order_status;
     }
 
 }

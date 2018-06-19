@@ -2,7 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
-
 class InitialBulkMigrate
 {
 
@@ -43,7 +42,6 @@ class InitialBulkMigrate
 
 
         foreach ($customers as $customer) {
-
             $this->migrate_initial_customers->push_to_queue($customer);  //Customers
         }
 

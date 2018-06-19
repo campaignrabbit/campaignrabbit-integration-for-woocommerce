@@ -49,7 +49,7 @@ class InitialCustomers extends \WP_Background_Process
             $created=$customer_api->create($customer_body);
         }else if ($customer_response->code==200){
             $email=$customer_response->body->data->email;
-            $updated=$customer_api->update($customer_body,$email);
+            $updated=$customer_api->update($email,$customer_body);
 
         }
 

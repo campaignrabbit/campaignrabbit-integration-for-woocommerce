@@ -39,14 +39,16 @@ class Order extends Request {
 
     public function update($id, $body){
 
+        $order_api=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')));
         $order_response=$this->get($id);
         if($order_response->code!=200){
             return $order_response;
         }
         $id=$order_response->body->data->id;
-        $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($body['status']);
+        $order_status=$order_api->getStatus($body['status']);
         $body=array(
-            'status'=>$order_status
+            'status'=>$order_status,
+            'updated_at'=>$body['updated_at']
         );
         $response=$this->request->request('PUT', $this->uri . '/' . $id, $body);
         return $response;

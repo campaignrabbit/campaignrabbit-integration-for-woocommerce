@@ -32,17 +32,17 @@ class CustomerUpdate extends \WP_Background_Process {
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
 
         $user = get_userdata( $item['user_id']);
-        $roles=array();
-        foreach ($user->roles as $role){
-            $roles[]=array(
+        $roles=array(array(
                 'meta_key'=>'CUSTOMER_GROUP',
-                'meta_value'=>$role,
+                'meta_value'=>$user->roles,
                 'meta_options'=>''
-            );
-        }
+            ));
+
         $post_customer = array(
             'email' =>$item['post_email'],
             'name' =>$item['user_login'],
+            'created_at'=>$user->user_registered,
+            'updated_at'=>get_user_meta($item['user_login'],'cr_user_updated',true),
             'meta' => $roles
 
         );

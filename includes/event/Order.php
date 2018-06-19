@@ -6,7 +6,6 @@ use CampaignRabbit\WooIncludes\Helper\Site;
 class Order
 {
 
-
     protected $uri;
 
     protected $order_create_request;
@@ -17,96 +16,47 @@ class Order
 
     public $woo_version;
 
-
-
-    public function __construct($uri)
-    {
-
+    public function __construct($uri){
         $this->uri = $uri;
-
     }
 
-
-    public function create($order_id)
-    {
-
-
+    public function create($order_id){
         if (get_option('api_token_flag')) {
-
-            $this->woo_version = (new Site())->getWooVersion();
-
-            if ($this->woo_version < 3.0) {
-
-                /*
-                 * 2.6
-                 */
-
-                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($order_id);
-
-
-            } else {
-
-                /*
-                 * 3.0
-                 */
-
-                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order_id);
-            }
-
-
             global $order_create_request;
-
             $this->order_create_request=$order_create_request;
-
+            $this->woo_version = (new Site())->getWooVersion();
+            if ($this->woo_version < 3.0) {
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($order_id);  //2.6
+            } else {
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order_id);  //3.0
+            }
             $this->order_create_request->push_to_queue( $order );
             $this->order_create_request->save()->dispatch();
-
         }
-
     }
 
-    public function update($order_id,$old_status,$new_status)
-    {
-
+    public function update($order_id,$old_status,$new_status){
         if (get_option('api_token_flag')) {
-
             global $order_update_request;
-
             $this->order_update_request=$order_update_request;
-
-            $order_status = (new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'), get_option('app_id')))->getStatus($new_status);
-
+            $order = new \WC_Order($order_id);
             $data=array(
                 'order_id'=>$order_id,
-                'status'=>  $order_status
+                'status'=>  $new_status,
+                'updated_at'=>$order->modified_date
             );
-
-
             $this->order_update_request->push_to_queue( $data );
             $this->order_update_request->save()->dispatch();
-
         }
-
     }
 
-    public function trash($post_id)
-    {
-
-
+    public function trash($post_id){
         if (get_option('api_token_flag') && get_post_type($post_id) == 'shop_order') {
-
             global $order_trash_request;
-
             $this->order_trash_request = $order_trash_request;
-
-
             $this->order_trash_request->push_to_queue( $post_id );
             $this->order_trash_request->save()->dispatch();
-
-
-
         }
-
     }
 
 
