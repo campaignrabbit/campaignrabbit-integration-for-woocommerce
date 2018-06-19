@@ -42,6 +42,7 @@ use CampaignRabbit\WooIncludes\Event\Customer;
 use CampaignRabbit\WooIncludes\Event\Order;
 use CampaignRabbit\WooIncludes\Event\Product;
 
+use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Migrate\InitialCustomers;
 use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
 use CampaignRabbit\WooIncludes\Migrate\InitialProducts;
@@ -114,7 +115,6 @@ class CampaignRabbit
     public function __construct()
     {
 
-
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
@@ -146,6 +146,9 @@ class CampaignRabbit
         //rest api hook init
 
         $this->define_rest_api_hook();
+
+
+
 
 
     }
