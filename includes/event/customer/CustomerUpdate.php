@@ -30,7 +30,6 @@ class CustomerUpdate extends \WP_Background_Process {
         // Actions to perform
 
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
-
         $user = get_userdata( $item['user_id']);
         $roles=array(array(
                 'meta_key'=>'CUSTOMER_GROUP',
@@ -47,7 +46,8 @@ class CustomerUpdate extends \WP_Background_Process {
 
         );
 
-        $customer_api->update($item['user_email'],$post_customer);
+        $updated=$customer_api->update($item['user_email'],$post_customer);
+        error_log($updated);
 
         return false;
     }

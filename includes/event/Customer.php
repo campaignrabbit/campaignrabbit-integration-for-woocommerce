@@ -7,10 +7,6 @@ namespace CampaignRabbit\WooIncludes\Event;
 class Customer
 {
 
-
-    /**
-     * @var
-     */
     protected $uri;
 
     protected $customer_create_request;
@@ -24,24 +20,16 @@ class Customer
      * Customer constructor.
      * @param $uri
      */
-    public function __construct($uri)
-    {
+    public function __construct($uri){
         $this->uri = $uri;
 
     }
 
-    /**
-     *
-     */
-    public function create()
-    {
 
+    public function create(){
         if (get_option('api_token_flag')) {
-
             global $customer_create_request;
-
             $user_login=isset($_POST['user_login']) ? $_POST['user_login'] : '';
-
             $this->customer_create_request = $customer_create_request;
             update_user_meta( $user_login, 'cr_user_updated', current_time( 'mysql' ) );
             $meta_array = array(array(
@@ -63,27 +51,17 @@ class Customer
                     'meta' => $meta_array
                 );
             }
-
             $this->customer_create_request->push_to_queue($post_customer);
             $this->customer_create_request->save()->dispatch();
         }
 
     }
 
-    /**
-     * @param $user_id
-     * @param $old_user_data
-     */
-    public function update($user_id, $old_user_data)
-    {
-
+    public function update($user_id, $old_user_data){
         if (get_option('api_token_flag')) {
-
             global $customer_update_request;
             $this->customer_update_request = $customer_update_request;
-
             update_user_meta( $old_user_data->user_login, 'cr_user_updated', current_time( 'mysql' ) );
-
             $data = array(
                 'user_email' => $old_user_data->user_email,
                 'user_id' => $user_id,
@@ -92,25 +70,16 @@ class Customer
             );
             $this->customer_update_request->push_to_queue($data);
             $this->customer_update_request->save()->dispatch();
-
         }
-
     }
 
 
-    public function delete($user_id)
-    {
-
+    public function delete($user_id){
         if (get_option('api_token_flag')) {
-
             global $customer_delete_request;
-
             $this->customer_delete_request = $customer_delete_request;
-
-
             $this->customer_delete_request->push_to_queue($user_id);
             $this->customer_delete_request->save()->dispatch();
-
         }
     }
 
