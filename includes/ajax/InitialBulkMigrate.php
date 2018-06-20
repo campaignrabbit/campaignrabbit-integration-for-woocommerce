@@ -3,6 +3,7 @@
 namespace CampaignRabbit\WooIncludes\Ajax;
 
 use CampaignRabbit\WooIncludes\Helper\Site;
+use CampaignRabbit\WooIncludes\Lib\Order;
 
 class InitialBulkMigrate
 {
@@ -74,8 +75,29 @@ class InitialBulkMigrate
         $this->migrate_initial_products->save()->dispatch();
 
         foreach ($orders as $order_id) {
+            $site = new Site();
+            $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
+            $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
 
-           $this->migrate_initial_orders->push_to_queue($order_id);  //Orders
+            $woo_version = $site->getWooVersion();
+
+            if ($woo_version < 3.0) {
+                $order_body = $order_v2_6->get($order_id); //2.6
+                $order_status=$order_v2_6->getWooStatus($order_id);
+            } else {
+                $order_body = $order_v3_0->get($order_id); //3.0
+                $order_status=$order_v3_0->getWooStatus($order_id);
+            }
+
+            $order_data=array(
+              'order_id'=>$order_id,
+               'order_body'=>$order_body,
+               'order_status'=>$order_status,
+                'api_token'=>get_option('api_token'),
+                'app_id'=>get_option('app_id')
+            );
+
+           $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
         }
 
         $this->migrate_initial_orders->save()->dispatch();

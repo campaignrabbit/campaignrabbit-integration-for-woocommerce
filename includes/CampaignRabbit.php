@@ -115,6 +115,8 @@ class CampaignRabbit
     public function __construct()
     {
 
+
+
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
@@ -346,16 +348,16 @@ class CampaignRabbit
 
         // Create New Product
 
-        $this->loader->add_action('added_post_meta', $product, 'create', 10, 4);
+   //     $this->loader->add_action('added_post_meta', $product, 'create', 10, 4);
 
         // Update Existing Product
 
 
         //store old product sku in global variable
 
-        $this->loader->add_action('save_post_product', $product, 'save_sku', 10, 3);
+  //      $this->loader->add_action('save_post_product', $product, 'save_sku', 10, 3);
 
-        $this->loader->add_action('updated_post_meta', $product, 'update', 10, 4); //gets triggered on product create. so we have to check if it already exist to trigger post
+   //     $this->loader->add_action('updated_post_meta', $product, 'update', 10, 4); //gets triggered on product create. so we have to check if it already exist to trigger post
 
         //Delete Existing Product
 
@@ -386,11 +388,11 @@ class CampaignRabbit
 
         //create New Customer
 
-        $this->loader->add_action('user_register', $customer, 'create', 10, 1);
+    //    $this->loader->add_action('user_register', $customer, 'create', 10, 1);
 
         //Update Existing Customer
 
-        $this->loader->add_action('profile_update', $customer, 'update', 10, 2);
+    //    $this->loader->add_action('profile_update', $customer, 'update', 10, 2);
 
         //Delete Existing Customer
 
@@ -417,12 +419,12 @@ class CampaignRabbit
 
         //create new Order
 
-        $this->loader->add_action('woocommerce_checkout_order_processed', $order, 'create', 10, 1);
+      //  $this->loader->add_action('woocommerce_checkout_order_processed', $order, 'create', 10, 1);
 
 
         //update existing order
 
-        $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
+    //    $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
 
 
         //delete existing order

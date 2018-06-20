@@ -33,31 +33,19 @@ class InitialOrders extends \WP_Background_Process
      * @return mixed
      */
     protected function task($item){
-        $site = new Site();
-        $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
-        $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
-        $order_api=new Order(get_option('api_token'),get_option('app_id'));
-        $woo_version = $site->getWooVersion();
-
-        if ($woo_version < 3.0) {
-            $order_body = $order_v2_6->get($item); //2.6
-            $order_status=$order_v2_6->getWooStatus($item);
-        } else {
-            $order_body = $order_v3_0->get($item); //3.0
-            $order_status=$order_v3_0->getWooStatus($item);
-        }
-
-        $order_response = $order_api->get($item);
+        $item=json_decode($item, true);
+        $order_api=new Order($item['api_token'],$item['app_id']);
+        $order_response = $order_api->get($item['order_id']);
 
         if ($order_response->code == 404) {
-            $created = $order_api->create($order_body);
+            $created = $order_api->create($item['order_body']);
             error_log('Order Created: '.$created->raw_body);
         }elseif ($order_response->code==200){
             $order_update_body = array(
-                'status' => $order_status,
-                'updated_at'=>$order_body['updated_at']
+                'status' => $item['order_status'],
+                'updated_at'=>$item['order_body']['updated_at']
             );
-            $updated = $order_api->update($item,$order_update_body);
+            $updated = $order_api->update($item['order_id'],$order_update_body);
             error_log('Order Updated: '.$updated->raw_body);
         }else{
             error_log('Order Migrate Error: '.$order_response->raw_body);

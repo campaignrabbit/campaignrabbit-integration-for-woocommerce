@@ -20,7 +20,7 @@ class Customer{
         }
         $post_customer = array(
             'email' =>$customer->user_email,
-            'name' =>$customer->user_login,
+            'name' =>$customer->first_name.' '.$customer->last_name,
             'created_at'=>$user->user_registered,
             'updated_at'=>$updated_at,
             'meta' => $roles
