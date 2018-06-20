@@ -38,13 +38,13 @@ class InitialCustomers extends \WP_Background_Process
 
         if($customer_response->code==404){
             $created=$customer_api->create($item);
-            error_log($created->raw_body);
+            error_log('Customer Created: '. $created->raw_body);
         }elseif ($customer_response->code==200){
             $email=$customer_response->body->data->email;
             $updated=$customer_api->update($email,$item);
-            error_log($updated->raw_body);
+            error_log('Customer Updated: '.$updated->raw_body);
         }else {
-            error_log($customer_response->raw_body);
+            error_log('Customer Migrate Error: '.$customer_response->raw_body);
         }
 
         return false;
