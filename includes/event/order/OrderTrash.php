@@ -27,8 +27,8 @@ class OrderTrash extends \WP_Background_Process {
         // Actions to perform
 
         $order_api= new Order(get_option('api_token'),get_option('app_id'));
-
-        $order_api->delete($item);
+        $deleted=$order_api->delete($item);
+        error_log($deleted);
 
         return false;
     }

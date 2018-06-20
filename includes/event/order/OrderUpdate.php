@@ -28,7 +28,9 @@ class OrderUpdate extends \WP_Background_Process {
     protected function task( $item ) {
         // Actions to perform
         $order_api= new Order(get_option('api_token'),get_option('app_id'));
-        $order_api->update($item['order_id'],$item);
+        $updated=$order_api->update($item['order_id'],$item);
+        error_log($updated);
+
         return false;
     }
 

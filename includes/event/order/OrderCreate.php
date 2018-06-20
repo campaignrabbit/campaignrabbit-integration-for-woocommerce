@@ -2,8 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Event\Order;
 
-
-use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Lib\Order;
 
 class OrderCreate extends \WP_Background_Process
@@ -29,11 +27,9 @@ class OrderCreate extends \WP_Background_Process
     protected function task($item)
     {
         // Actions to perform
-
-
         $order_api= new Order(get_option('api_token'),get_option('app_id'));
-
-        $order_api->create($item);
+        $created=$order_api->create($item);
+        error_log($created);
 
         return false;
     }
