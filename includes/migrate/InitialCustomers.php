@@ -33,25 +33,15 @@ class InitialCustomers extends \WP_Background_Process
      */
     protected function task( $item ) {
 
-        $site = new Site();
-        $woo_version = $site->getWooVersion();
-        $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
-        $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
-
-        if ($woo_version < 3.0) {
-            $customer_body = $customer_v2_6->get($item); //2.6
-        } else {
-            $customer_body = $customer_v3_0->get($item); //3.0
-        }
         $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
-        $customer_response=$customer_api->get($customer_body['email']);
+        $customer_response=$customer_api->get($item['email']);
 
         if($customer_response->code==404){
-            $created=$customer_api->create($customer_body);
+            $created=$customer_api->create($item);
             error_log($created->raw_body);
         }elseif ($customer_response->code==200){
             $email=$customer_response->body->data->email;
-            $updated=$customer_api->update($email,$customer_body);
+            $updated=$customer_api->update($email,$item);
             error_log($updated->raw_body);
         }else {
             error_log($customer_response->raw_body);

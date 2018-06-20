@@ -237,7 +237,7 @@ class CampaignRabbit
         global $initial_bulk_migrate_orders_process;
 
         $initial_bulk_migrate_orders_process = new InitialOrders();
-        
+
         /*
          *Recurring initial migration
          */

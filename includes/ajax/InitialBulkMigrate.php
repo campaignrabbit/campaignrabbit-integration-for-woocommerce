@@ -2,6 +2,8 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
+use CampaignRabbit\WooIncludes\Helper\Site;
+
 class InitialBulkMigrate
 {
 
@@ -39,13 +41,34 @@ class InitialBulkMigrate
         $orders = $this->get_orders();
 
         foreach ($customers as $customer) {
-            $this->migrate_initial_customers->push_to_queue($customer);  //Customers
+            $site = new Site();
+            $woo_version = $site->getWooVersion();
+            $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
+            $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
+
+            if ($woo_version < 3.0) {
+                $customer_body = $customer_v2_6->get($customer); //2.6
+            } else {
+                $customer_body = $customer_v3_0->get($customer); //3.0
+            }
+            $this->migrate_initial_customers->push_to_queue($customer_body);  //Customers
         }
 
         $this->migrate_initial_customers->save()->dispatch();
 
         foreach ($products as $product) {
-            $this->migrate_initial_products->push_to_queue($product);  //Products
+            $site=new Site();
+            $product_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product();
+            $product_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product();
+
+            $woo_version = $site->getWooVersion();
+
+            if ($woo_version < 3.0) {
+                $product_body = $product_v2_6->get($product); //2.6
+            } else {
+                $product_body = $product_v3_0->get($product); //3.0
+            }
+            $this->migrate_initial_products->push_to_queue($product_body);  //Products
         }
 
         $this->migrate_initial_products->save()->dispatch();
