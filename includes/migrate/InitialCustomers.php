@@ -53,7 +53,6 @@ class InitialCustomers extends \WP_Background_Process
 
         }
 
-
         return false;
     }
 
