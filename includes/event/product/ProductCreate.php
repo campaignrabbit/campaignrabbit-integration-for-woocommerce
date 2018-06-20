@@ -27,20 +27,16 @@ class ProductCreate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
         if($item['type']=='simple'){
-
-           $product_api->create($item['body']);
-
+           $created=$product_api->create($item['body']);
+           error_log($created->raw_body);
         }else{
-
             foreach ($item['body'] as $body){
-
-                $product_api->create($item['body']);
+                $created=$product_api->create($body);
+                error_log($created->raw_body);
             }
         }
-
         return false;
     }
 

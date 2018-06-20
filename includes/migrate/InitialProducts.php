@@ -2,8 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-
-use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Product;
 
 
@@ -32,39 +30,32 @@ class InitialProducts extends \WP_Background_Process
      *
      * @return mixed
      */
-    protected function task($item)
-    {
+    protected function task($item){
 
-        $site=new Site();
+
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
-        $woo_version = $site->getWooVersion();
-
-        if ($woo_version < 3.0) {
-            $product = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product())->get($item); //2.6
-        } else {
-            $product = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->get($item); //3.0
-        }
-
-        if ($product['type'] == 'simple') {
-
-            $product_response=$product_api->get($product['body']['sku']);
-
+        if ($item['type'] == 'simple') {
+            $product_response=$product_api->get($item['body']['sku']);
             if($product_response->code==404){
-                $created=$product_api->create($product['body']);
+                $created=$product_api->create($item['body']);
+                error_log('Simple Product Created: '.$created->raw_body);
             }elseif ($product_response->code==200){
-                $updated=$product_api->update($product['body'],$product['body']['sku']);
+                $updated=$product_api->update($item['body'],$item['body']['sku']);
+                error_log('Simple Product Updated: '.$updated->raw_body);
+            }else{
+                error_log('Simple Product Migrate Error: '.$product_response->raw_body);
             }
-
-        } else {
-
-            foreach ($product['body'] as $body) {
-
+        }elseif($item['type']=='variable') {
+            foreach ($item['body'] as $body) {
                 $product_response=$product_api->get($body['sku']);
-
                 if($product_response->code==404){
                     $created=$product_api->create($body);
+                    error_log('Variable Product Created: '.$created->raw_body);
                 }elseif ($product_response->code==200){
                     $updated=$product_api->update($body,$body['sku']);
+                    error_log('Variable Product Updated: '.$updated->raw_body);
+                }else{
+                    error_log('Variable Product Migrate Error: '.$product_response->raw_body);
                 }
             }
         }

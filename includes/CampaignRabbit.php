@@ -131,9 +131,9 @@ class CampaignRabbit
         $this->load_dependencies();
         $this->set_locale();
 
-        $this->define_admin_hooks();
-
         $this->define_public_hooks();
+
+        $this->define_admin_hooks();
 
         //define ajax hooks
 
@@ -146,9 +146,6 @@ class CampaignRabbit
         //rest api hook init
 
         $this->define_rest_api_hook();
-
-
-
 
 
     }
@@ -204,7 +201,6 @@ class CampaignRabbit
     private function define_admin_hooks()
     {
 
-
         $plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
         $api = new Api();
 
@@ -241,12 +237,6 @@ class CampaignRabbit
         global $initial_bulk_migrate_orders_process;
 
         $initial_bulk_migrate_orders_process = new InitialOrders();
-
-        //TODO TEST
-//        add_action('wp_loaded',function (){
-//            $initial_bulk_migration = new InitialBulkMigrate();
-//            $initial_bulk_migration->execute();
-//        },0);
 
         /*
          *Recurring initial migration

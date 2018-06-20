@@ -2,9 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Event\Customer;
 
-
-
-use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 
 class CustomerDelete extends \WP_Background_Process {
@@ -30,7 +27,8 @@ class CustomerDelete extends \WP_Background_Process {
         // Actions to perform
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
         $old_user_data = get_userdata($item);
-        $customer_api->delete($old_user_data->user_email);
+        $deleted=$customer_api->delete($old_user_data->user_email);
+        error_log($deleted->raw_body);
 
         return false;
     }

@@ -2,8 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\Event\Customer;
 
-
-
 use CampaignRabbit\WooIncludes\Lib\Customer;
 
 class CustomerCreate extends \WP_Background_Process {
@@ -27,11 +25,9 @@ class CustomerCreate extends \WP_Background_Process {
      */
     protected function task( $item ) {
         // Actions to perform
-
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
-
-        $customer_api->create($item);
-
+        $created=$customer_api->create($item);
+        error_log($created->raw_body);
 
         return false;
     }
