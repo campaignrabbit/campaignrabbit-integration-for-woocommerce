@@ -15,9 +15,7 @@ use CampaignRabbit\WooIncludes\Lib\Store;
 /**
  * Class Auth
  */
-class Auth
-{
-
+class Auth{
 
     private $site;
 
@@ -26,16 +24,13 @@ class Auth
     /**
      * Auth constructor.
      */
-    public function __construct()
-    {
+    public function __construct(){
         $this->site = new Site();
-
         $this->store = new Store(get_option('api_token'), get_option('app_id'));
     }
 
 
-    public function authenticate()
-    {
+    public function authenticate(){
 
         if (empty(get_option('api_token')) && empty(get_option('app_id'))) {
             echo '<p style="color:red;">';

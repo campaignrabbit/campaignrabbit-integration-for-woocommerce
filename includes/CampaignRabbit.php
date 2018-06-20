@@ -243,10 +243,36 @@ class CampaignRabbit
         $initial_bulk_migrate_orders_process = new InitialOrders();
 
         //TODO TEST
-//        add_action('wp_loaded',function (){
-//            $initial_bulk_migration = new InitialBulkMigrate();
-//            $initial_bulk_migration->execute();
-//        },0);
+
+        $customers = get_users();
+
+        foreach ($customers as $item){
+            $site = new Site();
+            $woo_version = $site->getWooVersion();
+            $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
+            $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
+
+            if ($woo_version < 3.0) {
+                $customer_body = $customer_v2_6->get($item); //2.6
+            } else {
+                $customer_body = $customer_v3_0->get($item); //3.0
+            }
+            $customer_api=new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
+            $customer_response=$customer_api->get($customer_body['email']);
+
+            if($customer_response->code==404){
+                $created=$customer_api->create($customer_body);
+                error_log($created);
+            }elseif ($customer_response->code==200){
+                $email=$customer_response->body->data->email;
+                $updated=$customer_api->update($email,$customer_body);
+                error_log($updated);
+            }else {
+                error_log($customer_response);
+            }
+        }
+
+
 
         /*
          *Recurring initial migration

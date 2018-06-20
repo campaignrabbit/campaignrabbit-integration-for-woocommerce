@@ -25,7 +25,6 @@ class InitialBulkMigrate
 
     public function execute(){
 
-
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
@@ -38,8 +37,6 @@ class InitialBulkMigrate
         $customers = $this->get_customers();
         $products = $this->get_products();
         $orders = $this->get_orders();
-
-
 
         foreach ($customers as $customer) {
             $this->migrate_initial_customers->push_to_queue($customer);  //Customers
