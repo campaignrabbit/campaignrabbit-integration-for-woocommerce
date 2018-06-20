@@ -41,9 +41,7 @@ define('CAMPAIGNRABBIT_NAME', 'campaignrabbit-integration-for-woocommerce');
 /**
  * The code that runs during plugin activation.
  */
-function activate_campaignrabbit()
-{
-
+function activate_campaignrabbit(){
     \CampaignRabbit\WooIncludes\Activator::activate();
 }
 
@@ -51,9 +49,7 @@ function activate_campaignrabbit()
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-plugin-name-deactivator.php
  */
-function deactivate_campaignrabbit()
-{
-
+function deactivate_campaignrabbit(){
     \CampaignRabbit\WooIncludes\Deactivator::deactivate();
 }
 
@@ -74,12 +70,7 @@ register_deactivation_hook(__FILE__, 'deactivate_campaignrabbit');
  *
  * @since    1.1.0
  */
-
-
-function run_campaignrabbit()
-{
-
-
+function run_campaignrabbit(){
     /**
      * Check if WooCommerce is active
      **/

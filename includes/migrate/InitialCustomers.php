@@ -35,24 +35,27 @@ class InitialCustomers extends \WP_Background_Process
 
         $site = new Site();
         $woo_version = $site->getWooVersion();
+        $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
+        $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
 
         if ($woo_version < 3.0) {
-            $customer_body = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer())->get($item); //2.6
+            $customer_body = $customer_v2_6->get($item); //2.6
         } else {
-            $customer_body = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($item); //3.0
+            $customer_body = $customer_v3_0->get($item); //3.0
         }
         $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
-
         $customer_response=$customer_api->get($customer_body['email']);
 
         if($customer_response->code==404){
             $created=$customer_api->create($customer_body);
-        }else if ($customer_response->code==200){
+            error_log($created);
+        }elseif ($customer_response->code==200){
             $email=$customer_response->body->data->email;
             $updated=$customer_api->update($email,$customer_body);
-
+            error_log($updated);
+        }else {
+            error_log($customer_response);
         }
-
 
         return false;
     }
