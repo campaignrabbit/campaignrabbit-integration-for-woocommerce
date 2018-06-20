@@ -87,6 +87,9 @@ function run_campaignrabbit(){
     }
 }
 
-run_campaignrabbit();
+add_action('wp_loaded',function (){
+    run_campaignrabbit();
+},0);
+
 
 

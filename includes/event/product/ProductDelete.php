@@ -28,7 +28,7 @@ class ProductDelete extends \WP_Background_Process {
         // Actions to perform
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
         $deleted=$product_api->delete($item);
-        error_log($deleted);
+        error_log($deleted->raw_body);
 
         return false;
     }

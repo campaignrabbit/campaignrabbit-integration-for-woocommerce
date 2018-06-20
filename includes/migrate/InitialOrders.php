@@ -51,16 +51,16 @@ class InitialOrders extends \WP_Background_Process
 
         if ($order_response->code == 404) {
             $created = $order_api->create($order_body);
-            error_log($created);
+            error_log($created->raw_body);
         }elseif ($order_response->code==200){
             $order_update_body = array(
                 'status' => $order_status,
                 'updated_at'=>$order_body['updated_at']
             );
             $updated = $order_api->update($item,$order_update_body);
-            error_log($updated);
+            error_log($updated->raw_body);
         }else{
-            error_log($order_response);
+            error_log($order_response->raw_body);
         }
 
 

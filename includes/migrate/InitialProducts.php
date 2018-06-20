@@ -49,20 +49,20 @@ class InitialProducts extends \WP_Background_Process
             $product_response=$product_api->get($product['body']['sku']);
             if($product_response->code==404){
                 $created=$product_api->create($product['body']);
-                error_log($created);
+                error_log($created->raw_body);
             }elseif ($product_response->code==200){
                 $updated=$product_api->update($product['body'],$product['body']['sku']);
-                error_log($updated);
+                error_log($updated->raw_body);
             }
         }else {
             foreach ($product['body'] as $body) {
                 $product_response=$product_api->get($body['sku']);
                 if($product_response->code==404){
                     $created=$product_api->create($body);
-                    error_log($created);
+                    error_log($created->raw_body);
                 }elseif ($product_response->code==200){
                     $updated=$product_api->update($body,$body['sku']);
-                    error_log($updated);
+                    error_log($updated->raw_body);
                 }
             }
         }
