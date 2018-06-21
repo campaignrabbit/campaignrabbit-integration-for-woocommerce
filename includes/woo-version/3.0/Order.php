@@ -8,9 +8,6 @@ class Order{
     public function get($order_id){
 
         $order = new \WC_Order($order_id);
-        if($order->post_status=='auto-draft'){
-            return false;
-        }
 
         $post_order_items = $order->get_items();
         $meta_array = array(array(
