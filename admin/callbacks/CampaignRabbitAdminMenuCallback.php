@@ -67,13 +67,14 @@ class CampaignRabbitAdminMenuCallback
                         <input type="hidden" name="action" value="initial_bulk_migrate"/>
                         <label><?php esc_html_e("Initiate the recurring migration of customers, products, orders from woocommerce to CampaignRabbit- ",'campaignrabbit-integration-for-woocommerce'); ?></label>
                         <input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
-                               value="<?php esc_attr_e("Migrate", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                               value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
 
                     </form>
                     <?php
                 }
 
             }
+            
         } else {
             echo 'Not Authenticated';
         }

@@ -101,9 +101,6 @@ class InitialBulkMigrate
                 $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
             }
 
-
-
-
         }
 
         $this->migrate_initial_orders->save()->dispatch();
