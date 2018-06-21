@@ -74,7 +74,7 @@ class CampaignRabbitAdminMenuCallback
                 }
 
             }
-            
+
         } else {
             echo 'Not Authenticated';
         }
