@@ -98,11 +98,12 @@ class InitialBulkMigrate
                     'api_token'=>get_option('api_token'),
                     'app_id'=>get_option('app_id')
                 );
+                $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
             }
 
 
 
-            $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+
         }
 
         $this->migrate_initial_orders->save()->dispatch();
