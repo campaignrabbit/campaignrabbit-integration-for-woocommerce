@@ -74,7 +74,7 @@ class Order extends Request {
     public function getStatus($status){
         switch ($status){
             case 'pending':
-                $order_status='pending';
+                $order_status='unpaid';
                 break;
             case 'wc-pending':
                 $order_status='unpaid';
@@ -96,6 +96,30 @@ class Order extends Request {
                 break;
             case 'wc-failed':
                 $order_status='unpaid';
+                break;
+            case 'processing':
+                $order_status='pending';
+                break;
+            case 'on-hold':
+                $order_status='unpaid';
+                break;
+            case 'completed':
+                $order_status='completed';
+                break;
+            case 'cancelled':
+                $order_status='cancelled';
+                break;
+            case 'refunded':
+                $order_status='cancelled';
+                break;
+            case 'failed':
+                $order_status='unpaid';
+                break;
+            case 'wc-shipping':
+                $order_status='pending';
+                break;
+            case 'shipping':
+                $order_status='pending';
                 break;
             default:
                 $order_status='pending';

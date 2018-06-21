@@ -2,8 +2,6 @@
 
 namespace CampaignRabbit\WooIncludes\WooVersion\v2_6;
 
-use function GuzzleHttp\Psr7\str;
-
 class Product{
 
     public function get($product_id){
@@ -22,7 +20,7 @@ class Product{
 
             $post_product = array(
                 'r_product_id' => $woo_product->id,
-                'sku' => $woo_product->sku,
+                'sku' => empty($woo_product->sku)?$woo_product->id:$woo_product->sku,
                 'product_name' => $woo_product->post->post_title,
                 'product_price' => $woo_product->price,
                 'parent_id' => $woo_product->id,
@@ -50,7 +48,7 @@ class Product{
 
                 $post_product = array(
                     'r_product_id' => $woo_variation_id,
-                    'sku' => $woo_variable_product->sku,
+                    'sku' => empty($woo_variable_product->sku)?$woo_variation_id:$woo_variable_product->sku,
                     'product_name' => $woo_product->post->post_title,
                     'product_price' => $woo_variable_product->price,
                     'parent_id' => $woo_product->id,
@@ -92,8 +90,8 @@ class Product{
     public function getSKU($product_id){
 
         $woo_product = wc_get_product($product_id);
-
-        return $woo_product->sku;
+        $sku=empty($woo_product->sku)?$woo_product->id:$woo_product->sku;
+        return $sku;
     }
 
 }

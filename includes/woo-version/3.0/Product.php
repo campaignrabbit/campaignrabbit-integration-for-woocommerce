@@ -21,7 +21,7 @@ class Product{
 
             $post_product = array(
                 'r_product_id' => $woo_product->get_id(),
-                'sku' => $woo_product->get_sku(),
+                'sku' =>  empty($woo_product->get_sku())?$woo_product->get_id():$woo_product->get_sku(),
                 'product_name' => $woo_product->get_title(),
                 'product_price' => $woo_product->get_price(),
                 'parent_id' => $woo_product->get_parent_id(),
@@ -51,7 +51,7 @@ class Product{
 
                 $post_product = array(
                     'r_product_id' => $woo_variable_product->get_id(),
-                    'sku' => $woo_variable_product->get_sku(),
+                    'sku' => empty($woo_variable_product->get_sku())?$woo_variable_product->get_id():$woo_variable_product->get_sku(),
                     'product_name' => $woo_variable_product->get_title(),
                     'product_price' => $woo_variable_product->get_price(),
                     'parent_id' => $woo_variable_product->get_parent_id(),
@@ -77,8 +77,8 @@ class Product{
     public function getSKU($product_id){
 
         $woo_product = wc_get_product($product_id);
-
-        return $woo_product->get_sku();
+        $sku=empty($woo_product->get_sku())?$woo_product->get_id():$woo_product->get_sku();
+        return $sku;
     }
 
 }

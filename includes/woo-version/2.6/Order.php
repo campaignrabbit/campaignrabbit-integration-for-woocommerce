@@ -22,7 +22,7 @@ class Order{
             $product=wc_get_product($product_id);
             $order_items[] = array(
                 'r_product_id' => $product_id,
-                'sku' => $product->sku,
+                'sku' =>  empty($product->sku)?$product_id:$product->sku,
                 'product_name' => $product->post->post_title,
                 'product_price' => $product->price,
                 'item_qty' => $post_order_item['qty'],
