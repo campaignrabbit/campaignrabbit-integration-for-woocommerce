@@ -42,10 +42,16 @@ class Customer
                 'name' => $user_login,
                 'meta' => $meta_array
             );
+            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
+            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
+            $name=$first_name.' '.$last_name;
+            if(empty($name)){
+                $name=isset($_POST['user_login'])?$_POST['user_login']:'';
+            }
             if (isset($_POST['createaccount']) ? $_POST['createaccount'] : false) {
                 $post_customer = array(
                     'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
-                    'name' => isset($_POST['billing_first_name']) ? $_POST['billing_first_name'] : '',
+                    'name' => $name,
                     'created_at'=>get_user_meta($user_login,'cr_user_updated',true),
                     'updated_at'=>get_user_meta($user_login,'cr_user_updated',true),
                     'meta' => $meta_array
@@ -62,10 +68,16 @@ class Customer
             global $customer_update_request;
             $this->customer_update_request = $customer_update_request;
             update_user_meta( $old_user_data->user_login, 'cr_user_updated', current_time( 'mysql' ) );
+            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
+            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
+            $name=$first_name.' '.$last_name;
+            if(empty($name)){
+                $name=$old_user_data->user_login;
+            }
             $data = array(
                 'user_email' => $old_user_data->user_email,
                 'user_id' => $user_id,
-                'user_login'=>$old_user_data->user_login,
+                'user_name'=>$name,
                 'post_email'=>isset($_POST['email'])?$_POST['email']:''
             );
             $this->customer_update_request->push_to_queue($data);
