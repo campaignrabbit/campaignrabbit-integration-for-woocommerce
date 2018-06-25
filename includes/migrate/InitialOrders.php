@@ -35,21 +35,46 @@ class InitialOrders extends \WP_Background_Process
     protected function task($item){
         $item=json_decode($item, true);
         $order_api=new Order($item['api_token'],$item['app_id']);
-        $order_response = $order_api->get($item['order_id']);
 
-        if ($order_response->code == 404) {
-            $created = $order_api->create($item['order_body']);
-            error_log('Order Created: '.$created->raw_body);
-        }elseif ($order_response->code==200){
-            $order_update_body = array(
-                'status' => $item['order_status'],
-                'updated_at'=>$item['order_body']['updated_at']
-            );
-            $updated = $order_api->update($item['order_id'],$order_update_body);
-            error_log('Order Updated: '.$updated->raw_body);
-        }else{
-            error_log('Order Migrate Error: '.$order_response->raw_body);
+        /**
+         * Dont do anything if order_status is auto_draft
+         */
+        if($item['order_status']!='auto-draft'){
+            $order_response = $order_api->get($item['order_id']);
+            if ($order_response->code == 404) {
+                $created = $order_api->create($item['order_body']);
+                error_log('Order Creation Body: '.json_encode($item['order_body']));
+                error_log('Order Created: '.$created->raw_body);
+            }elseif ($order_response->code==200){
+                $order_update_body = array(
+                    'status' => $item['order_status'],
+                    'updated_at'=>$item['order_body']['updated_at']
+                );
+                $updated = $order_api->update($item['order_id'],$order_update_body);
+                error_log('Order Updated: '.$updated->raw_body);
+            }else{
+                error_log('Order Migrate Error: '.$order_response->raw_body);
+            }
+
+            /**
+             * Delete orders from campaignrabbit if not in woocommerce
+             */
+            $cr_orders=$order_api->getAll()->body->data;
+            error_log('Woo Order Body:'.print_r($item['order_body'],true));
+            $woo_order_ids=$item['woo_order_ids'];
+            error_log('Woo Order IDs:'.print_r($woo_order_ids,true));
+            foreach ($cr_orders as $cr_order){
+                $order_id=$cr_order->order_ref;
+                error_log('CR Order IDs:'. $order_id);
+                if(!in_array($order_id,$woo_order_ids) ){
+                    error_log('Going to delete');
+                    $deleted=$order_api->delete($order_id);
+                    error_log('Order Deleted:'.$deleted->raw_body);
+                }
+            }
         }
+
+
 
 
         return false;
