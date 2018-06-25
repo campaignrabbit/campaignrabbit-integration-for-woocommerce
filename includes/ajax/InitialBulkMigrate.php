@@ -3,7 +3,6 @@
 namespace CampaignRabbit\WooIncludes\Ajax;
 
 use CampaignRabbit\WooIncludes\Helper\Site;
-use CampaignRabbit\WooIncludes\Lib\Order;
 
 class InitialBulkMigrate
 {
@@ -98,8 +97,6 @@ class InitialBulkMigrate
                 'woo_order_ids'=>$orders
             );
             $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
-
-
         }
 
         $this->migrate_initial_orders->save()->dispatch();
