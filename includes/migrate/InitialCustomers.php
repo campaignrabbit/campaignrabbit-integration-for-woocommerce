@@ -40,6 +40,7 @@ class InitialCustomers extends \WP_Background_Process
             $created=$customer_api->create($item);
             error_log('Customer Created: '. $created->raw_body);
         }elseif ($customer_response->code==200){
+            error_log('Update Customer Data: '.print_r($item,true));
             $email=$customer_response->body->data->email;
             $updated=$customer_api->update($email,$item);
             error_log('Customer Updated: '.$updated->raw_body);

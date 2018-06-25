@@ -80,6 +80,7 @@ class Customer
                 'user_name'=>$name,
                 'post_email'=>isset($_POST['email'])?$_POST['email']:''
             );
+            error_log('Update Customer Data: '.print_r($data,true));
             $this->customer_update_request->push_to_queue($data);
             $this->customer_update_request->save()->dispatch();
         }

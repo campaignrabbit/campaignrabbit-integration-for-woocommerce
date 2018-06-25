@@ -9,6 +9,7 @@ class Order{
 
         $order = new \WC_Order($order_id);
 
+
         $post_order_items = $order->get_items();
         $meta_array = array(array(
             'meta_key' => 'dummy_key',
@@ -33,6 +34,7 @@ class Order{
 
         $billing = array(
             'first_name' => $order->get_billing_first_name(),
+            'last_name'=>$order->get_billing_last_name(),
             'company_name' => $order->get_billing_company(),
             'email' => $order->get_billing_email(),
             'mobile' => $order->get_billing_phone(),
@@ -47,6 +49,7 @@ class Order{
         $shipping = array(
 
             'first_name' => !empty($order->get_shipping_first_name())?$order->get_shipping_first_name():$order->get_billing_first_name(),
+            'last_name'=>!empty($order->get_billing_last_name())?$order->get_shipping_last_name():$order->get_billing_last_name(),
             'company_name' => !empty($order->get_shipping_company())?$order->get_shipping_company():$order->get_billing_company(),
             'email' => $order->get_billing_email(),             //note: No Shipping Email
             'mobile' => $order->get_billing_phone(),            //note: No Shipping Phone
@@ -69,7 +72,7 @@ class Order{
             'r_order_id' => $order->get_id(),
             'r_order_ref' => $order->get_id(),
             'customer_email' => $order->get_billing_email(),
-            'customer_name' => $order->get_billing_first_name(),
+            'customer_name' => $order->get_billing_first_name().' '.$order->get_billing_last_name(),
             'order_total' => $order->get_total(),
             'meta' => $meta_array,
             'order_items' =>$order_items,

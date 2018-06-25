@@ -116,7 +116,6 @@ class CampaignRabbit
     {
 
 
-
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {

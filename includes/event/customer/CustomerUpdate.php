@@ -49,7 +49,7 @@ class CustomerUpdate extends \WP_Background_Process {
         );
         $post_customer = array(
             'email' =>$item['post_email'],
-            'name' =>$item['user_login'],
+            'name' =>$item['user_name'],
             'created_at'=>$user->user_registered,
             'updated_at'=>get_user_meta($item['user_login'],'cr_user_updated',true),
             'meta' => $meta_roles
