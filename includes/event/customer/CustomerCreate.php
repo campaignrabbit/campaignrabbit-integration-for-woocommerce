@@ -27,7 +27,7 @@ class CustomerCreate extends \WP_Background_Process {
         // Actions to perform
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
         $created=$customer_api->create($item);
-        error_log($created->raw_body);
+        error_log('Customer Created (Event):'.$created->raw_body);
 
         return false;
     }

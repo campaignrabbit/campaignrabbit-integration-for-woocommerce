@@ -28,7 +28,7 @@ class ProductRestore extends \WP_Background_Process {
         // Actions to perform
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
         $restored=$product_api->restore($item);
-        error_log($restored->raw_body);
+        error_log('Product Restored (Event):'.$restored->raw_body);
 
         return false;
     }

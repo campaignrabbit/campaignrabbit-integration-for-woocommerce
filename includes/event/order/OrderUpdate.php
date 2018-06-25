@@ -29,7 +29,7 @@ class OrderUpdate extends \WP_Background_Process {
         // Actions to perform
         $order_api= new Order(get_option('api_token'),get_option('app_id'));
         $updated=$order_api->update($item['order_id'],$item);
-        error_log($updated->raw_body);
+        error_log('Order Updated (Event):'.$updated->raw_body);
 
         return false;
     }

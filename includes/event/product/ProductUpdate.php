@@ -28,7 +28,7 @@ class ProductUpdate extends \WP_Background_Process {
         // Actions to perform
         $product_api= new Product(get_option('api_token'),get_option('app_id'));
         $updated=$product_api->update($item['body'],$item['sku']);
-        error_log($updated->raw_body);
+        error_log('Product Updated (Event):'.$updated->raw_body);
 
         return false;
     }

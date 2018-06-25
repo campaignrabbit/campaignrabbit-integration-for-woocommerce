@@ -28,7 +28,7 @@ class CustomerDelete extends \WP_Background_Process {
         $customer_api= new Customer(get_option('api_token'),get_option('app_id'));
         $old_user_data = get_userdata($item);
         $deleted=$customer_api->delete($old_user_data->user_email);
-        error_log($deleted->raw_body);
+        error_log('Customer Deleted (Event):'.$deleted->raw_body);
 
         return false;
     }
