@@ -15,7 +15,6 @@ class InitialBulkMigrate
 
 
     function __construct(){
-        do_action( 'woocommerce_loaded');
     }
 
     public function initiate(){
