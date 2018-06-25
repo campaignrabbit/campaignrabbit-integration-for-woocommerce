@@ -29,9 +29,13 @@ class Customer
     public function create(){
         if (get_option('api_token_flag')) {
             global $customer_create_request;
-            $user_login=isset($_POST['user_login']) ? $_POST['user_login'] : '';
             $this->customer_create_request = $customer_create_request;
-            update_user_meta( $user_login, 'cr_user_updated', current_time( 'mysql' ) );
+            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
+            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
+            $name=$first_name.' '.$last_name;
+            if($name==' '){
+                $name=isset($_POST['user_login'])?$_POST['user_login']:'';
+            }
             $meta_array = array(array(
                 'meta_key' => 'CUSTOMER_GROUP',
                 'meta_value' => isset($_POST['role']) ? $_POST['role'] : '',
@@ -39,21 +43,18 @@ class Customer
             ));
             $post_customer = array(
                 'email' => isset($_POST['email']) ? $_POST['email'] : '',
-                'name' => $user_login,
+                'name' => $name,
+                'created_at'=>current_time( 'mysql' ),
+                'updated_at'=>current_time( 'mysql' ),
                 'meta' => $meta_array
             );
-            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
-            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
-            $name=$first_name.' '.$last_name;
-            if(empty($name)){
-                $name=isset($_POST['user_login'])?$_POST['user_login']:'';
-            }
+
             if (isset($_POST['createaccount']) ? $_POST['createaccount'] : false) {
                 $post_customer = array(
                     'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
                     'name' => $name,
-                    'created_at'=>get_user_meta($user_login,'cr_user_updated',true),
-                    'updated_at'=>get_user_meta($user_login,'cr_user_updated',true),
+                    'created_at'=>current_time( 'mysql' ),
+                    'updated_at'=>current_time( 'mysql' ),
                     'meta' => $meta_array
                 );
             }
@@ -67,20 +68,19 @@ class Customer
         if (get_option('api_token_flag')) {
             global $customer_update_request;
             $this->customer_update_request = $customer_update_request;
-            update_user_meta( $old_user_data->user_login, 'cr_user_updated', current_time( 'mysql' ) );
+            update_user_meta( $user_id, 'cr_user_updated', current_time( 'mysql' ) );
             $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
             $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
             $name=$first_name.' '.$last_name;
-            if(empty($name)){
+            if($name==' '){
                 $name=$old_user_data->user_login;
             }
             $data = array(
                 'user_email' => $old_user_data->user_email,
                 'user_id' => $user_id,
                 'user_name'=>$name,
-                'post_email'=>isset($_POST['email'])?$_POST['email']:''
+                'post_email'=>isset($_POST['email'])?$_POST['email']:'',
             );
-            error_log('Update Customer Data: '.print_r($data,true));
             $this->customer_update_request->push_to_queue($data);
             $this->customer_update_request->save()->dispatch();
         }

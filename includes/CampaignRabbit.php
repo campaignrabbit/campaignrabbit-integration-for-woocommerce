@@ -115,6 +115,9 @@ class CampaignRabbit
     public function __construct()
     {
 
+        foreach (get_users() as $user){
+            $x=(new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($user);
+        }
 
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
