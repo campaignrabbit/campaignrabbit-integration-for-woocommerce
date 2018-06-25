@@ -57,7 +57,7 @@ class CustomerUpdate extends \WP_Background_Process {
         );
 
         $updated=$customer_api->update($item['user_email'],$post_customer);
-        error_log($updated->raw_body);
+        error_log('Customer Updated (Event):'.$updated->raw_body);
 
         return false;
     }

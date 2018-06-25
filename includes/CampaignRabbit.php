@@ -114,11 +114,6 @@ class CampaignRabbit
      */
     public function __construct()
     {
-
-        foreach (get_users() as $user){
-            $x=(new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer())->get($user);
-        }
-
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
@@ -130,7 +125,6 @@ class CampaignRabbit
         } else {
             $this->plugin_name = 'campaignrabbit-integration-for-woocommerce';
         }
-        do_action( 'woocommerce_loaded' );
 
         $this->load_dependencies();
         $this->set_locale();
