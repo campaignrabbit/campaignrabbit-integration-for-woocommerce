@@ -8,8 +8,6 @@ class Order{
     public function get($order_id){
 
         $order = new \WC_Order($order_id);
-
-
         $post_order_items = $order->get_items();
         $meta_array = array(array(
             'meta_key' => 'dummy_key',
@@ -49,7 +47,7 @@ class Order{
         $shipping = array(
 
             'first_name' => !empty($order->get_shipping_first_name())?$order->get_shipping_first_name():$order->get_billing_first_name(),
-            'last_name'=>!empty($order->get_billing_last_name())?$order->get_shipping_last_name():$order->get_billing_last_name(),
+            'last_name'=>!empty($order->get_shipping_last_name())?$order->get_shipping_last_name():$order->get_billing_last_name(),
             'company_name' => !empty($order->get_shipping_company())?$order->get_shipping_company():$order->get_billing_company(),
             'email' => $order->get_billing_email(),             //note: No Shipping Email
             'mobile' => $order->get_billing_phone(),            //note: No Shipping Phone
@@ -62,12 +60,10 @@ class Order{
 
         );
 
-
-
         $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->get_status());
 
-        $created_at=empty($order->get_date_created())?'2016-12-04':$order->get_date_created()->date('Y-m-d H:i:s');
-        $updated_at=empty($order->get_date_modified())?'2016-12-04':$order->get_date_modified()->date('Y-m-d H:i:s');
+        $created_at=empty($order->get_date_created())?date('mysql'):$order->get_date_created()->date('Y-m-d H:i:s');
+        $updated_at=empty($order->get_date_modified())?date('mysql'):$order->get_date_modified()->date('Y-m-d H:i:s');
         $post_order = array(
             'r_order_id' => $order->get_id(),
             'r_order_ref' => $order->get_id(),

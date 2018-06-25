@@ -3,7 +3,7 @@
 namespace CampaignRabbit\WooIncludes\WooVersion\v2_6;
 
 class Customer{
-    
+
     public function get($customer){
         $roles='';
         $user = get_userdata( $customer->ID );
