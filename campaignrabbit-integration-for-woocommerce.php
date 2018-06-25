@@ -83,7 +83,11 @@ function run_campaignrabbit(){
         error_log('Yay! CampaignRabbit Integration Plugin Installed!');
 
     } else {
-        wp_die(__('Please install and Activate WooCommerce.', 'woocommerce-addon-slug'), 'Plugin dependency check', array('back_link' => true));
+        ?>
+        <script>
+            alert('Please install and Activate WooCommerce.')
+        </script>
+        <?php
         error_log('Ops! CampaignRabbit Integration Plugin Installation Failed');
     }
 }
