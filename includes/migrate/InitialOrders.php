@@ -43,7 +43,6 @@ class InitialOrders extends \WP_Background_Process
             $order_response = $order_api->get($item['order_id']);
             if ($order_response->code == 404) {
                 $created = $order_api->create($item['order_body']);
-                error_log('Order Creation Body: '.json_encode($item['order_body']));
                 error_log('Order Created: '.$created->raw_body);
             }elseif ($order_response->code==200){
                 $order_update_body = array(
@@ -60,14 +59,10 @@ class InitialOrders extends \WP_Background_Process
              * Delete orders from campaignrabbit if not in woocommerce
              */
             $cr_orders=$order_api->getAll()->body->data;
-            error_log('Woo Order Body:'.print_r($item['order_body'],true));
             $woo_order_ids=$item['woo_order_ids'];
-            error_log('Woo Order IDs:'.print_r($woo_order_ids,true));
             foreach ($cr_orders as $cr_order){
                 $order_id=$cr_order->order_ref;
-                error_log('CR Order IDs:'. $order_id);
                 if(!in_array($order_id,$woo_order_ids) ){
-                    error_log('Going to delete');
                     $deleted=$order_api->delete($order_id);
                     error_log('Order Deleted:'.$deleted->raw_body);
                 }
