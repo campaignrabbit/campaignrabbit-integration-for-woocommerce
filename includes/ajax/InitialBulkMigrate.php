@@ -15,30 +15,27 @@ class InitialBulkMigrate
     protected $migrate_initial_orders;
 
 
-    function __construct()
-    {
-        do_action('woocommerce_loaded');
+    function __construct(){
+        do_action( 'woocommerce_loaded');
     }
 
-    public function initiate()
-    {
-        if (!wp_next_scheduled('campaignrabbit_recurring_bulk_migration')) {
-            wp_schedule_event(time(), 'campaignrabbit_every_five_minutes', 'campaignrabbit_recurring_bulk_migration');
+    public function initiate(){
+        if ( ! wp_next_scheduled( 'campaignrabbit_recurring_bulk_migration' ) ) {
+            wp_schedule_event( time(), 'campaignrabbit_every_five_minutes', 'campaignrabbit_recurring_bulk_migration' );
         }
         wp_redirect(admin_url() . 'admin.php?page=campaignrabbit-admin.php');
     }
 
-    public function execute()
-    {
+    public function execute(){
 
         global $initial_bulk_migrate_customers_process;
-        $this->migrate_initial_customers = $initial_bulk_migrate_customers_process;
+        $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
         global $initial_bulk_migrate_products_process;
-        $this->migrate_initial_products = $initial_bulk_migrate_products_process;
+        $this->migrate_initial_products=$initial_bulk_migrate_products_process;
 
         global $initial_bulk_migrate_orders_process;
-        $this->migrate_initial_orders = $initial_bulk_migrate_orders_process;
+        $this->migrate_initial_orders=$initial_bulk_migrate_orders_process;
 
         $customers = $this->get_customers();
         $products = $this->get_products();
@@ -47,8 +44,8 @@ class InitialBulkMigrate
         foreach ($customers as $customer) {
             $site = new Site();
             $woo_version = $site->getWooVersion();
-            $customer_v2_6 = new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
-            $customer_v3_0 = new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
+            $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
+            $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
 
             if ($woo_version < 3.0) {
                 $customer_body = $customer_v2_6->get($customer); //2.6
@@ -61,9 +58,9 @@ class InitialBulkMigrate
         $this->migrate_initial_customers->save()->dispatch();
 
         foreach ($products as $product) {
-            $site = new Site();
-            $product_v2_6 = new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product();
-            $product_v3_0 = new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product();
+            $site=new Site();
+            $product_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product();
+            $product_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product();
 
             $woo_version = $site->getWooVersion();
 
@@ -79,65 +76,66 @@ class InitialBulkMigrate
 
         foreach ($orders as $order_id) {
             $site = new Site();
-            $order_v2_6 = new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
-            $order_v3_0 = new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
+            $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
+            $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
 
             $woo_version = $site->getWooVersion();
 
             if ($woo_version < 3.0) {
                 $order_body = $order_v2_6->get($order_id); //2.6
-                $order_status = $order_v2_6->getWooStatus($order_id);
+                $order_status=$order_v2_6->getWooStatus($order_id);
             } else {
                 $order_body = $order_v3_0->get($order_id); //3.0
-                $order_status = $order_v3_0->getWooStatus($order_id);
+                $order_status=$order_v3_0->getWooStatus($order_id);
             }
 
-            $order_data = array(
-                'order_id' => $order_id,
-                'order_body' => $order_body,
-                'order_status' => $order_status,
-                'api_token' => get_option('api_token'),
-                'app_id' => get_option('app_id')
+            $order_data=array(
+                'order_id'=>$order_id,
+                'order_body'=>$order_body,
+                'order_status'=>$order_status,
+                'api_token'=>get_option('api_token'),
+                'app_id'=>get_option('app_id'),
+                'woo_order_ids'=>$orders
             );
             $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+
+
         }
+
         $this->migrate_initial_orders->save()->dispatch();
-        update_option('first_migrate', true);    //set the wp_options first_migrate to true
+        update_option('first_migrate',true);    //set the wp_options first_migrate to true
 
 
     }
 
-    private function get_customers()
-    {
-        if (get_option('api_token_flag')) {
+    private function get_customers(){
+        if ( get_option('api_token_flag')) {
             $users = get_users();
             return $users;
         }
         return array();
     }
 
-    private function get_products()
-    {
-        if (get_option('api_token_flag')) {
-            $args = array(
-                'post_type' => 'product',
+    private function get_products(){
+        if ( get_option('api_token_flag')) {
+            $args=array(
+                'post_type'      => 'product',
                 'posts_per_page' => -1,
             );
             $products = get_posts($args);
-            $product_ids = wp_list_pluck($products, 'ID');
+            $product_ids=wp_list_pluck($products,'ID');
             return $product_ids;
         }
         return array();
     }
 
-    private function get_orders()
-    {
-        if (get_option('api_token_flag')) {
+    private function get_orders(){
+        if ( get_option('api_token_flag')) {
             global $wpdb;
 
             $sql = "SELECT * FROM $wpdb->posts WHERE post_type='shop_order'";
-            $orders = $wpdb->get_results($sql);
-            $order_ids = wp_list_pluck($orders, 'ID');
+            $orders = $wpdb->get_results( $sql);
+            $order_ids=wp_list_pluck($orders,'ID');
             return $order_ids;
         }
         return array();

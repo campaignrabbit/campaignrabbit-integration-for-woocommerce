@@ -57,17 +57,12 @@ class Order extends Request {
 
 
     public function delete($id){
-        $order= new \WC_Order($id);
         $order_response=$this->get($id);
         if($order_response->code!=200){
             return $order_response;
         }
         $id=$order_response->body->data->id;
-
-        $body=array(
-            'status'=> $order->get_status()
-        );
-        $response=$this->request->request('DELETE', $this->uri . '/' . $id, $body);
+        $response=$this->request->request('DELETE', $this->uri . '/' . $id, '');
         return $response;
     }
 
