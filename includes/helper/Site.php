@@ -68,6 +68,36 @@ class Site{
         }
     }
 
+    public function getCronEvent($cron_hook) {
+
+        $crons  = _get_cron_array();
+        $events = array();
+        foreach ( $crons as $time => $cron ) {
+            foreach ( $cron as $hook => $dings ) {
+                foreach ( $dings as $sig => $data ) {
+
+                    if($hook==$cron_hook){
+                        # This is a prime candidate for a Crontrol_Event class but I'm not bothering currently.
+                        $events[ "$hook-$sig-$time" ] = (object) array(
+                            'hook'     => $hook,
+                            'time'     => $time,
+                            'sig'      => $sig,
+                            'args'     => $data['args'],
+                            'schedule' => $data['schedule'],
+                            'interval' => isset( $data['interval'] ) ? $data['interval'] : null,
+                        );
+                    }
+
+
+                }
+            }
+        }
+
+        return $events;
+
+    }
+
+
 
 
 

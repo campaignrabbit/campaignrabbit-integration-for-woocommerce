@@ -29,16 +29,13 @@ class Auth{
         $this->store = new Store(get_option('api_token'), get_option('app_id'));
     }
 
-
     public function authenticate(){
-
         if (empty(get_option('api_token')) && empty(get_option('app_id'))) {
             echo '<p style="color:red;">';
             esc_html_e('Authentication Fail: App Id and Api Token are required fields. Enter them and try again', 'campaignrabbit-integration-for-woocommerce');
             echo '</p>';
             return false;
         }
-
         if (!empty(get_option('api_token'))) {
             if (!empty(get_option('app_id'))) {
                 $auth_response = $this->store->authenticate();

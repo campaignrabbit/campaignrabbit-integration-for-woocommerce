@@ -52,16 +52,8 @@ class ProductTable extends \WP_List_Table
     function column_default($item, $column_name){
 
         switch($column_name){
-            case 'name':
+            case 'data':
                 return $item[$column_name];
-            case 'sku':
-                return $item[$column_name];
-            case 'migrate_status':
-                return get_user_meta($item['ID'],'migrate_status', true);
-            case 'migrate_status_code':
-                return get_user_meta($item['ID'],'migrate_status_code', true);
-            case 'migrate_error_msg':
-                return get_user_meta($item['ID'],'migrate_error_msg', true);
             default:
                 // return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
@@ -133,11 +125,7 @@ class ProductTable extends \WP_List_Table
      **************************************************************************/
     function get_columns(){
         $columns = array(//Render a checkbox instead of text
-            'name'     => 'Name',
-            'sku'  => 'SKU',
-            'migrate_status'=>'Status',
-            'migrate_status_code'=>'Code',
-            'migrate_error_msg'=>'Error Message'
+            'data'     => 'Data',
         );
         return $columns;
     }
@@ -159,11 +147,7 @@ class ProductTable extends \WP_List_Table
      **************************************************************************/
     function get_sortable_columns() {
         $sortable_columns = array(
-            'name'     => array('name',false),     //true means it's already sorted
-            'sku'  => array('sku',false),
-            'migrate_status'     => array('migrate_status',false),
-            'migrate_status_code'    => array('migrate_status_code',false),
-            'migrate_error_msg'  => array('migrate_error_msg',false)
+            'data'     => array('data',false),     //true means it's already sorted
 
         );
         return $sortable_columns;

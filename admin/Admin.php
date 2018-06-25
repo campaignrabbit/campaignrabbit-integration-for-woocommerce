@@ -142,45 +142,45 @@ class Admin {
      */
     public function admin_custom_submenu(){
 
-//        $submenu_callback=new CampaignRabbitProductSubmenuCallback();
-//
-//        /*
-//         * Products Page
-//         */
-//        $GLOBALS['campaignrabbit_products_page']=add_submenu_page(
-//            'campaignrabbit-admin.php',
-//        __('Products','campaignrabbit-integration-for-woocommerce'),
-//            'Products',
-//            'manage_options',
-//            'campaignrabbit-products.php',
-//            array($submenu_callback, 'display')
-//        );
-//
-//       $submenu_callback=new CampaignRabbitCustomerSubmenuCallback();
-//        /*
-//         * Customers Page
-//         */
-//        $GLOBALS['campaignrabbit_customers_page']=add_submenu_page(
-//            'campaignrabbit-admin.php',
-//            __('Customers','campaignrabbit-integration-for-woocommerce'),
-//            'Customers',
-//            'manage_options',
-//            'campaignrabbit-customers.php',
-//            array($submenu_callback, 'display')
-//        );
-//
-//        $submenu_callback=new CampaignRabbitOrderSubmenuCallback();
-//        /*
-//         * Orders Page
-//         */
-//        $GLOBALS['campaignrabbit_orders_page']=add_submenu_page(
-//            'campaignrabbit-admin.php',
-//            __('Orders','campaignrabbit-integration-for-woocommerce'),
-//            'Orders',
-//            'manage_options',
-//            'campaignrabbit-orders.php',
-//            array($submenu_callback, 'display')
-//        );
+        $submenu_callback=new CampaignRabbitProductSubmenuCallback();
+
+        /*
+         * Products Page
+         */
+        $GLOBALS['campaignrabbit_products_page']=add_submenu_page(
+            'campaignrabbit-admin.php',
+        __('Products','campaignrabbit-integration-for-woocommerce'),
+            'Products',
+            'manage_options',
+            'campaignrabbit-products.php',
+            array($submenu_callback, 'display')
+        );
+
+       $submenu_callback=new CampaignRabbitCustomerSubmenuCallback();
+        /*
+         * Customers Page
+         */
+        $GLOBALS['campaignrabbit_customers_page']=add_submenu_page(
+            'campaignrabbit-admin.php',
+            __('Customers','campaignrabbit-integration-for-woocommerce'),
+            'Customers',
+            'manage_options',
+            'campaignrabbit-customers.php',
+            array($submenu_callback, 'display')
+        );
+
+        $submenu_callback=new CampaignRabbitOrderSubmenuCallback();
+        /*
+         * Orders Page
+         */
+        $GLOBALS['campaignrabbit_orders_page']=add_submenu_page(
+            'campaignrabbit-admin.php',
+            __('Orders','campaignrabbit-integration-for-woocommerce'),
+            'Orders',
+            'manage_options',
+            'campaignrabbit-orders.php',
+            array($submenu_callback, 'display')
+        );
     }
 
 }
