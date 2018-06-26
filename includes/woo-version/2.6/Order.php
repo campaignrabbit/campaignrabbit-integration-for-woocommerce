@@ -20,14 +20,26 @@ class Order{
             $product_id=$post_order_item['product_id'];
             $product_id= empty($variation_id)?$product_id:$variation_id;
             $product=wc_get_product($product_id);
-            $order_items[] = array(
-                'r_product_id' => $product_id,
-                'sku' =>  empty($product->sku)?$product_id:$product->sku,
-                'product_name' => $product->get_title(),
-                'product_price' => $product->price,
-                'item_qty' => $post_order_item['qty'],
-                'meta' => $meta_array
-            );
+            if(!$product){
+                $order_items[] = array(
+                    'r_product_id' => $product_id,
+                    'sku' =>  empty($product->sku)?$product_id:$product->sku,
+                    'product_name' => $product->get_title(),
+                    'product_price' => $product->price,
+                    'item_qty' => $post_order_item['qty'],
+                    'meta' => $meta_array
+                );
+            }else{
+                $order_items[] = array(
+                    'r_product_id' => $product_id,
+                    'sku' =>  $product_id,
+                    'product_name' => $post_order_item['name'],
+                    'product_price' =>$post_order_item['line_total'],
+                    'item_qty' => $post_order_item['qty'],
+                    'meta' => $meta_array
+                );
+            }
+
         }
 
         $billing = array(
