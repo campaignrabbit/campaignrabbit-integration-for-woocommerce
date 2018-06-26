@@ -127,7 +127,7 @@ class InitialBulkMigrate
         return array();
     }
 
-    public function get_orders(){
+    private function get_orders(){
         if ( get_option('api_token_flag')) {
             global $wpdb;
 

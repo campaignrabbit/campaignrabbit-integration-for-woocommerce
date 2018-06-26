@@ -114,11 +114,7 @@ class CampaignRabbit
      */
     public function __construct()
     {
-
-        $orders=(new InitialBulkMigrate())->get_orders();
-        foreach ($orders as $order){
-            $x=(new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get('810');
-        }
+        
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
