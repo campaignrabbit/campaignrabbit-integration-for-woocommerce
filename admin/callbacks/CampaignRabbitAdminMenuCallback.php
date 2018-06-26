@@ -4,9 +4,6 @@
 namespace CampaignRabbit\WooAdmin\Callbacks;
 
 use CampaignRabbit\WooIncludes\Api\Auth;
-use CampaignRabbit\WooIncludes\Helper\Site;
-use CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer;
-use CampaignRabbit\WooIncludes\WooVersion\v2_6\Order;
 
 class CampaignRabbitAdminMenuCallback
 {
@@ -25,31 +22,24 @@ class CampaignRabbitAdminMenuCallback
 
         $first_migrate = get_option('first_migrate');
         if ($authenticated) {
-            ?>  <br> <h2><?php esc_attr_e("CampaignRabbit Synchronization", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            ?>  <br>
+            <h2><?php esc_attr_e("CampaignRabbit Synchronization", "campaignrabbit-integration-for-woocommerce"); ?></h2>
             <?php
             $this->displayDisabledCron();
             if (!$first_migrate) {
-                if (wp_get_schedule('campaignrabbit_recurring_bulk_migration')) {
-                    $this->displayCronEvent();
-                }
-                $this->displaySync();
+                echo '<p style="color:red;">';
+                esc_html_e('Synchronization Yet to be Initiated', 'campaignrabbit-integration-for-woocommerce');
+                echo '</p>';
             } else {
-                if (wp_get_schedule('campaignrabbit_recurring_bulk_migration')) {
-                    $this->displayCronEvent();
-                } else {
-                    $this->displaySync();
-                }
+                echo '<p style="color:green;">';
+                esc_html_e('Initial Synchronization Success', 'campaignrabbit-integration-for-woocommerce');
+                echo '</p><p style="color: #363b3f">';
             }
-
-                 /*
-                 * TODO
-                 * Resync
-                 * 1. delete all cron events
-                 * 2. delete all data from wp_options aka queue
-                 * 3. reinitiate bulk migration
-                 * 4. set first_migrate to zero
-                 */
-                 $this->displayResync();
+            if (wp_get_schedule('campaignrabbit_recurring_bulk_migration')) {
+                $this->displayCronEvent();
+            }
+            $this->displaySync();
+         //   $this->displayResync();
         } else {
             echo 'Not Authenticated';
         }
@@ -121,7 +111,16 @@ class CampaignRabbitAdminMenuCallback
         <?php
     }
 
-    private function displayResync(){
+    private function displayResync()
+    {
+                /*
+                * TODO
+                * Resync
+
+                * 2. delete all data from wp_options aka queue
+                *
+                * 4. set first_migrate to zero
+                */
         ?>
         <br>
         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
