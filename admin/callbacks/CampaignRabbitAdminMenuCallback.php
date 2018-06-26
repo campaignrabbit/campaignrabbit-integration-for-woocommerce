@@ -23,7 +23,7 @@ class CampaignRabbitAdminMenuCallback
         $first_migrate = get_option('first_migrate');
         if ($authenticated) {
             ?>  <br>
-            <h2><?php esc_attr_e("CampaignRabbit Synchronization", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            <h2><?php esc_attr_e("Woocommerce Synchronization", "campaignrabbit-integration-for-woocommerce"); ?></h2>
             <?php
             $this->displayDisabledCron();
             if (!$first_migrate) {
