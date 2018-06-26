@@ -21,7 +21,8 @@ class CampaignRabbitOrderSubmenuCallback extends \WP_List_Table {
         $data=array();
         foreach ($orders as $order){
             $data[]=array(
-                'data'=>$order->option_value
+                'option_name'=>$order->option_name,
+                'option_value'=>$order->option_value
             );
         }
         return $data;

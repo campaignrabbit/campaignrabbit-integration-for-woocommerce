@@ -53,7 +53,9 @@ class OrderTable extends \WP_List_Table
     function column_default($item, $column_name){
 
         switch($column_name){
-            case 'data':
+            case 'option_name':
+                return $item[$column_name];
+            case 'option_value':
                 return $item[$column_name];
             default:
                 // return print_r($item,true); //Show the whole array for troubleshooting purposes
@@ -126,7 +128,8 @@ class OrderTable extends \WP_List_Table
      **************************************************************************/
     function get_columns(){
         $columns = array(//Render a checkbox instead of text
-            'data'     => 'Data',
+            'option_name'     => 'Option Name',
+            'option_value'     => 'Option Value'
         );
         return $columns;
     }
@@ -148,7 +151,8 @@ class OrderTable extends \WP_List_Table
      **************************************************************************/
     function get_sortable_columns() {
         $sortable_columns = array(
-            'data'     => array('data',false),     //true means it's already sorted
+            'option_name'     => array('option_name',false),
+            'option_value'     => array('option_value',false) //true means it's already sorted
 
         );
         return $sortable_columns;
