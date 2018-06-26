@@ -87,16 +87,19 @@ class InitialBulkMigrate
                 $order_body = $order_v3_0->get($order_id); //3.0
                 $order_status=$order_v3_0->getWooStatus($order_id);
             }
+            if(!empty($order_body)){
+                $order_data=array(
+                    'order_id'=>$order_id,
+                    'order_body'=>$order_body,
+                    'order_status'=>$order_status,
+                    'api_token'=>get_option('api_token'),
+                    'app_id'=>get_option('app_id'),
+                    'woo_order_ids'=>$orders
+                );
+                $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+            }
 
-            $order_data=array(
-                'order_id'=>$order_id,
-                'order_body'=>$order_body,
-                'order_status'=>$order_status,
-                'api_token'=>get_option('api_token'),
-                'app_id'=>get_option('app_id'),
-                'woo_order_ids'=>$orders
-            );
-            $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+
         }
 
         $this->migrate_initial_orders->save()->dispatch();
