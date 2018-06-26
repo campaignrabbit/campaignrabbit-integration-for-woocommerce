@@ -20,7 +20,7 @@ class Order{
             $product_id=$post_order_item['product_id'];
             $product_id= empty($variation_id)?$product_id:$variation_id;
             $product=wc_get_product($product_id);
-            if(!$product){
+            if(gettype($product)=='object'){
                 $order_items[] = array(
                     'r_product_id' => $product_id,
                     'sku' =>  empty($product->sku)?$product_id:$product->sku,
@@ -30,7 +30,6 @@ class Order{
                     'meta' => $meta_array
                 );
             }else{
-
                 $order_items[] = array(
                     'r_product_id' => $product_id,
                     'sku' =>  $product_id,

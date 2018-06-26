@@ -22,23 +22,24 @@ class Order
             $order_item_data = $post_order_item->get_data();
             $product_id = empty($order_item_data['variation_id']) ? $order_item_data['product_id'] : $order_item_data['variation_id'];
             $product = wc_get_product($product_id);
-            if (!$product) {
-                $order_items[] = array(
-                    'r_product_id' => $product_id,
-                    'sku' => $product_id,
-                    'product_name' => $post_order_item->get_name(),
-                    'product_price' => $post_order_item['line_total'],
-                    'item_qty' => $post_order_item['qty'],
-                    'meta' => $meta_array
-                );
-
-            } else {
+            if(gettype($product)=='object'){
                 $order_items[] = array(
                     'r_product_id' => $product_id,
                     'sku' => empty($product->get_sku()) ? $product_id : $product->get_sku(),
                     'product_name' => $product->get_title(),
                     'product_price' => $product->get_price(),
                     'item_qty' => $post_order_item->get_quantity(),
+                    'meta' => $meta_array
+                );
+
+            } else {
+
+                $order_items[] = array(
+                    'r_product_id' => $product_id,
+                    'sku' => $product_id,
+                    'product_name' => $post_order_item->get_name(),
+                    'product_price' => $post_order_item['line_total'],
+                    'item_qty' => $post_order_item['qty'],
                     'meta' => $meta_array
                 );
             }
