@@ -15,7 +15,7 @@ class CampaignRabbitProductSubmenuCallback extends \WP_List_Table{
         $data=array();
         foreach ($products as $product){
             $data[]=array(
-                    'data'=>$product->option_name
+                    'data'=>$product->option_value
             );
         }
         return $data;

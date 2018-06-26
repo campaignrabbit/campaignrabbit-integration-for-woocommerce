@@ -2,9 +2,8 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
-use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Lib\Customer;
-use function PHPSTORM_META\type;
+
 
 
 /**

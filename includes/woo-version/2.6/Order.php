@@ -23,7 +23,7 @@ class Order{
             $order_items[] = array(
                 'r_product_id' => $product_id,
                 'sku' =>  empty($product->sku)?$product_id:$product->sku,
-                'product_name' => $product->post->post_title,
+                'product_name' => $product->get_title(),
                 'product_price' => $product->price,
                 'item_qty' => $post_order_item['qty'],
                 'meta' => $meta_array

@@ -26,6 +26,7 @@ class InitialBulkMigrate
 
     public function execute(){
 
+        error_log('execute');
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
@@ -101,6 +102,7 @@ class InitialBulkMigrate
         $this->migrate_initial_orders->save()->dispatch();
         update_option('first_migrate',true);    //set the wp_options first_migrate to true
 
+        return true;
 
     }
 

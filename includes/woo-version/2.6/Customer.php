@@ -17,8 +17,8 @@ class Customer{
         }
         $first_name=isset($customer->first_name)?$customer->first_name:'';
         $last_name=isset($customer->last_name)?$customer->last_name:'';
-        $name=$first_name.' '.$last_name;
-        if($name==' '){
+        $name=$first_name;
+        if($name==''){
             $name=$customer->user_login;
         }
         $roles=array(

@@ -463,6 +463,26 @@ class CampaignRabbit
 
         }
 
+        /*
+         * setup a wc-api
+         */
+        $this->loader->add_action('woocommerce_api_campaignrabbit_sync', $this, 'sync', 10);
+
+
+    }
+
+    /**
+     * wc-api callback sync
+     */
+
+    public function sync(){
+
+        $sync=(new InitialBulkMigrate())->execute();
+        if($sync){
+            wp_safe_redirect(add_query_arg('sync', $sync, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
+        }else{
+            wp_safe_redirect(add_query_arg('sync', $sync, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
+        }
 
     }
 
