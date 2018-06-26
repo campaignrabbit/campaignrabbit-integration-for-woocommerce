@@ -23,18 +23,18 @@ class Order{
             if(!$product){
                 $order_items[] = array(
                     'r_product_id' => $product_id,
-                    'sku' =>  empty($product->sku)?$product_id:$product->sku,
-                    'product_name' => $product->get_title(),
-                    'product_price' => $product->price,
+                    'sku' =>  $product_id,
+                    'product_name' => $post_order_item['name'],
+                    'product_price' =>$post_order_item['line_total'],
                     'item_qty' => $post_order_item['qty'],
                     'meta' => $meta_array
                 );
             }else{
                 $order_items[] = array(
                     'r_product_id' => $product_id,
-                    'sku' =>  $product_id,
-                    'product_name' => $post_order_item['name'],
-                    'product_price' =>$post_order_item['line_total'],
+                    'sku' =>  empty($product->sku)?$product_id:$product->sku,
+                    'product_name' => $product->get_title(),
+                    'product_price' => $product->price,
                     'item_qty' => $post_order_item['qty'],
                     'meta' => $meta_array
                 );
