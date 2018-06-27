@@ -54,12 +54,9 @@ class CampaignRabbitAdminMenuCallback
         $now = date('Y-m-d H:i:s');
         $diff = strtotime($next_run) - strtotime($now);
         if ($diff < 0) {
-            $diff=abs($diff);
-            $minutes = floor(($diff) / (60));
-            $seconds = floor(($diff - $minutes * 60));
             ?>
             <h4><?php esc_html_e('Cron Event campaignrabbit_recurring_bulk_migration has ended. Please try again!', 'campaignrabbit-integration-for-woocommerce') ?></h4>
-            <h4><?php esc_html_e('Last Run: '. $minutes . ' min ' . $seconds . ' sec ago', 'campaignrabbit-integration-for-woocommerce') ?></h4>
+
 
             <?php
         } else {
@@ -78,6 +75,8 @@ class CampaignRabbitAdminMenuCallback
             echo '<p style="color:red;">';
             esc_html_e('The DISABLE_WP_CRON constant is set to true. WP-Cron spawning is disabled.', 'campaignrabbit-integration-for-woocommerce');
             echo '</p>';
+            $execute_url=site_url().'/wc-api/campaignrabbit_sync'
+            ?><h4><?php esc_html_e("Execute this to initiate the synchronization: $execute_url", 'campaignrabbit-integration-for-woocommerce') ?></h4> <?php
         }
     }
 
