@@ -19,6 +19,7 @@ use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitAdminMenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitCustomerSubmenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitOrderSubmenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitProductSubmenuCallback;
+use CampaignRabbit\WooAdmin\Callbacks\LoggerCallback;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -170,6 +171,19 @@ class Admin {
         );
 
         $submenu_callback=new CampaignRabbitOrderSubmenuCallback();
+        /*
+         * Orders Page
+         */
+        $GLOBALS['campaignrabbit_orders_page']=add_submenu_page(
+            'campaignrabbit-admin.php',
+            __('Orders','campaignrabbit-integration-for-woocommerce'),
+            'Orders',
+            'manage_options',
+            'campaignrabbit-orders.php',
+            array($submenu_callback, 'display')
+        );
+
+        $submenu_callback=new LoggerCallback();
         /*
          * Orders Page
          */
