@@ -114,7 +114,9 @@ class CampaignRabbit
      */
     public function __construct()
     {
-        
+
+
+
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
@@ -453,6 +455,9 @@ class CampaignRabbit
 
         $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
         $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
+
+        $this->loader->add_action('admin_post_nopriv_resync_migration', $initial_bulk_migrate, 'reSync', 10);
+        $this->loader->add_action('admin_post_resync_migration', $initial_bulk_migrate, 'reSync', 10);
 
         if (is_admin()) {
 

@@ -39,7 +39,7 @@ class CampaignRabbitAdminMenuCallback
                 $this->displayCronEvent();
             }
             $this->displaySync();
-         //   $this->displayResync();
+            $this->displayResync();
         } else {
             echo 'Not Authenticated';
         }

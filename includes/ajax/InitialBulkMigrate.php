@@ -109,6 +109,10 @@ class InitialBulkMigrate
 
     }
 
+    public function reSync(){
+        $x=1;
+    }
+
     private function get_customers(){
         if ( get_option('api_token_flag')) {
             $users = get_users();
@@ -130,10 +134,9 @@ class InitialBulkMigrate
         return array();
     }
 
-    private function get_orders(){
+    public function get_orders(){
         if ( get_option('api_token_flag')) {
             global $wpdb;
-
             $sql = "SELECT * FROM $wpdb->posts WHERE post_type='shop_order'";
             $orders = $wpdb->get_results( $sql);
             $order_ids=wp_list_pluck($orders,'ID');
