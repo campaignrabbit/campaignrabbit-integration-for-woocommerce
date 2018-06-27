@@ -110,7 +110,16 @@ class InitialBulkMigrate
     }
 
     public function reSync(){
-        $x=1;
+       $first_migrate=update_option('first_migrate',false);   //update first migrate and set to 0
+        //delete wp_order, wp_customer, wp_product
+        global $wpdb;
+        $delete_order_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_order%'";
+        $order_queue_deleted=$wpdb->query($delete_order_query);
+        $delete_customer_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_customer%'";
+        $customer_queue_deleted=$wpdb->query($delete_customer_query);
+        $delete_product_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_product%'";
+        $product_queue_deleted=$wpdb->query($delete_product_query);
+        wp_safe_redirect(add_query_arg('first_migrate', $first_migrate, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
     }
 
     private function get_customers(){

@@ -30,16 +30,18 @@ class CampaignRabbitAdminMenuCallback
                 echo '<p style="color:red;">';
                 esc_html_e('Synchronization Yet to be Initiated', 'campaignrabbit-integration-for-woocommerce');
                 echo '</p>';
+                $this->displaySync();
             } else {
                 echo '<p style="color:green;">';
                 esc_html_e('Initial Synchronization Success', 'campaignrabbit-integration-for-woocommerce');
                 echo '</p><p style="color: #363b3f">';
+                $this->displayResync();
             }
             if (wp_get_schedule('campaignrabbit_recurring_bulk_migration')) {
                 $this->displayCronEvent();
             }
-            $this->displaySync();
-            $this->displayResync();
+
+
         } else {
             echo 'Not Authenticated';
         }
@@ -52,8 +54,13 @@ class CampaignRabbitAdminMenuCallback
         $now = date('Y-m-d H:i:s');
         $diff = strtotime($next_run) - strtotime($now);
         if ($diff < 0) {
+            $diff=abs($diff);
+            $minutes = floor(($diff) / (60));
+            $seconds = floor(($diff - $minutes * 60));
             ?>
             <h4><?php esc_html_e('Cron Event campaignrabbit_recurring_bulk_migration has ended. Please try again!', 'campaignrabbit-integration-for-woocommerce') ?></h4>
+            <h4><?php esc_html_e('Last Run: '. $minutes . ' min ' . $seconds . ' sec ago', 'campaignrabbit-integration-for-woocommerce') ?></h4>
+
             <?php
         } else {
             $minutes = floor(($diff) / (60));
@@ -113,14 +120,6 @@ class CampaignRabbitAdminMenuCallback
 
     private function displayResync()
     {
-                /*
-                * TODO
-                * Resync
-
-                * 2. delete all data from wp_options aka queue
-                *
-                * 4. set first_migrate to zero
-                */
         ?>
         <br>
         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
