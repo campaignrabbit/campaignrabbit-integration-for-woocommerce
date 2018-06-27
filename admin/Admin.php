@@ -187,12 +187,12 @@ class Admin {
         /*
          * Orders Page
          */
-        $GLOBALS['campaignrabbit_orders_page']=add_submenu_page(
+        $GLOBALS['campaignrabbit_logger_page']=add_submenu_page(
             'campaignrabbit-admin.php',
-            __('Orders','campaignrabbit-integration-for-woocommerce'),
-            'Orders',
+            __('Log','campaignrabbit-integration-for-woocommerce'),
+            'Log',
             'manage_options',
-            'campaignrabbit-orders.php',
+            'campaignrabbit-logger.php',
             array($submenu_callback, 'display')
         );
     }
