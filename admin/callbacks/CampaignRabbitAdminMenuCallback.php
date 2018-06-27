@@ -55,8 +55,20 @@ class CampaignRabbitAdminMenuCallback
         $diff = strtotime($next_run) - strtotime($now);
         if ($diff < 0) {
             ?>
-            <h4><?php esc_html_e('Cron Event campaignrabbit_recurring_bulk_migration has ended. Please try again!', 'campaignrabbit-integration-for-woocommerce') ?></h4>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "billingrabbit-integration"); ?></label>
+                    </td>
+                    <td>
+                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                                   value="<?php echo esc_attr_e('Terminated', "billingrabbit-integration-for-woocommerce");?>"/>
+                    </td>
+                </tr>
 
+                </tbody>
+            </table>
 
             <?php
         } else {
@@ -76,7 +88,23 @@ class CampaignRabbitAdminMenuCallback
             esc_html_e('The DISABLE_WP_CRON constant is set to true. WP-Cron spawning is disabled.', 'campaignrabbit-integration-for-woocommerce');
             echo '</p>';
             $execute_url=site_url().'/wc-api/campaignrabbit_sync'
-            ?><h4><?php esc_html_e("Execute this to initiate the synchronization: $execute_url", 'campaignrabbit-integration-for-woocommerce') ?></h4> <?php
+            ?>
+            <table>
+            <tbody>
+
+            <tr>
+                <td>
+                    <br>  <label class="woo-label"><?php esc_attr_e("Synchronization URL:", "billingrabbit-integration"); ?></label>
+                </td>
+                <td>
+                    <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                               value="<?php echo esc_attr_e($execute_url, "billingrabbit-integration-for-woocommerce");?>"/>
+                </td>
+            </tr>
+
+            </tbody>
+            </table><?php
+
         }
     }
 
@@ -85,9 +113,20 @@ class CampaignRabbitAdminMenuCallback
         ?>
         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
             <input type="hidden" name="action" value="initial_bulk_migrate"/>
-            <label><?php esc_html_e("Initiate the recurring migration of customers,products,orders from woocommerce to CampaignRabbit- "); ?></label>
-            <input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
-                   value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Sync:", "billingrabbit-integration"); ?></label>
+                    </td>
+                    <td>
+                        <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
+                                    value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
         </form>
         <?php
     }
@@ -120,12 +159,23 @@ class CampaignRabbitAdminMenuCallback
     private function displayResync()
     {
         ?>
-        <br>
+
         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
             <input type="hidden" name="action" value="resync_migration"/>
-            <label><?php esc_html_e("Re-Sync the recurring migration of customers,products,orders from woocommerce to CampaignRabbit- "); ?></label>
-            <input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
-                   value="<?php esc_attr_e("Re-Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Re-Sync:", "billingrabbit-integration"); ?></label>
+                    </td>
+                    <td>
+                        <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
+                                   value="<?php esc_attr_e("Re-Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
         </form>
         <?php
     }
