@@ -59,23 +59,7 @@ class InitialOrders extends \WP_Background_Process
                 $file_handler->append('Order Migrate Error: '. $order_response->raw_body);
             }
 
-            /**
-             * Delete orders from campaignrabbit if not in woocommerce
-             */
-            $cr_orders=$order_api->getAll()->body->data;
-            $woo_order_ids=$item['woo_order_ids'];
-            foreach ($cr_orders as $cr_order){
-                $order_id=$cr_order->order_ref;
-                if(!in_array($order_id,$woo_order_ids) ){
-                    $deleted=$order_api->delete($order_id);
-                    error_log('Order Deleted:'.$deleted->raw_body);
-                    $file_handler->append('Order Deleted: '. $deleted->raw_body);
-                }
-            }
         }
-
-
-
 
         return false;
     }
