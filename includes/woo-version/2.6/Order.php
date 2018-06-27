@@ -8,6 +8,9 @@ class Order{
 
         $post_order=array();
         $order = new \WC_Order($order_id);
+        if(empty($order->billing_email)){
+            return array();
+        }
         if($order && gettype($order)=='object'){
             $post_order_items = $order->get_items();
             $meta_array = array(array(
@@ -81,6 +84,7 @@ class Order{
 
             $created_at=empty($order->order_date)?'2020-12-22':$order->order_date;
             $updated_at=empty($order->modified_date)?'2020-12-22':$order->modified_date;
+
 
             $post_order = array(
                 'r_order_id' => $order->id,

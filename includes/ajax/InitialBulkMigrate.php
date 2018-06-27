@@ -101,7 +101,10 @@ class InitialBulkMigrate
                     'app_id'=>get_option('app_id'),
                     'woo_order_ids'=>$orders
                 );
-                $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+                if($order_status!='auto-draft'){
+                    $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
+                }
+
             }
 
 

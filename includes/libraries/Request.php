@@ -41,6 +41,7 @@ class Request{
 
         try {
 
+            \Unirest\Request::timeout(30);
             $headers=array(
                 'Authorization' => 'Bearer '. $this->api_token,
                 'Request-From-Domain' => $this->site->getDomain(),
