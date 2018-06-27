@@ -53,7 +53,11 @@ class CampaignRabbitAdminMenuCallback
         $next_run = get_date_from_gmt(date('Y-m-d H:i:s', $cron_timestamp));
         $now = get_date_from_gmt(date('Y-m-d H:i:s'));
         $diff = strtotime($next_run) - strtotime($now);
+
         if ($diff < 0) {
+            $diff=abs($diff);
+            $minutes = floor(($diff) / (60));
+            $seconds = floor(($diff - $minutes * 60));
             ?>
             <table>
                 <tbody>
@@ -64,6 +68,16 @@ class CampaignRabbitAdminMenuCallback
                     <td>
                         <br><input type="url" size="80" readonly name="api_token" id="api_token"
                                    value="<?php echo esc_attr_e('Terminated', "campaignrabbit-integration-for-woocommerce");?>"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Last Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                    </td>
+                    <td>
+                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                                   value="<?php echo esc_attr_e($next_run. ' (' . $minutes . ' min ' . $seconds . ' sec ago)', "campaignrabbit-integration-for-woocommerce");?>"/>
                     </td>
                 </tr>
 

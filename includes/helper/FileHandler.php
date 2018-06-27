@@ -6,8 +6,7 @@ class FileHandler{
 
     private $file_name;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->file_name=plugin_dir_path(__FILE__) . 'log.txt';
     }
 
@@ -23,9 +22,7 @@ class FileHandler{
     }
 
     public function getAsArray(){
-
         $data=file($this->file_name, FILE_IGNORE_NEW_LINES);;
-
         return $data;
     }
 
