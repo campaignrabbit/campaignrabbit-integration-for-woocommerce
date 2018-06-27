@@ -2,6 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Ajax;
 
+use CampaignRabbit\WooIncludes\Helper\FileHandler;
 use CampaignRabbit\WooIncludes\Helper\Site;
 
 class InitialBulkMigrate
@@ -26,7 +27,11 @@ class InitialBulkMigrate
 
     public function execute(){
 
+        $file_handler= new FileHandler();
+
         error_log('Executed');
+        $file_handler->append('Data Migration Started');
+
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
@@ -105,6 +110,7 @@ class InitialBulkMigrate
         $this->migrate_initial_orders->save()->dispatch();
         update_option('first_migrate',true);    //set the wp_options first_migrate to true
         error_log('Execution Success');
+        $file_handler->append('Data Migration Completed');
         return true;
 
     }
