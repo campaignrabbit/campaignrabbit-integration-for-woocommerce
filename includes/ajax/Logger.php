@@ -22,4 +22,16 @@ class Logger
 
     }
 
+    public function saveEnableLog(){
+
+        $enable_log=isset($_POST['enable_log'])?$_POST['enable_log']:'';
+        if($enable_log=='on'){
+            update_option('cr_enable_log',true);
+        }else{
+            update_option('cr_enable_log',false);
+        }
+        wp_safe_redirect(add_query_arg('erased', true, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
+
+    }
+
 }

@@ -465,6 +465,9 @@ class CampaignRabbit
         $this->loader->add_action('admin_post_nopriv_clear_log', $logger, 'clearLog', 10);
         $this->loader->add_action('admin_post_clear_log', $logger, 'clearLog', 10);
 
+        $this->loader->add_action('admin_post_nopriv_enable_log', $logger, 'saveEnableLog', 10);
+        $this->loader->add_action('admin_post_enable_log', $logger, 'saveEnableLog', 10);
+
         if (is_admin()) {
 
             $analytics = new Analytics();

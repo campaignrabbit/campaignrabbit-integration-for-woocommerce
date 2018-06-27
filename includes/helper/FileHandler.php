@@ -11,13 +11,15 @@ class FileHandler{
     }
 
     public function append($data){
-        $handle = fopen($this->file_name, 'a');
-        if ($handle) {
-            fwrite($handle, "\n".$data);
-        } else {
-            $contents = "\n".'Log Created';
-            //Save our content to the file.
-            file_put_contents($this->file_name, $contents);
+        if(get_option('cr_enable_log')){
+            $handle = fopen($this->file_name, 'a');
+            if ($handle) {
+                fwrite($handle, "\n".$data);
+            } else {
+                $contents = "\n".'Log Created';
+                //Save our content to the file.
+                file_put_contents($this->file_name, $contents);
+            }
         }
     }
 

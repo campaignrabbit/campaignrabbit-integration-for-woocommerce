@@ -45,6 +45,7 @@ class CampaignRabbitAdminMenuCallback
         } else {
             echo 'Not Authenticated';
         }
+        $this->displayLogger();
     }
 
     private function displayCronEvent()
@@ -55,7 +56,7 @@ class CampaignRabbitAdminMenuCallback
         $diff = strtotime($next_run) - strtotime($now);
 
         if ($diff < 0) {
-            $diff=abs($diff);
+            $diff = abs($diff);
             $minutes = floor(($diff) / (60));
             $seconds = floor(($diff - $minutes * 60));
             ?>
@@ -63,21 +64,23 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
                         <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e('Terminated', "campaignrabbit-integration-for-woocommerce");?>"/>
+                                   value="<?php echo esc_attr_e('Terminated', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
 
                 </tr>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Last Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("Last CRON Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e($next_run. ' (' . $minutes . ' min ' . $seconds . ' sec ago)', "campaignrabbit-integration-for-woocommerce");?>"/>
+                        <br><input type="text" size="80" readonly name="last_run" id="last_run"
+                                   value="<?php echo esc_attr_e($next_run . ' (' . $minutes . ' min ' . $seconds . ' sec ago)', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
 
@@ -89,24 +92,26 @@ class CampaignRabbitAdminMenuCallback
             $minutes = floor(($diff) / (60));
             $seconds = floor(($diff - $minutes * 60));
             ?>
-           <table>
+            <table>
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
                         <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e('Every 5 minutes', "campaignrabbit-integration-for-woocommerce");?>"/>
+                                   value="<?php echo esc_attr_e('Every 5 minutes', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Next Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("Next Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e($next_run. ' (' . $minutes . ' min ' . $seconds . ' sec )', "campaignrabbit-integration-for-woocommerce");?>"/>
+                        <br><input type="text" size="80" readonly name="next_run" id="next_run"
+                                   value="<?php echo esc_attr_e($next_run . ' (' . $minutes . ' min ' . $seconds . ' sec )', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
 
@@ -123,23 +128,24 @@ class CampaignRabbitAdminMenuCallback
             esc_html_e('The DISABLE_WP_CRON constant is set to true. WP-Cron spawning is disabled.', 'campaignrabbit-integration-for-woocommerce');
             echo '</p>';
         }
-            $execute_url=site_url().'/wc-api/campaignrabbit_sync'
-            ?>
-            <table>
-            <tbody>
+        $execute_url = site_url() . '/wc-api/campaignrabbit_sync'
+        ?>
+        <table>
+        <tbody>
 
-            <tr>
-                <td>
-                    <br>  <label class="woo-label"><?php esc_attr_e("Synchronization URL:", "campaignrabbit-integration-for-woocommerce"); ?></label>
-                </td>
-                <td>
-                    <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                               value="<?php echo esc_attr_e($execute_url, "campaignrabbit-integration-for-woocommerce");?>"/>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <br> <label
+                        class="woo-label"><?php esc_attr_e("Synchronization URL:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+            </td>
+            <td>
+                <br><input type="text" size="80" readonly name="sync_url" id="sync_url"
+                           value="<?php echo esc_attr_e($execute_url, "campaignrabbit-integration-for-woocommerce"); ?>"/>
+            </td>
+        </tr>
 
-            </tbody>
-            </table><?php
+        </tbody>
+        </table><?php
 
 
     }
@@ -153,11 +159,12 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
-                                    value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                        <br><input name="woo_sync" id="woo_sync" class="button button-primary" type="submit"
+                                   value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
 
@@ -202,10 +209,11 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Re-Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("Re-Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
+                        <br><input name="woo_resync" id="woo_resync" class="button button-primary" type="submit"
                                    value="<?php esc_attr_e("Re-Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
@@ -214,5 +222,38 @@ class CampaignRabbitAdminMenuCallback
             </table>
         </form>
         <?php
+    }
+
+    private function displayLogger()
+    {
+        ?>
+        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+            <input type="hidden" name="action" value="enable_log"/>
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <br> <label
+                                class="woo-label"><?php esc_attr_e("Log:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                    </td>
+                    <td>
+                        <br><input type='checkbox' name='enable_log'
+                                   id='enable_log'
+                            <?php get_option('cr_enable_log') ? print_r('checked') : print_r('') ?>><?php esc_html_e('Enable', 'campaignrabbit-integration-for-woocommerce') ?>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <br><br><input name="enable_log_save" id="enable_log_save" class="button button-primary" type="submit"
+                                   value="<?php esc_attr_e("Save", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </form>
+        <?php
+
     }
 }
