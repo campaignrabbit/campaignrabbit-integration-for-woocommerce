@@ -59,11 +59,11 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "billingrabbit-integration"); ?></label>
+                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
                         <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e('Terminated', "billingrabbit-integration-for-woocommerce");?>"/>
+                                   value="<?php echo esc_attr_e('Terminated', "campaignrabbit-integration-for-woocommerce");?>"/>
                     </td>
                 </tr>
 
@@ -75,8 +75,29 @@ class CampaignRabbitAdminMenuCallback
             $minutes = floor(($diff) / (60));
             $seconds = floor(($diff - $minutes * 60));
             ?>
-            <h3><?php esc_html_e('Sync Every 5 minutes', 'campaignrabbit-integration-for-woocommerce') ?></h3>
-            <h4><?php esc_html_e('Next Run: ' . $next_run . ' (' . $minutes . ' min ' . $seconds . ' sec )', 'campaignrabbit-integration-for-woocommerce') ?></h4>
+           <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                    </td>
+                    <td>
+                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                                   value="<?php echo esc_attr_e('Every 5 minutes', "campaignrabbit-integration-for-woocommerce");?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Next Run:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                    </td>
+                    <td>
+                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                                   value="<?php echo esc_attr_e($next_run, "campaignrabbit-integration-for-woocommerce");?>"/>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
             <?php
         }
     }
@@ -87,6 +108,7 @@ class CampaignRabbitAdminMenuCallback
             echo '<p style="color:red;">';
             esc_html_e('The DISABLE_WP_CRON constant is set to true. WP-Cron spawning is disabled.', 'campaignrabbit-integration-for-woocommerce');
             echo '</p>';
+        }
             $execute_url=site_url().'/wc-api/campaignrabbit_sync'
             ?>
             <table>
@@ -94,18 +116,18 @@ class CampaignRabbitAdminMenuCallback
 
             <tr>
                 <td>
-                    <br>  <label class="woo-label"><?php esc_attr_e("Synchronization URL:", "billingrabbit-integration"); ?></label>
+                    <br>  <label class="woo-label"><?php esc_attr_e("Synchronization URL:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                 </td>
                 <td>
                     <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                               value="<?php echo esc_attr_e($execute_url, "billingrabbit-integration-for-woocommerce");?>"/>
+                               value="<?php echo esc_attr_e($execute_url, "campaignrabbit-integration-for-woocommerce");?>"/>
                 </td>
             </tr>
 
             </tbody>
             </table><?php
 
-        }
+
     }
 
     private function displaySync()
@@ -117,7 +139,7 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Sync:", "billingrabbit-integration"); ?></label>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
                         <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
@@ -166,7 +188,7 @@ class CampaignRabbitAdminMenuCallback
                 <tbody>
                 <tr>
                     <td>
-                        <br>  <label class="woo-label"><?php esc_attr_e("Re-Sync:", "billingrabbit-integration"); ?></label>
+                        <br>  <label class="woo-label"><?php esc_attr_e("Re-Sync:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
                         <br><input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
