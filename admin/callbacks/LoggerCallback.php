@@ -15,10 +15,14 @@ class LoggerCallback extends \WP_List_Table
     public function get_log($per_page = 5, $page_number = 1)
     {
 
-        //create log.txt on logger dir if it does not exist and read each line and display in it
-        $file_handler=new FileHandler(plugin_dir_path(__FILE__) . 'logger/log.txt');
-        //read each line and save in array
-        $log_lines = $file_handler->getAsArray();
+        //logger read each line and display in it
+        $file_handler=new FileHandler();
+        if(!$file_handler->exists()){
+            $log_lines=array();
+        }else{
+            //read each line and save in array
+            $log_lines = $file_handler->getAsArray();
+        }
         $data = array();
         foreach ($log_lines as $log_line) {
             $data[] = array(

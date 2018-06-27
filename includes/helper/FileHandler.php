@@ -6,9 +6,9 @@ class FileHandler{
 
     private $file_name;
 
-    public function __construct($file_name)
+    public function __construct()
     {
-        $this->file_name=$file_name;
+        $this->file_name=plugin_dir_path(__FILE__) . 'logger/log.txt';
     }
 
     public function append($data){
@@ -28,5 +28,10 @@ class FileHandler{
 
         return $data;
     }
+
+    public function exists(){
+        return file_exists($this->file_name);
+    }
+
 
 }
