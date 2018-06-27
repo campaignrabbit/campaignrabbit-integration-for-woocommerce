@@ -42,8 +42,16 @@ class Product
             }
             global $product_create_request;
             $this->product_create_request = $product_create_request;
-            $this->product_create_request->push_to_queue($product);
-            $this->product_create_request->save()->dispatch();
+            $product_api= new \CampaignRabbit\WooIncludes\Lib\Product(get_option('api_token'),get_option('app_id'));
+            if($product['type']=='simple'){
+                $created=$product_api->create($product['body']);
+                error_log('Product Created (Event):'.$created->raw_body);
+            }else{
+                foreach ($product['body'] as $body){
+                    $created=$product_api->create($body);
+                    error_log('Product Created (Event):'.$created->raw_body);
+                }
+            }
         }
     }
 
@@ -52,6 +60,7 @@ class Product
         if (get_option('api_token_flag') && $meta_key == '_edit_lock' && get_post_type($post_id) == 'product') {
             global $product_update_request;
             global $woo_product_sku;
+            $product_api= new \CampaignRabbit\WooIncludes\Lib\Product(get_option('api_token'),get_option('app_id'));
             $this->product_update_request = $product_update_request;
             $this->woo_version = (new Site())->getWooVersion();
             if ($this->woo_version < 3.0) {
@@ -64,16 +73,18 @@ class Product
                     'sku' => $woo_product_sku[$product['body']['sku']],
                     'body' => $product['body']
                 );
-                $this->product_update_request->push_to_queue($data);
-                $this->product_update_request->save()->dispatch();
+                $updated=$product_api->update($data['body'],$data['sku']);
+                error_log('Product Updated (Event):'.$updated->raw_body);
+
             } else {
                 foreach ($product['body'] as $body) {      //variable products
                     $data = array(
                         'sku' => $woo_product_sku[$body['sku']],
                         'body' => $body
                     );
-                    $this->product_update_request->push_to_queue($data);
-                    $this->product_update_request->save()->dispatch();
+                    $updated=$product_api->update($data['body'],$data['sku']);
+                    error_log('Product Updated (Event):'.$updated->raw_body);
+
                 }
             }
         }
@@ -93,8 +104,9 @@ class Product
             } else {
                 $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->getSKU($post_id);   //3.0
             }
-            $this->product_delete_request->push_to_queue($product_sku);
-            $this->product_delete_request->save()->dispatch();
+            $product_api= new \CampaignRabbit\WooIncludes\Lib\Product(get_option('api_token'),get_option('app_id'));
+            $deleted=$product_api->delete($product_sku);
+            error_log('Product Deleted (Event):'.$deleted->raw_body);
         }
     }
 
@@ -111,8 +123,9 @@ class Product
             } else {
                 $product_sku = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product())->getSKU($post_id);   //3.0
             }
-            $this->product_restore_request->push_to_queue($product_sku);
-            $this->product_restore_request->save()->dispatch();
+            $product_api= new \CampaignRabbit\WooIncludes\Lib\Product(get_option('api_token'),get_option('app_id'));
+            $restored=$product_api->restore($product_sku);
+            error_log('Product Restored (Event):'.$restored->raw_body);
         }
     }
 
