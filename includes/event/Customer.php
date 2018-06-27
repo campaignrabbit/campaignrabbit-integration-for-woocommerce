@@ -58,8 +58,9 @@ class Customer
                     'meta' => $meta_array
                 );
             }
-            $this->customer_create_request->push_to_queue($post_customer);
-            $this->customer_create_request->save()->dispatch();
+            $customer_api= new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
+            $created=$customer_api->create($post_customer);
+            error_log('Customer Created (Event):'.$created->raw_body);
         }
 
     }
@@ -81,8 +82,36 @@ class Customer
                 'user_name'=>$name,
                 'post_email'=>isset($_POST['email'])?$_POST['email']:'',
             );
-            $this->customer_update_request->push_to_queue($data);
-            $this->customer_update_request->save()->dispatch();
+            $customer_api= new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
+            $user = get_userdata( $data['user_id']);
+            $roles='';
+            foreach ($user->roles as $customer_role){
+                if($roles==''){
+                    $roles=$customer_role;
+                }else{
+                    $roles=$roles.'|'.$customer_role;
+                }
+
+            }
+            $meta_roles=array(
+                array(
+                    'meta_key'=>'CUSTOMER_GROUP',
+                    'meta_value'=>$roles,
+                    'meta_options'=>''
+                )
+            );
+            $post_customer = array(
+                'email' =>$data['post_email'],
+                'name' =>$data['user_name'],
+                'created_at'=>$user->user_registered,
+                'updated_at'=>get_user_meta($data['user_id'],'cr_user_updated',true),
+                'meta' => $meta_roles
+
+            );
+
+            $updated=$customer_api->update($data['user_email'],$post_customer);
+            error_log('Customer Updated (Event):'.$updated->raw_body);
+
         }
     }
 
@@ -91,8 +120,10 @@ class Customer
         if (get_option('api_token_flag')) {
             global $customer_delete_request;
             $this->customer_delete_request = $customer_delete_request;
-            $this->customer_delete_request->push_to_queue($user_id);
-            $this->customer_delete_request->save()->dispatch();
+            $customer_api= new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
+            $old_user_data = get_userdata($user_id);
+            $deleted=$customer_api->delete($old_user_data->user_email);
+            error_log('Customer Deleted (Event):'.$deleted->raw_body);
         }
     }
 
