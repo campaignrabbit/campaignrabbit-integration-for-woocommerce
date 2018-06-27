@@ -2,4 +2,4 @@ campaignrabbit-client-library/
 vendor/
 /.idea
 .DS_Store
-includes/helper/logger/log.txt
+includes/helper/log.txt
