@@ -2,6 +2,7 @@
 
 namespace CampaignRabbit\WooIncludes\Migrate;
 
+use CampaignRabbit\WooIncludes\Helper\FileHandler;
 use CampaignRabbit\WooIncludes\Lib\Customer;
 
 
@@ -33,16 +34,20 @@ class InitialCustomers extends \WP_Background_Process
      */
     protected function task( $item ) {
             $customer_api=new Customer(get_option('api_token'),get_option('app_id'));
+            $file_handler=new FileHandler();
             $customer_response=$customer_api->get($item['email']);
             if($customer_response->code==404){
                 $created=$customer_api->create($item);
                 error_log('Customer Created: '. $created->raw_body);
+                $file_handler->append('Customer Created: '. $created->raw_body);
             }elseif ($customer_response->code==200){
                 $email=$customer_response->body->data->email;
                 $updated=$customer_api->update($email,$item);
                 error_log('Customer Updated: '.$updated->raw_body);
+                $file_handler->append('Customer Updated: '. $updated->raw_body);
             }else {
                 error_log('Customer Migrate Error: '.$customer_response->raw_body);
+                $file_handler->append('Customer Migrate Error: '. $customer_response->raw_body);
             }
 
 

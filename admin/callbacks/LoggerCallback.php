@@ -12,9 +12,7 @@ if (!class_exists('WP_List_Table')) {
 class LoggerCallback extends \WP_List_Table
 {
 
-    public function get_log($per_page = 5, $page_number = 1)
-    {
-
+    public function get_log($per_page = 5, $page_number = 1){
         //logger read each line and display in it
         $file_handler=new FileHandler();
         if(!$file_handler->exists()){
@@ -32,8 +30,7 @@ class LoggerCallback extends \WP_List_Table
         return $data;
     }
 
-    public function display()
-    {
+    public function display(){
         $loggerTable = new LoggerTable();
         $loggerTable->prepare_items();
 
