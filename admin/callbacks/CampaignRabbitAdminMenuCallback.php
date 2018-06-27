@@ -51,7 +51,7 @@ class CampaignRabbitAdminMenuCallback
     {
         $cron_timestamp = wp_next_scheduled('campaignrabbit_recurring_bulk_migration');
         $next_run = get_date_from_gmt(date('Y-m-d H:i:s', $cron_timestamp));
-        $now = date('Y-m-d H:i:s');
+        $now = get_date_from_gmt(date('Y-m-d H:i:s'));
         $diff = strtotime($next_run) - strtotime($now);
         if ($diff < 0) {
             ?>
@@ -92,7 +92,7 @@ class CampaignRabbitAdminMenuCallback
                     </td>
                     <td>
                         <br><input type="url" size="80" readonly name="api_token" id="api_token"
-                                   value="<?php echo esc_attr_e($next_run, "campaignrabbit-integration-for-woocommerce");?>"/>
+                                   value="<?php echo esc_attr_e($next_run. ' (' . $minutes . ' min ' . $seconds . ' sec )', "campaignrabbit-integration-for-woocommerce");?>"/>
                     </td>
                 </tr>
 
