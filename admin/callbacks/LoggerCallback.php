@@ -37,7 +37,13 @@ class LoggerCallback extends \WP_List_Table
         ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"><br/></div>
-            <h2><?php esc_html_e('Response Log', 'campaignrabbit-integration-for-woocommerce') ?></h2>
+
+            <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+                <h2><?php esc_html_e('Response Log', 'campaignrabbit-integration-for-woocommerce') ?></h2>
+                <input type="hidden" name="action" value="clear_log"/>
+                <input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
+                       value="<?php esc_attr_e("Clear Log", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+            </form>
             <form id="campaignrabbit-customers" method="get">
                 <input type="hidden" name="page"
                        value="<?php esc_attr_e($_REQUEST['page'], 'campaignrabbit-integration-for-woocommerce') ?>"/>

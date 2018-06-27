@@ -33,5 +33,9 @@ class FileHandler{
         return file_exists($this->file_name);
     }
 
+    public function erase(){
+        file_put_contents($this->file_name, '');
+    }
+
 
 }

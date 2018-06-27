@@ -35,6 +35,7 @@ namespace CampaignRabbit\WooIncludes;
 use CampaignRabbit\WooAdmin\Admin;
 use CampaignRabbit\WooIncludes\Ajax\Analytics;
 use CampaignRabbit\WooIncludes\Ajax\InitialBulkMigrate;
+use CampaignRabbit\WooIncludes\Ajax\Logger;
 use CampaignRabbit\WooIncludes\Api\Api;
 use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Endpoints\Authenticate;
@@ -42,6 +43,7 @@ use CampaignRabbit\WooIncludes\Event\Customer;
 use CampaignRabbit\WooIncludes\Event\Order;
 use CampaignRabbit\WooIncludes\Event\Product;
 
+use CampaignRabbit\WooIncludes\Helper\FileHandler;
 use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Migrate\InitialCustomers;
 use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
@@ -452,12 +454,16 @@ class CampaignRabbit
 
         $initial_bulk_migrate = new InitialBulkMigrate();
 
+        $logger=new Logger();
 
         $this->loader->add_action('admin_post_nopriv_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
         $this->loader->add_action('admin_post_initial_bulk_migrate', $initial_bulk_migrate, 'initiate', 10);
 
         $this->loader->add_action('admin_post_nopriv_resync_migration', $initial_bulk_migrate, 'reSync', 10);
         $this->loader->add_action('admin_post_resync_migration', $initial_bulk_migrate, 'reSync', 10);
+
+        $this->loader->add_action('admin_post_nopriv_clear_log', $logger, 'clearLog', 10);
+        $this->loader->add_action('admin_post_clear_log', $logger, 'clearLog', 10);
 
         if (is_admin()) {
 
