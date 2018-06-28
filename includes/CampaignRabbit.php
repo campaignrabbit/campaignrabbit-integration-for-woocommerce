@@ -37,17 +37,12 @@ use CampaignRabbit\WooIncludes\Ajax\Analytics;
 use CampaignRabbit\WooIncludes\Ajax\InitialBulkMigrate;
 use CampaignRabbit\WooIncludes\Ajax\Logger;
 use CampaignRabbit\WooIncludes\Api\Api;
-use CampaignRabbit\WooIncludes\Api\Request;
 use CampaignRabbit\WooIncludes\Endpoints\Authenticate;
 use CampaignRabbit\WooIncludes\Event\Customer;
 use CampaignRabbit\WooIncludes\Event\Order;
-use CampaignRabbit\WooIncludes\Event\Product;
 
-use CampaignRabbit\WooIncludes\Helper\FileHandler;
-use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Migrate\InitialCustomers;
 use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
-use CampaignRabbit\WooIncludes\Migrate\InitialProducts;
 use CampaignRabbit\WooPublic\CampaignRabbitPublic;
 
 class CampaignRabbit
@@ -233,9 +228,6 @@ class CampaignRabbit
 
         $initial_bulk_migrate_customers_process = new InitialCustomers();
 
-        global $initial_bulk_migrate_products_process;
-
-        $initial_bulk_migrate_products_process = new InitialProducts();
 
         global $initial_bulk_migrate_orders_process;
 
@@ -397,9 +389,6 @@ class CampaignRabbit
 
         $initial_bulk_migrate_customers_process = new InitialCustomers();
 
-        global $initial_bulk_migrate_products_process;
-
-        $initial_bulk_migrate_products_process = new InitialProducts();
 
         global $initial_bulk_migrate_orders_process;
 

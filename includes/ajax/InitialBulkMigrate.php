@@ -10,8 +10,6 @@ class InitialBulkMigrate
 
     protected $migrate_initial_customers;
 
-    protected $migrate_initial_products;
-
     protected $migrate_initial_orders;
 
 
@@ -36,14 +34,10 @@ class InitialBulkMigrate
         global $initial_bulk_migrate_customers_process;
         $this->migrate_initial_customers=$initial_bulk_migrate_customers_process;
 
-        global $initial_bulk_migrate_products_process;
-        $this->migrate_initial_products=$initial_bulk_migrate_products_process;
-
         global $initial_bulk_migrate_orders_process;
         $this->migrate_initial_orders=$initial_bulk_migrate_orders_process;
 
         $customers = $this->get_customers();
-        $products = $this->get_products();
         $orders = $this->get_orders();
 
         foreach ($customers as $customer) {
@@ -62,22 +56,6 @@ class InitialBulkMigrate
 
         $this->migrate_initial_customers->save()->dispatch();
 
-        foreach ($products as $product) {
-            $site=new Site();
-            $product_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Product();
-            $product_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Product();
-
-            $woo_version = $site->getWooVersion();
-
-            if ($woo_version < 3.0) {
-                $product_body = $product_v2_6->get($product); //2.6
-            } else {
-                $product_body = $product_v3_0->get($product); //3.0
-            }
-            $this->migrate_initial_products->push_to_queue($product_body);  //Products
-        }
-
-        $this->migrate_initial_products->save()->dispatch();
 
         foreach ($orders as $order_id) {
             $site = new Site();
@@ -93,21 +71,20 @@ class InitialBulkMigrate
                 $order_body = $order_v3_0->get($order_id); //3.0
                 $order_status=$order_v3_0->getWooStatus($order_id);
             }
-            if(!empty($order_body)){
-                $order_data=array(
-                    'order_id'=>$order_id,
-                    'order_body'=>$order_body,
-                    'order_status'=>$order_status,
-                    'api_token'=>get_option('api_token'),
-                    'app_id'=>get_option('app_id')
+            if(!empty($order_body)) {
+                $order_data = array(
+                    'order_id' => $order_id,
+                    'order_body' => $order_body,
+                    'order_status' => $order_status,
+                    'api_token' => get_option('api_token'),
+                    'app_id' => get_option('app_id')
 
                 );
-                if($order_status!='auto-draft'){
+                if ($order_status != 'auto-draft') {
                     $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
                 }
 
             }
-
 
         }
 
@@ -127,8 +104,6 @@ class InitialBulkMigrate
         $order_queue_deleted=$wpdb->query($delete_order_query);
         $delete_customer_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_customer%'";
         $customer_queue_deleted=$wpdb->query($delete_customer_query);
-        $delete_product_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_product%'";
-        $product_queue_deleted=$wpdb->query($delete_product_query);
         wp_safe_redirect(add_query_arg('first_migrate', $first_migrate, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
     }
 
@@ -136,19 +111,6 @@ class InitialBulkMigrate
         if ( get_option('api_token_flag')) {
             $users = get_users();
             return $users;
-        }
-        return array();
-    }
-
-    private function get_products(){
-        if ( get_option('api_token_flag')) {
-            $args=array(
-                'post_type'      => 'product',
-                'posts_per_page' => -1,
-            );
-            $products = get_posts($args);
-            $product_ids=wp_list_pluck($products,'ID');
-            return $product_ids;
         }
         return array();
     }
