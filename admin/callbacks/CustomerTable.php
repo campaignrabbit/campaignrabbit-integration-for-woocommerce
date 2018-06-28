@@ -214,7 +214,7 @@ class CustomerTable extends \WP_List_Table
          * use sort and pagination data to build a custom query instead, as you'll
          * be able to use your precisely-queried data immediately.
          */
-         $data=(new CampaignRabbitCustomerSubmenuCallback())->get_customers();
+         $data=(new CampaignRabbitQueueSubmenuCallback())->get_customers();
 
         /**
          * This checks for sorting input and sorts the data in our array accordingly.

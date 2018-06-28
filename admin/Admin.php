@@ -19,6 +19,7 @@ use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitAdminMenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitCustomerSubmenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitOrderSubmenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitProductSubmenuCallback;
+use CampaignRabbit\WooAdmin\Callbacks\CampaignRabbitQueueSubmenuCallback;
 use CampaignRabbit\WooAdmin\Callbacks\LoggerCallback;
 
 /**
@@ -142,31 +143,18 @@ class Admin {
      * Admin Submenus
      */
     public function admin_custom_submenu(){
-        
 
-       $submenu_callback=new CampaignRabbitCustomerSubmenuCallback();
-        /*
-         * Customers Page
-         */
-        $GLOBALS['campaignrabbit_customers_page']=add_submenu_page(
-            'campaignrabbit-admin.php',
-            __('Customers','campaignrabbit-integration-for-woocommerce'),
-            'Customers',
-            'manage_options',
-            'campaignrabbit-customers.php',
-            array($submenu_callback, 'display')
-        );
+        $submenu_callback=new CampaignRabbitQueueSubmenuCallback();
 
-        $submenu_callback=new CampaignRabbitOrderSubmenuCallback();
         /*
-         * Orders Page
+         * Queue Page
          */
-        $GLOBALS['campaignrabbit_orders_page']=add_submenu_page(
+        $GLOBALS['campaignrabbit_queue_page']=add_submenu_page(
             'campaignrabbit-admin.php',
-            __('Orders','campaignrabbit-integration-for-woocommerce'),
-            'Orders',
+        __('Queue','campaignrabbit-integration-for-woocommerce'),
+            'Queue',
             'manage_options',
-            'campaignrabbit-orders.php',
+            'campaignrabbit-queue.php',
             array($submenu_callback, 'display')
         );
 

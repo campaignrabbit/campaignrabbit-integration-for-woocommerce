@@ -215,7 +215,7 @@ class OrderTable extends \WP_List_Table
          * use sort and pagination data to build a custom query instead, as you'll
          * be able to use your precisely-queried data immediately.
          */
-        $data=(new CampaignRabbitOrderSubmenuCallback())->get_orders();
+        $data=(new CampaignRabbitQueueSubmenuCallback())->get_orders();
 
 
         /**
