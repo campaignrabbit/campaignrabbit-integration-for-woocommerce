@@ -116,6 +116,12 @@ class Order extends Request {
             case 'shipping':
                 $order_status='pending';
                 break;
+            case 'wc-trash':
+                $order_status='trash';
+                break;
+            case 'trash':
+                $order_status='trash';
+                break;
             default:
                 $order_status='pending';
                 break;

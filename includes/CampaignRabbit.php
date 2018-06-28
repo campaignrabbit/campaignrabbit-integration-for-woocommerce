@@ -325,50 +325,6 @@ class CampaignRabbit
     {
 
 
-        global $product_create_request;
-
-        $product_create_request = new Product\ProductCreate();
-
-        global $product_update_request;
-
-        $product_update_request = new Product\ProductUpdate();
-
-        global $product_delete_request;
-
-        $product_delete_request = new Product\ProductDelete();
-
-        global $product_restore_request;
-
-        $product_restore_request = new Product\ProductRestore();
-
-        /*
-         * Product events
-         */
-
-        $product = new Product('product');
-
-        // Create New Product
-
-        $this->loader->add_action('added_post_meta', $product, 'create', 10, 4);
-
-        // Update Existing Product
-
-
-        //store old product sku in global variable
-
-        $this->loader->add_action('save_post_product', $product, 'save_sku', 10, 3);
-
-        $this->loader->add_action('updated_post_meta', $product, 'update', 10, 4); //gets triggered on product create. so we have to check if it already exist to trigger post
-
-        //Delete Existing Product
-
-        $this->loader->add_action('wp_trash_post', $product, 'delete', 1, 1);
-
-        //Restore deleted product
-
-        $this->loader->add_action('untrash_post', $product, 'restore', 10, 1);
-
-
         global $customer_create_request;
 
         $customer_create_request = new Customer\CustomerCreate();
@@ -427,9 +383,6 @@ class CampaignRabbit
 
         $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
 
-
-        //delete existing order
-        $this->loader->add_action('wp_trash_post', $order, 'trash', 1, 1);
 
 
     }

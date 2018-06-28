@@ -28,6 +28,7 @@ class InitialBulkMigrate
     public function execute(){
 
         $file_handler= new FileHandler();
+        $file_handler->erase();
 
         error_log('Executed');
         $file_handler->append('Data Migration Started');
@@ -98,8 +99,8 @@ class InitialBulkMigrate
                     'order_body'=>$order_body,
                     'order_status'=>$order_status,
                     'api_token'=>get_option('api_token'),
-                    'app_id'=>get_option('app_id'),
-                    'woo_order_ids'=>$orders
+                    'app_id'=>get_option('app_id')
+
                 );
                 if($order_status!='auto-draft'){
                     $this->migrate_initial_orders->push_to_queue(json_encode($order_data));  //Orders
