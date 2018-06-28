@@ -142,20 +142,7 @@ class Admin {
      * Admin Submenus
      */
     public function admin_custom_submenu(){
-
-        $submenu_callback=new CampaignRabbitProductSubmenuCallback();
-
-        /*
-         * Products Page
-         */
-        $GLOBALS['campaignrabbit_products_page']=add_submenu_page(
-            'campaignrabbit-admin.php',
-        __('Products','campaignrabbit-integration-for-woocommerce'),
-            'Products',
-            'manage_options',
-            'campaignrabbit-products.php',
-            array($submenu_callback, 'display')
-        );
+        
 
        $submenu_callback=new CampaignRabbitCustomerSubmenuCallback();
         /*
@@ -185,7 +172,7 @@ class Admin {
 
         $submenu_callback=new LoggerCallback();
         /*
-         * Orders Page
+         * Logger Page
          */
         $GLOBALS['campaignrabbit_logger_page']=add_submenu_page(
             'campaignrabbit-admin.php',
