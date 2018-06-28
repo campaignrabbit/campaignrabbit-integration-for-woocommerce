@@ -121,7 +121,7 @@ class Order extends Request {
                 $order_status='';
                 break;
             default:
-                $order_status=$status;
+                $order_status='';
                 break;
         }
         return $order_status;
