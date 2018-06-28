@@ -31,7 +31,6 @@ defined('ABSPATH') or die('Cannot Access this File'); // Exit if accessed direct
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-
 /**
  * Current plugin version.
  */

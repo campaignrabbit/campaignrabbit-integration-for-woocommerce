@@ -44,6 +44,7 @@ use CampaignRabbit\WooIncludes\Event\Order;
 use CampaignRabbit\WooIncludes\Migrate\InitialCustomers;
 use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
 use CampaignRabbit\WooPublic\CampaignRabbitPublic;
+use CampaignRabbitSDK\Libraries\Product;
 
 class CampaignRabbit
 {
@@ -113,6 +114,14 @@ class CampaignRabbit
     {
 
 
+        //
+        require_once __DIR__ . '../campaignrabbit-client-library/vendor/autoload.php';
+
+
+        $product_api=new Product('35e1bBr6FFHm38Df2R4IWM34j5x6nQLQzRRNw6pmNXNfJ42wzviF4yz3esrm','424ab9d7-7a38-5575-847a-c96b8e65b460','http://dev.wordpress.campaignrabbit');
+        $x=$product_api->getAll();
+        $y=1;
+        //
 
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
@@ -375,7 +384,8 @@ class CampaignRabbit
 
         $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
 
-
+        //delete existing order
+        $this->loader->add_action('wp_trash_post', $order, 'trash', 1, 1);
 
     }
 
