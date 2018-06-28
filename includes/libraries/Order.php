@@ -121,7 +121,7 @@ class Order extends Request {
                 $order_status='';
                 break;
             default:
-                $order_status='unpaid';
+                $order_status=$status;
                 break;
         }
         return $order_status;

@@ -82,8 +82,8 @@ class Order{
 
             $order_status=(new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id')))->getStatus($order->post_status);
 
-            $created_at=empty($order->order_date)?'2020-12-22':$order->order_date;
-            $updated_at=empty($order->modified_date)?'2020-12-22':$order->modified_date;
+            $created_at=empty($order->order_date)?$order->get_date_created():$order->order_date;
+            $updated_at=empty($order->modified_date)?$order->get_date_created():$order->modified_date;
 
 
             $post_order = array(

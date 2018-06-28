@@ -112,6 +112,11 @@ class CampaignRabbit
      */
     public function __construct()
     {
+        $orders=(new InitialBulkMigrate())->get_orders();
+        foreach ($orders as $order){
+            $or=(new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($order);
+            $x=1;
+        }
 
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
@@ -375,7 +380,7 @@ class CampaignRabbit
         $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
 
         //delete existing order
-        $this->loader->add_action('wp_trash_post', $order, 'trash', 1, 1);
+       // $this->loader->add_action('wp_trash_post', $order, 'trash', 1, 1);
 
     }
 
