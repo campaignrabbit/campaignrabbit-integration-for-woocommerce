@@ -113,16 +113,6 @@ class CampaignRabbit
     public function __construct()
     {
 
-
-        //
-        require_once __DIR__ . '../campaignrabbit-client-library/vendor/autoload.php';
-
-
-        $product_api=new Product('35e1bBr6FFHm38Df2R4IWM34j5x6nQLQzRRNw6pmNXNfJ42wzviF4yz3esrm','424ab9d7-7a38-5575-847a-c96b8e65b460','http://dev.wordpress.campaignrabbit');
-        $x=$product_api->getAll();
-        $y=1;
-        //
-
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {
