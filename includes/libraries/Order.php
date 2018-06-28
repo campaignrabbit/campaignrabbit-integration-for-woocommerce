@@ -115,13 +115,13 @@ class Order extends Request {
                 $order_status='pending';
                 break;
             case 'wc-trash':
-                $order_status='trash';
+                $order_status='';
                 break;
             case 'trash':
-                $order_status='trash';
+                $order_status='';
                 break;
             default:
-                $order_status='pending';
+                $order_status='unpaid';
                 break;
         }
         return $order_status;
