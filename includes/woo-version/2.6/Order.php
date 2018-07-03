@@ -21,7 +21,6 @@ class Order{
         }
         if($order && gettype($order)=='object'){
             $post_order_items = $order->get_items();
-
             $order_items = array();
             if(!empty($post_order_items)){
                 foreach ($post_order_items as $post_order_item) {

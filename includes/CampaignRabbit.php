@@ -116,7 +116,7 @@ class CampaignRabbit
 
         $orders=(new InitialBulkMigrate())->get_orders();
         foreach ($orders as  $order){
-            $x=(new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get(40);
+            $x=(new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order);
         }
 
         //
