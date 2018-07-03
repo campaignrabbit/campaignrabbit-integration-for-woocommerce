@@ -13,7 +13,7 @@ class Order{
             return array();
         }
         foreach ($order as $order_key=>$order_value){
-            if(!empty($order_value)){
+            if(!empty($order_value) && gettype($order_value)=='string'){
                 $order_meta[]=array(
                     'meta_key'=>$order_key,
                     'meta_value'=>$order_value,
@@ -33,7 +33,7 @@ class Order{
                     $product=wc_get_product($product_id);
                     $order_item_meta=array();
                     foreach ($post_order_item as $line_order_item_key=>$line_order_item_value){
-                        if(!empty($line_order_item_value)){
+                        if(!empty($line_order_item_value) && gettype($line_order_item_value)=='string'){
                             $order_item_meta[]=array(
                                 'meta_key'=>$line_order_item_key,
                                 'meta_value'=>$line_order_item_value,

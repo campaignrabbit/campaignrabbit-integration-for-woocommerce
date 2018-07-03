@@ -114,6 +114,7 @@ class CampaignRabbit
     public function __construct()
     {
 
+
         if (defined('CAMPAIGNRABBIT_VERSION')) {
             $this->version = CAMPAIGNRABBIT_VERSION;
         } else {

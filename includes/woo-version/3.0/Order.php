@@ -13,11 +13,13 @@ class Order{
             return array();
         }
         foreach ($order->get_data() as $order_key=>$order_value){
-            $order_meta[]=array(
-                'meta_key'=>$order_key,
-                'meta_value'=>$order_value,
-                'meta_options'=>''
-            );
+            if(!empty($order_value) && gettype($order_value)=='string'){
+                $order_meta[]=array(
+                    'meta_key'=>$order_key,
+                    'meta_value'=>$order_value,
+                    'meta_options'=>''
+                );
+            }
         }
         if($order && gettype($order)=='object') {
             $post_order_items = $order->get_items();
@@ -29,7 +31,7 @@ class Order{
                     $product = wc_get_product($product_id);
                     $order_item_meta = array();
                     foreach ($post_order_item->get_data() as $line_order_item_key => $line_order_item_value) {
-                        if(!empty($line_order_item_value)){
+                        if(!empty($line_order_item_value) && gettype($line_order_item_value)=='string'){
                             $order_item_meta[] = array(
                                 'meta_key' => $line_order_item_key,
                                 'meta_value' => $line_order_item_value,
@@ -132,6 +134,7 @@ class Order{
 
             );
         }
+        error_log('Order Creation Data:'.json_encode($post_order));
         return $post_order;
     }
 
