@@ -41,6 +41,7 @@ use CampaignRabbit\WooIncludes\Endpoints\Authenticate;
 use CampaignRabbit\WooIncludes\Event\Customer;
 use CampaignRabbit\WooIncludes\Event\Order;
 
+use CampaignRabbit\WooIncludes\Helper\Site;
 use CampaignRabbit\WooIncludes\Migrate\InitialCustomers;
 use CampaignRabbit\WooIncludes\Migrate\InitialOrders;
 use CampaignRabbit\WooPublic\CampaignRabbitPublic;

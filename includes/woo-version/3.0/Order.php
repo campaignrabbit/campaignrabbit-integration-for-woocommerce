@@ -29,11 +29,14 @@ class Order{
                     $product = wc_get_product($product_id);
                     $order_item_meta = array();
                     foreach ($post_order_item->get_data() as $line_order_item_key => $line_order_item_value) {
-                        $order_item_meta[] = array(
-                            'meta_key' => $line_order_item_key,
-                            'meta_value' => $line_order_item_value,
-                            'meta_options' => ''
-                        );
+                        if(!empty($line_order_item_value)){
+                            $order_item_meta[] = array(
+                                'meta_key' => $line_order_item_key,
+                                'meta_value' => $line_order_item_value,
+                                'meta_options' => ''
+                            );
+                        }
+
                     }
                     if (gettype($product) == 'object') {
                         $order_items[] = array(
@@ -48,8 +51,8 @@ class Order{
                     } else {
 
                         $order_items[] = array(
-                            'r_product_id' => $product_id,
-                            'sku' => $product_id,
+                            'r_product_id' => empty($product_id)?$order_item_data['id']:$product_id,
+                            'sku' => empty($product_id)?$order_item_data['id']:$product_id,
                             'product_name' => $post_order_item->get_name(),
                             'product_price' => $post_order_item['line_total'],
                             'item_qty' => $post_order_item['qty'],
