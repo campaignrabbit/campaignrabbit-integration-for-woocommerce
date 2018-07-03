@@ -26,11 +26,16 @@ class Customer{
                 'meta_key'=>'CUSTOMER_GROUP',
                 'meta_value'=>$roles,
                 'meta_options'=>''
+            ),
+            array(
+                'meta_key'=>'last_name',
+                'meta_value'=>$last_name,
+                'meta_options'=>''
             )
         );
         $updated_at=get_user_meta($customer->ID,'cr_user_updated',true);
         if(empty($updated_at)){
-            $updated_at=$user->user_registered;
+            $updated_at=current_time('mysql');
         }
         $post_customer = array(
             'email' =>$customer->user_email,
