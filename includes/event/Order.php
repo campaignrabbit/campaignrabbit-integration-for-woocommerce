@@ -36,7 +36,7 @@ class Order
         }
     }
 
-    public function update($order_id,$old_status,$new_status){
+    public function update($order_id,$old_status){
         if (get_option('api_token_flag')) {
 
             //experimental... however this should work.

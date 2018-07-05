@@ -373,7 +373,7 @@ class CampaignRabbit
 
         //update existing order- status
 
-        $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 3);
+        $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 2);
 
         //delete existing order
 
@@ -381,7 +381,7 @@ class CampaignRabbit
 
         //update existing order
 
-        $this->loader->add_action('woocommerce_process_shop_order_meta',$order,'update',10,3);
+        $this->loader->add_action('woocommerce_process_shop_order_meta',$order,'update',10,2);
 
     }
 
