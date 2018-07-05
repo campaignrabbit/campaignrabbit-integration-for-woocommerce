@@ -43,12 +43,12 @@ class InitialBulkMigrate
         foreach ($customers as $customer) {
             $site = new Site();
             $woo_version = $site->getWooVersion();
-            $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
-            $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
 
             if ($woo_version < 3.0) {
+                $customer_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Customer();
                 $customer_body = $customer_v2_6->get($customer); //2.6
             } else {
+                $customer_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Customer();
                 $customer_body = $customer_v3_0->get($customer); //3.0
             }
             $this->migrate_initial_customers->push_to_queue($customer_body);  //Customers
@@ -59,15 +59,15 @@ class InitialBulkMigrate
 
         foreach ($orders as $order_id) {
             $site = new Site();
-            $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
-            $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
 
             $woo_version = $site->getWooVersion();
 
             if ($woo_version < 3.0) {
+                $order_v2_6=new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order();
                 $order_body = $order_v2_6->get($order_id); //2.6
                 $order_status=$order_v2_6->getWooStatus($order_id);
             } else {
+                $order_v3_0=new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order();
                 $order_body = $order_v3_0->get($order_id); //3.0
                 $order_status=$order_v3_0->getWooStatus($order_id);
             }
