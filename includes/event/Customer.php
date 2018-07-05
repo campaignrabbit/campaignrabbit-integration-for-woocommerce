@@ -45,7 +45,7 @@ class Customer
                 'email' => isset($_POST['email']) ? $_POST['email'] : '',
                 'name' => $name,
                 'created_at'=>current_time( 'mysql' ),
-                'updated_at'=>current_time( 'mysql' ),
+               // 'updated_at'=>current_time( 'mysql' ),
                 'meta' => $meta_array
             );
 
@@ -54,7 +54,7 @@ class Customer
                     'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
                     'name' => $name,
                     'created_at'=>current_time( 'mysql' ),
-                    'updated_at'=>current_time( 'mysql' ),
+                 //   'updated_at'=>current_time( 'mysql' ),
                     'meta' => $meta_array
                 );
             }
@@ -104,7 +104,7 @@ class Customer
                 'email' =>$data['post_email'],
                 'name' =>$data['user_name'],
                 'created_at'=>$user->user_registered,
-                'updated_at'=>get_user_meta($data['user_id'],'cr_user_updated',true),
+               // 'updated_at'=>get_user_meta($data['user_id'],'cr_user_updated',true),
                 'meta' => $meta_roles
 
             );

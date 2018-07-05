@@ -41,7 +41,7 @@ class Customer{
             'email' =>$customer->user_email,
             'name' =>$name,
             'created_at'=>$user->user_registered,
-            'updated_at'=>$updated_at,
+          //  'updated_at'=>$updated_at,
             'meta' => $roles
         );
 

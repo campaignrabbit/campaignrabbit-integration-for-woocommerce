@@ -51,7 +51,7 @@ class CustomerUpdate extends \WP_Background_Process {
             'email' =>$item['post_email'],
             'name' =>$item['user_name'],
             'created_at'=>$user->user_registered,
-            'updated_at'=>get_user_meta($item['user_id'],'cr_user_updated',true),
+          //  'updated_at'=>get_user_meta($item['user_id'],'cr_user_updated',true),
             'meta' => $meta_roles
 
         );
