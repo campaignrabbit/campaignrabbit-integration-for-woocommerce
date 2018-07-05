@@ -38,6 +38,10 @@ class Order
 
     public function update($order_id,$old_status,$new_status){
         if (get_option('api_token_flag')) {
+
+            //experimental... however this should work.
+            $this->create($order_id);
+            return;
             global $order_update_request;
             $this->order_update_request=$order_update_request;
             $order = new \WC_Order($order_id);

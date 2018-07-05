@@ -52,6 +52,14 @@ class Order extends Request {
         return $response;
     }
 
+    /**
+     * @param $body The Payload
+     * @param string $id order_id If does does exist, it would create
+     */
+    public function create_or_update($body, $id='') {
+        $response=$this->request->request('POST', $this->uri, $body);
+        return $response;
+    }
 
 
     public function delete($id){
