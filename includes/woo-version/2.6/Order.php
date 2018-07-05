@@ -130,7 +130,7 @@ class Order{
                 'created_at'=>$created_at,
                 'updated_at'=>$updated_at,
                 'customer_created_at'=>$customer_created_at,
-                'customer_updated_at'=>$customer_updated_at
+              //  'customer_updated_at'=>$customer_updated_at
 
             );
         }
