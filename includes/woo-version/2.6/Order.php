@@ -13,10 +13,11 @@ class Order{
             return array();
         }
         foreach ($order as $order_key=>$order_value){
-            if(!empty($order_value) && gettype($order_value)=='string'){
+            $order_type=gettype($order_value);
+            if(!empty($order_value) &&( $order_type=='string' || $order_type=='integer' || $order_type=='boolean')){
                 $order_meta[]=array(
                     'meta_key'=>$order_key,
-                    'meta_value'=>$order_value,
+                    'meta_value'=>(string)$order_value,
                     'meta_options'=>''
                 );
             }
