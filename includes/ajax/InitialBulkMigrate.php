@@ -107,7 +107,7 @@ class InitialBulkMigrate
         wp_safe_redirect(add_query_arg('first_migrate', $first_migrate, admin_url() . 'admin.php?page=campaignrabbit-admin.php' ));
     }
 
-    private function get_customers(){
+    public function get_customers(){
         if ( get_option('api_token_flag')) {
             $users = get_users();
             return $users;
