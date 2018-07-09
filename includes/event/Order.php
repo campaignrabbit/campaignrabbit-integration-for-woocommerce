@@ -40,18 +40,18 @@ class Order
         if (get_option('api_token_flag')) {
 
             //experimental... however this should work.
-            $this->create($order_id);
-            return;
+//            $this->create($order_id);
+//            return;
             global $order_update_request;
             $this->order_update_request=$order_update_request;
-            $order = new \WC_Order($order_id);
-            $data=array(
-                'order_id'=>$order_id,
-                'status'=>  $new_status,
-                'updated_at'=>$order->modified_date
-            );
             $order_api= new \CampaignRabbit\WooIncludes\Lib\Order(get_option('api_token'),get_option('app_id'));
-            $updated=$order_api->update($data['order_id'],$data);
+            $this->woo_version = (new Site())->getWooVersion();
+            if ($this->woo_version < 3.0) {
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v2_6\Order())->get($order_id);  //2.6
+            } else {
+                $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order_id);  //3.0
+            }
+            $updated=$order_api->update($order_id,$order);
             error_log('Order Updated (Event):'.$updated->raw_body);
         }
     }

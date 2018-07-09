@@ -370,12 +370,11 @@ class CampaignRabbit
 
         $this->loader->add_action('woocommerce_checkout_order_processed', $order, 'create', 10, 1);
 
-
         //update existing order- status
 
         $this->loader->add_action('woocommerce_order_status_changed', $order, 'update', 10, 2);
 
-        //delete existing order
+        //delete permanently order
 
         $this->loader->add_action('before_delete_post', $order, 'trash', 1, 1);
 

@@ -43,11 +43,6 @@ class Order extends Request {
             return $order_response;
         }
         $id=$order_response->body->data->id;
-        $order_status=$this->getStatus($body['status']);
-        $body=array(
-            'status'=>$order_status,
-            'updated_at'=>$body['updated_at']
-        );
         $response=$this->request->request('PUT', $this->uri . '/' . $id, $body);
         return $response;
     }

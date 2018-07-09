@@ -97,7 +97,7 @@ class InitialBulkMigrate
     }
 
     public function reSync(){
-       $first_migrate=update_option('first_migrate',false);   //update first migrate and set to 0
+        $first_migrate=update_option('first_migrate',false);   //update first migrate and set to 0
         //delete wp_order, wp_customer, wp_product
         global $wpdb;
         $delete_order_query = "DELETE FROM $wpdb->options WHERE option_name LIKE '%wp_order%'";

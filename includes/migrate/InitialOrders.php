@@ -38,33 +38,29 @@ class InitialOrders extends \WP_Background_Process
         $order_api=new Order($item['api_token'],$item['app_id']);
         $file_handler=new FileHandler();
         /**
-         * Dont do anything if order_status is auto_draft
+         * Don't do anything if order_status is auto_draft
          */
         if($item['order_status']!='auto-draft'){
-            /* $order_response = $order_api->get($item['order_id']);
+             $order_response = $order_api->get($item['order_id']);
             if ($order_response->code == 404) {
                 $created = $order_api->create($item['order_body']);
                 error_log('Order Created: '.$created->raw_body);
                 $file_handler->append('Order Created: '. $created->raw_body);
             }elseif ($order_response->code==200){
-                $order_update_body = array(
-                    'status' => $item['order_status'],
-                    'updated_at'=>$item['order_body']['updated_at']
-                );
-                $updated = $order_api->update($item['order_id'],$order_update_body);
+                $updated = $order_api->update($item['order_id'],$item['order_body']);
                 error_log('Order Updated: '.$updated->raw_body);
                 $file_handler->append('Order Updated: '. $updated->raw_body);
             }else{
                 error_log('Order Migrate Error: '.$order_response->raw_body);
                 $file_handler->append('Order Migrate Error: '. $order_response->raw_body);
             }
-            */
+
 
             //Both create and update are actually same.
-            $created =  $order_api->create_or_update($item['order_body']);
+           /* $created =  $order_api->create_or_update($item['order_body']);
             error_log('Order Created: '.$created->raw_body);
             $file_handler->append('Order Created: '. $created->raw_body);
-
+            */
         }
 
         return false;
