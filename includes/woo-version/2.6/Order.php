@@ -44,20 +44,27 @@ class Order{
 
                     }
                     if(gettype($product)=='object'){
+                        $product_price = round(($post_order_item['line_total'] / $post_order_item['qty']), 2);
+
                         $order_items[] = array(
                             'r_product_id' => $product_id,
                             'sku' =>  empty($product->sku)?$product_id:$product->sku,
                             'product_name' => isset($post_order_item['name'])?$post_order_item['name']:'',
-                            'product_price' =>isset($post_order_item['line_total'])?$post_order_item['line_total']:'',
+                            'product_price' =>$product_price,
+                            'item_total' => $post_order_item['line_total'],
                             'item_qty' => $post_order_item['qty'],
                             'meta' => $order_item_meta
                         );
                     }else{
+
+                        $product_price = round(($post_order_item['line_total'] / $post_order_item['qty']), 2);
+
                         $order_items[] = array(
                             'r_product_id' => $product_id,
                             'sku' =>  $product_id,
                             'product_name' => isset($post_order_item['name'])?$post_order_item['name']:'',
-                            'product_price' =>isset($post_order_item['line_total'])?$post_order_item['line_total']:'',
+                            'product_price' =>$product_price,
+                            'item_total' => $post_order_item['line_total'],
                             'item_qty' => isset($post_order_item['qty'])?$post_order_item['qty']:'',
                             'meta' => $order_item_meta
                         );
