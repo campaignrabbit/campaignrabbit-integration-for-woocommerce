@@ -40,12 +40,13 @@ class Order{
                         }
 
                     }
+                    $product_price = round(($post_order_item['line_total'] / $post_order_item['qty']), 2);
                     if (gettype($product) == 'object') {
                         $order_items[] = array(
                             'r_product_id' => $product_id,
                             'sku' => empty($product->get_sku()) ? $product_id : $product->get_sku(),
-                            'product_name' => $product->get_title(),
-                            'product_price' => $product->get_price(),
+                            'product_name' =>  $post_order_item->get_name(),
+                            'product_price' => $product_price,
                             'item_total' => $post_order_item['line_total'],
                             'item_qty' => $post_order_item->get_quantity(),
                             'meta' => $order_item_meta
@@ -57,7 +58,7 @@ class Order{
                             'r_product_id' => empty($product_id)?$order_item_data['id']:$product_id,
                             'sku' => empty($product_id)?$order_item_data['id']:$product_id,
                             'product_name' => $post_order_item->get_name(),
-                            'product_price' => round(($post_order_item['line_total'] / $post_order_item['qty']), 2),
+                            'product_price' => $product_price,
                             'item_total' => $post_order_item['line_total'],
                             'item_qty' => $post_order_item['qty'],
                             'meta' => $order_item_meta
