@@ -26,15 +26,80 @@ class Customer
     }
 
 
-    public function create(){
-        if (get_option('api_token_flag')) {
+    public function create($user_id = '')
+    {
+       // if (get_option('api_token_flag')) {
             global $customer_create_request;
             $this->customer_create_request = $customer_create_request;
-            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
-            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
+            $user = new \stdClass();
+            if (!empty($user_id) && is_numeric($user_id)) {
+                $user = get_userdata($user_id);
+            }
+            $post_customer = false;
+            if (isset($user->ID) && $user->ID > 0) {
+                $post_customer = $this->create_registered_user($user);
+            } else {
+                $post_customer = $this->create_guest_user();
+            }
+
+            if (!$post_customer) {
+                $customer_api = new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'), get_option('app_id'));
+                $created = $customer_api->create($post_customer);
+                error_log('Customer Created (Event):' . $created->raw_body);
+            }
+
+//        }
+
+    }
+
+    public function create_registered_user($user) {
+
+        $first_name = get_user_meta($user->ID, 'first_name', true);
+        $last_name = get_user_meta($user->ID, 'last_name', true);
+        if(empty($first_name) && empty($last_name)) {
+            $name = $user->user_login;
+        }else {
             $name=$first_name.' '.$last_name;
-            if($name==' '){
-                $name=isset($_POST['user_login'])?$_POST['user_login']:'';
+        }
+        $roles = '';
+        if(isset($user->roles)) {
+            if(is_array($user->roles)) {
+                $roles = implode(' | ', $user->roles);
+            }elseif(is_string($user->roles)) {
+                $roles = $user->roles;
+            }
+        }
+
+        $meta_array = array(array(
+            'meta_key' => 'CUSTOMER_GROUP',
+            'meta_value' => $roles,
+            'meta_options' => ''
+        ));
+        $post_customer = array(
+            'email' => $user->user_email,
+            'name' => $name,
+            'created_at'=>current_time( 'mysql' ),
+            // 'updated_at'=>current_time( 'mysql' ),
+            'meta' => $meta_array
+        );
+
+        return $post_customer;
+    }
+
+    public function create_guest_user() {
+
+        $post_customer = false;
+
+        if(
+            (isset($_POST['email']) && !empty($_POST['email']) ) ||
+            (isset($_POST['billing_email']) || !empty($_POST['billing_email']))
+        ) {
+
+            $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+            $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+            $name = $first_name . ' ' . $last_name;
+            if ($name == ' ') {
+                $name = isset($_POST['user_login']) ? $_POST['user_login'] : '';
             }
             $meta_array = array(array(
                 'meta_key' => 'CUSTOMER_GROUP',
@@ -44,8 +109,8 @@ class Customer
             $post_customer = array(
                 'email' => isset($_POST['email']) ? $_POST['email'] : '',
                 'name' => $name,
-                'created_at'=>current_time( 'mysql' ),
-               // 'updated_at'=>current_time( 'mysql' ),
+                'created_at' => current_time('mysql'),
+                // 'updated_at'=>current_time( 'mysql' ),
                 'meta' => $meta_array
             );
 
@@ -53,64 +118,67 @@ class Customer
                 $post_customer = array(
                     'email' => isset($_POST['billing_email']) ? $_POST['billing_email'] : '',
                     'name' => $name,
-                    'created_at'=>current_time( 'mysql' ),
-                 //   'updated_at'=>current_time( 'mysql' ),
+                    'created_at' => current_time('mysql'),
+                    //   'updated_at'=>current_time( 'mysql' ),
                     'meta' => $meta_array
                 );
             }
-            $customer_api= new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
-            $created=$customer_api->create($post_customer);
-            error_log('Customer Created (Event):'.$created->raw_body);
         }
-
+        return $post_customer;
     }
 
-    public function update($user_id, $old_user_data){
+    public function update($user_id, $old_user_data)
+    {
         if (get_option('api_token_flag')) {
             global $customer_update_request;
             $this->customer_update_request = $customer_update_request;
-            update_user_meta( $user_id, 'cr_user_updated', current_time( 'mysql' ) );
-            $first_name=isset($_POST['first_name'])?$_POST['first_name']:'';
-            $last_name=isset($_POST['last_name'])?$_POST['last_name']:'';
-            $name=$first_name.' '.$last_name;
-            if($name==' '){
-                $name=$old_user_data->user_login;
+
+            $user = get_userdata($user_id);
+            if (!isset($user->ID) || $user->ID < 1) return;
+
+            update_user_meta($user_id, 'cr_user_updated', current_time('mysql'));
+            $first_name = isset($_POST['first_name']) ? $_POST['first_name'] : '';
+            $last_name = isset($_POST['last_name']) ? $_POST['last_name'] : '';
+            $name = $first_name . ' ' . $last_name;
+            if ($name == ' ') {
+                $name = $old_user_data->user_login;
             }
             $data = array(
                 'user_email' => $old_user_data->user_email,
                 'user_id' => $user_id,
-                'user_name'=>$name,
-                'post_email'=>isset($_POST['email'])?$_POST['email']:'',
+                'user_name' => $name,
+                'post_email' => isset($_POST['email']) ? $_POST['email'] : '',
             );
-            $customer_api= new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'),get_option('app_id'));
-            $user = get_userdata( $data['user_id']);
-            $roles='';
-            foreach ($user->roles as $customer_role){
-                if($roles==''){
-                    $roles=$customer_role;
-                }else{
-                    $roles=$roles.'|'.$customer_role;
+
+
+            $roles = '';
+            foreach ($user->roles as $customer_role) {
+                if ($roles == '') {
+                    $roles = $customer_role;
+                } else {
+                    $roles = $roles . '|' . $customer_role;
                 }
 
             }
-            $meta_roles=array(
+            $meta_roles = array(
                 array(
-                    'meta_key'=>'CUSTOMER_GROUP',
-                    'meta_value'=>$roles,
-                    'meta_options'=>''
+                    'meta_key' => 'CUSTOMER_GROUP',
+                    'meta_value' => $roles,
+                    'meta_options' => ''
                 )
             );
             $post_customer = array(
-                'email' =>$data['post_email'],
-                'name' =>$data['user_name'],
-                'created_at'=>$user->user_registered,
-               // 'updated_at'=>get_user_meta($data['user_id'],'cr_user_updated',true),
+                'email' => $data['post_email'],
+                'name' => $data['user_name'],
+                'created_at' => $user->user_registered,
+                // 'updated_at'=>get_user_meta($data['user_id'],'cr_user_updated',true),
                 'meta' => $meta_roles
 
             );
 
-            $updated=$customer_api->update($data['user_email'],$post_customer);
-            error_log('Customer Updated (Event):'.$updated->raw_body);
+            $customer_api = new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'), get_option('app_id'));
+            $updated = $customer_api->update($data['user_email'], $post_customer);
+            error_log('Customer Updated (Event):' . $updated->raw_body);
 
         }
     }
