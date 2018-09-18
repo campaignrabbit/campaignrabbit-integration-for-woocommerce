@@ -28,7 +28,7 @@ class Customer
 
     public function create($user_id = '')
     {
-       // if (get_option('api_token_flag')) {
+        if (get_option('api_token_flag')) {
             global $customer_create_request;
             $this->customer_create_request = $customer_create_request;
             $user = new \stdClass();
@@ -42,13 +42,13 @@ class Customer
                 $post_customer = $this->create_guest_user();
             }
 
-            if (!$post_customer) {
+            if ($post_customer) {
                 $customer_api = new \CampaignRabbit\WooIncludes\Lib\Customer(get_option('api_token'), get_option('app_id'));
                 $created = $customer_api->create($post_customer);
                 error_log('Customer Created (Event):' . $created->raw_body);
             }
 
-//        }
+        }
 
     }
 

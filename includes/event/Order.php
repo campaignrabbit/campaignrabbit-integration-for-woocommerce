@@ -39,6 +39,7 @@ class Order
     public function update($order_id,$old_status){
         if (get_option('api_token_flag')) {
 
+
             //experimental... however this should work.
 //            $this->create($order_id);
 //            return;
@@ -51,7 +52,14 @@ class Order
             } else {
                 $order = (new \CampaignRabbit\WooIncludes\WooVersion\v3_0\Order())->get($order_id);  //3.0
             }
+
+
             $updated=$order_api->update($order_id,$order);
+            //if order does not exist, we need to run the create request
+
+            if($updated->code == '404') {
+                $this->create($order_id);
+            }
             error_log('Order Updated (Event):'.$updated->raw_body);
         }
     }
