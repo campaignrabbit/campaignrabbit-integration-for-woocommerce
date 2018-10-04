@@ -23,7 +23,8 @@ class CampaignRabbitAdminMenuCallback
         $first_migrate = get_option('first_migrate');
         if ($authenticated) {
             ?>  <br>
-            <h2><?php esc_attr_e("Woocommerce Synchronization", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            <h2><?php esc_attr_e("Synchronize your old orders (Optional)", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            <small style="color: #333333;"><?php esc_attr_e("This step is optional. You can use this to synchronize orders that are made before you installed the Campaignrabbit", "campaignrabbit-integration-for-woocommerce"); ?></small>
             <?php
             $this->displayDisabledCron();
             if (!$first_migrate) {
@@ -68,7 +69,7 @@ class CampaignRabbitAdminMenuCallback
                                 class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                        <br><input type="url" size="80" readonly
                                    value="<?php echo esc_attr_e('Terminated', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
 
@@ -100,7 +101,7 @@ class CampaignRabbitAdminMenuCallback
                                 class="woo-label"><?php esc_attr_e("CRON:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                     </td>
                     <td>
-                        <br><input type="url" size="80" readonly name="api_token" id="api_token"
+                        <br><input type="url" size="80" readonly
                                    value="<?php echo esc_attr_e('Every 5 minutes', "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
@@ -164,7 +165,7 @@ class CampaignRabbitAdminMenuCallback
                     </td>
                     <td>
                         <br><input name="woo_sync" id="woo_sync" class="button button-primary" type="submit"
-                                   value="<?php esc_attr_e("Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                                   value="<?php esc_attr_e("Initiate Old Orders Sync", "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
 
@@ -181,17 +182,20 @@ class CampaignRabbitAdminMenuCallback
             <input type="hidden" name="action" value="update_campaignrabbit_settings"/>
             <input type="hidden" name="hidden_api_token_flag" id="hidden_api_token_flag"
                    value="<?php echo get_option('api_token_flag') ?>"/>
-            <h2><?php esc_attr_e("CampaignRabbit Authentication Information", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            <h2><?php esc_attr_e("CampaignRabbit Keys", "campaignrabbit-integration-for-woocommerce"); ?></h2>
+            <small><?php esc_attr_e("You can find the keys during the sign up or at the Settings section of ", "campaignrabbit-integration-for-woocommerce"); ?>
+                <a href="https://www.campaignrabbit.com"><?php esc_attr_e("Campaignrabbit", "campaignrabbit-integration-for-woocommerce"); ?></a>
+            </small>
+
+            <p>
+                <label class="woo-label"><?php esc_attr_e("App ID:", "campaignrabbit-integration-for-woocommerce"); ?></label>
+                <input type="text" size="80" name="app_id" id="app_id" value="<?php echo get_option('app_id'); ?>"/>
+            </p>
             <p>
                 <label class="woo-label"><?php esc_attr_e("API Token:", "campaignrabbit-integration-for-woocommerce"); ?></label>
                 <input type="text" size="80" name="api_token" id="api_token"
                        value="<?php echo get_option('api_token'); ?>"/>
             </p>
-            <p>
-                <label class="woo-label"><?php esc_attr_e("App ID:", "campaignrabbit-integration-for-woocommerce"); ?></label>
-                <input type="text" size="80" name="app_id" id="app_id" value="<?php echo get_option('app_id'); ?>"/>
-            </p>
-
             <input name="woo_connect" id="woo_connect" class="button button-primary" type="submit"
                    value="<?php esc_attr_e("Connect", "campaignrabbit-integration-for-woocommerce"); ?>"/>
 
@@ -246,7 +250,7 @@ class CampaignRabbitAdminMenuCallback
                 <tr>
                     <td>
                         <br><br><input name="enable_log_save" id="enable_log_save" class="button button-primary" type="submit"
-                                   value="<?php esc_attr_e("Save", "campaignrabbit-integration-for-woocommerce"); ?>"/>
+                                   value="<?php esc_attr_e("Save Sync Settings", "campaignrabbit-integration-for-woocommerce"); ?>"/>
                     </td>
                 </tr>
 
