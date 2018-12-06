@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "c5fc4b077193f7fc94cae0a04e39049c",
     "content-hash": "a6cd0147eee86dacdc015067cca6b594",
     "packages": [
         {
@@ -40,7 +41,7 @@
                 }
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
-            "time": "2018-02-12T09:24:05+00:00"
+            "time": "2018-02-12 09:24:05"
         },
         {
             "name": "mashape/unirest-php",
@@ -86,7 +87,7 @@
                 "https",
                 "rest"
             ],
-            "time": "2016-08-11T17:49:21+00:00"
+            "time": "2016-08-11 17:49:21"
         }
     ],
     "packages-dev": [],
