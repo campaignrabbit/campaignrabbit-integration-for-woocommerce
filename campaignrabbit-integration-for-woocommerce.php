@@ -34,7 +34,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * Current plugin version.
  */
-define('CAMPAIGNRABBIT_VERSION', '1.1.0');
+define('CAMPAIGNRABBIT_VERSION', '1.1.1');
 define('CAMPAIGNRABBIT_NAME', 'campaignrabbit-integration-for-woocommerce');
 
 /**
