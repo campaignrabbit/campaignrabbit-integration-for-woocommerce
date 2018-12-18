@@ -103,7 +103,7 @@ class CampaignRabbitPublic {
         if(isset($current_user->user_email) && !empty($current_user->user_email)){
             $user_email = $current_user->user_email;
         }
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/campaignrabbit-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/campaignrabbit-public.js', array( 'jquery' ), $this->version, true );
 
         wp_localize_script( $this->plugin_name, 'CRAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'user_email' => $user_email  ) );
 
