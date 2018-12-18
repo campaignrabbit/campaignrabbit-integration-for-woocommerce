@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       CampaignRabbit Integration For WooCommerce
  * Description:       To intergrate campaignRabbit and woocommerce
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            Cartrabbit
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -34,7 +34,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * Current plugin version.
  */
-define('CAMPAIGNRABBIT_VERSION', '1.1.1');
+define('CAMPAIGNRABBIT_VERSION', '1.1.2');
 define('CAMPAIGNRABBIT_NAME', 'campaignrabbit-integration-for-woocommerce');
 
 /**
